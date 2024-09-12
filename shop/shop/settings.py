@@ -56,7 +56,7 @@ ROOT_URLCONF = 'shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,8 +78,8 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ClothingShop',
-        'USER': 'shop_user',
+        'NAME': 'clothingshop',
+        'USER': 'shop',
         'PASSWORD': 'Nokia-c2-01',
         'HOST': 'localhost',  # Или IP-адрес, если база данных на удаленном сервере
         'PORT': '3306',  # Стандартный порт для MySQL
@@ -123,6 +123,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
