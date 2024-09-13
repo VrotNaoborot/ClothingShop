@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from MainShop.views import index_page
+from MainShop.views import register, test_email
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index_page)
+    path('register/', register),
+    path('register/check_code', register),
+    path('test/', test_email)
 ]

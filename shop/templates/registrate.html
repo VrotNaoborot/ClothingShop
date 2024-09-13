@@ -4,22 +4,21 @@
         <meta charset="utf-8">
         <title>RegistrationForm_v1 by Colorlib</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <!-- MATERIAL DESIGN ICONIC FONT -->
         <link rel="stylesheet" href="{% static 'registrate/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
 
         <!-- STYLE CSS -->
         <link rel="stylesheet" href="{% static 'registrate/css/style.css' %}">
     </head>
-
     <body>
-
         <div class="wrapper" style="background-image: url('{% static 'registrate/images/bg-registration-form-1.jpg' %}');">
             <div class="inner">
                 <div class="image-holder">
                     <img src="{% static 'registrate/images/registration-form-1.jpg' %}" alt="">
                 </div>
-               <form id="registrationForm">
+                <form id="registrationForm" method="post">
+                    {% csrf_token %}
                     <h3>Registration Form</h3>
                     <div class="form-group">
                         <input type="text" placeholder="First Name" class="form-control" id="firstName">
@@ -30,25 +29,31 @@
                         <i class="zmdi zmdi-email"></i>
                     </div>
                     <div class="form-wrapper" id="verificationCodeWrapper" style="display: none;">
-                        <input type="text" placeholder="Verification Code" class="form-control" id="verificationCode">
-                        <i class="zmdi zmdi-check"></i>
+                        <div class="input-container">
+                            <input type="text" placeholder="Verification Code" class="form-control" id="verificationCode">
+                            <i class="zmdi zmdi-check"></i>
+                        </div>
+                        <div class="resend-container">
+                            <span id="timer" style="display: none;">Отправить код повторно можно через 60 секунд</span>
+                            <span id="resendCodeText" style="display: none;">Отправить код повторно</span>
+                        </div>
                     </div>
                     <div class="form-wrapper">
                         <input type="password" placeholder="Password" class="form-control" id="password">
-                        <i class="zmdi zmdi-lock"></i>
+                        <i class="zmdi zmdi-lock" id="togglePassword1" style="cursor: pointer;"></i>
                     </div>
                     <div class="form-wrapper">
                         <input type="password" placeholder="Confirm Password" class="form-control" id="confirmPassword">
-                        <i class="zmdi zmdi-lock"></i>
+                        <i class="zmdi zmdi-lock" id="togglePassword2" style="cursor: pointer;"></i>
                     </div>
                     <button id="registerButton">Register
                         <i class="zmdi zmdi-arrow-right"></i>
                     </button>
-                    <div class="error-messages" id="errorMessages"></div>
+                    <div class="error-message" id="errorMessage"></div> <!-- Сообщение об ошибке -->
                 </form>
-
             </div>
         </div>
         <script src="{% static 'registrate/js/verification.js' %}"></script>
+        <script src="{% static 'registrate/js/show_passwords.js' %}"></script>
     </body>
 </html>

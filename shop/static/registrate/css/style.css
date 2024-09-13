@@ -1,8 +1,49 @@
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
+/* Контейнер для поля ввода и иконки */
+.input-container {
+    position: relative;
+    margin-bottom: 10px; /* Отступ между полем ввода и контейнером с таймером */
 }
+
+.form-control {
+    height: 40px; /* Высота поля ввода */
+    padding-right: 30px; /* Отступ справа для иконки */
+}
+
+/* Контейнер для таймера и текста */
+.resend-container {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание по центру */
+    margin-top: -15px; /* Отступ сверху */
+    margin-bottom: 10px
+}
+
+/* Стиль для таймера */
+#timer {
+    color: gray; /* Цвет для таймера */
+    font-size: 14px; /* Размер шрифта для таймера */
+    margin-right: 10px; /* Расстояние между таймером и текстом */
+    display: none; /* Скрыть по умолчанию */
+}
+
+/* Стиль для текста повторной отправки кода */
+#resendCodeText {
+    cursor: pointer;
+    color: blue; /* Цвет текста по умолчанию */
+    text-decoration: underline;
+    font-size: 14px; /* Размер шрифта для текста */
+    display: none; /* Скрыть по умолчанию */
+}
+
+
+
+
+#errorMessage {
+    font-family: "Poppins-SemiBold"; /* Замените на нужный шрифт из вашего файла */
+    font-size: 12px; /* Размер шрифта */
+    color: red; /* Цвет текста */
+    text-align: center; /* Выравнивание текста */
+}
+
 
 @font-face {
   font-family: "Poppins-Regular";
