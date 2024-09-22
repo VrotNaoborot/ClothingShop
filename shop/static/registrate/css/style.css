@@ -1,3 +1,19 @@
+.link-text {
+  margin-top: 20px; /* Отступ сверху для текста */
+  text-align: center; /* Центрирование текста */
+}
+
+.link-text a {
+  color: #007bff; /* Цвет ссылки */
+  text-decoration: none; /* Убрать подчеркивание */
+}
+
+.link-text a:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+
+
 /* Контейнер для поля ввода и иконки */
 .input-container {
     position: relative;
@@ -39,7 +55,7 @@
 
 #errorMessage {
     font-family: "Poppins-SemiBold"; /* Замените на нужный шрифт из вашего файла */
-    font-size: 12px; /* Размер шрифта */
+    font-size: 14px; /* Размер шрифта */
     color: red; /* Цвет текста */
     text-align: center; /* Выравнивание текста */
 }

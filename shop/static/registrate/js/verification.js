@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const timerElement = document.getElementById('timer');
     let timer;
     let countdown = 60; // Таймер в секундах
-    let isResend = false; // Флаг для проверки, повторная отправка или нет
 
     function startTimer() {
         resendCodeText.style.display = 'none'; // Скрыть текст "Resend Code"
@@ -73,49 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let error = '';
 
-            if (document.getElementById('verificationCodeWrapper').style.display === 'block') {
-                // Проверка кода подтверждения
-                if (!verificationCode) {
-                    error = 'Пожалуйста, введите код подтверждения.';
-                }
-
-                if (error) {
-                    errorMessage.textContent = error;
-                    errorMessage.style.color = 'red'; // Сделать текст красным
-                    errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
-                    errorMessage.style.textAlign = 'center'; // Выравнивание по центру
-                    return;
-                }
-
-                // Отправка кода подтверждения
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-                fetch('/register/', { // URL для проверки кода подтверждения
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    },
-                    body: JSON.stringify({ verification_code: verificationCode })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('User registered successfully');
-                        // Успешная регистрация
-                    } else {
-                        errorMessage.textContent = data.message;
-                        errorMessage.style.color = 'red'; // Сделать текст красным
-                        errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
-                        errorMessage.style.textAlign = 'center'; // Выравнивание по центру
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-            } else {
-                // Проверка данных для первичной регистрации
+            // Функция для проверки введенных данных
+            function validateForm() {
                 if (!firstName) {
                     error = 'Пожалуйста, введите имя.';
                 } else if (!lastName) {
@@ -144,15 +102,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     errorMessage.style.color = 'red'; // Сделать текст красным
                     errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
                     errorMessage.style.textAlign = 'center'; // Выравнивание по центру
+                    return false;
+                }
+                return true;
+            }
+
+            // Проверяем, видна ли форма для ввода кода подтверждения
+            if (document.getElementById('verificationCodeWrapper').style.display === 'block') {
+                // Вторичный запрос - проверка кода подтверждения
+                if (!verificationCode) {
+                    error = 'Пожалуйста, введите код подтверждения.';
+                }
+
+                // Проверяем введенные данные (на случай, если они могли измениться после первого запроса)
+                if (!validateForm()) return;
+
+                if (error) {
+                    errorMessage.textContent = error;
+                    errorMessage.style.color = 'red'; // Сделать текст красным
+                    errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
+                    errorMessage.style.textAlign = 'center'; // Выравнивание по центру
                     return;
                 }
 
-                // Если все проверки прошли, показать скрытое поле
-                document.getElementById('verificationCodeWrapper').style.display = 'block';
-                startTimer(); // Запускаем таймер после показа поля ввода кода
-
-                // Отправка данных на сервер
+                // Отправляем код подтверждения и все данные для регистрации на сервер
                 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
                 fetch('/register/', {
                     method: 'POST',
                     headers: {
@@ -160,16 +135,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRFToken': csrfToken
                     },
                     body: JSON.stringify({
-                        firstName,
-                        lastName,
-                        email,
-                        password
+                        first_name: firstName,
+                        last_name: lastName,
+                        email: email,
+                        password: password,
+                        verification_code: verificationCode
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Обработка ответа от сервера
-                    console.log(data);
+                    if (data.success) {
+                        console.log('User registered successfully');
+                        alert('Регистрация завершена!');
+                    } else {
+                        errorMessage.textContent = data.message;
+                        errorMessage.style.color = 'red'; // Сделать текст красным
+                        errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
+                        errorMessage.style.textAlign = 'center'; // Выравнивание по центру
+
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            } else {
+                // Первый запрос - регистрация и отправка кода подтверждения
+                if (!validateForm()) return;
+
+                // Отправка данных на сервер для отправки кода
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch('/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        first_name: firstName,
+                        last_name: lastName,
+                        email: email,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Verification code sent successfully');
+
+                        // Если сервер ответил успешно, показать скрытое поле для ввода кода подтверждения
+                        document.getElementById('verificationCodeWrapper').style.display = 'block';
+                        startTimer(); // Запускаем таймер после показа поля ввода кода
+                    } else {
+                        errorMessage.textContent = data.message;
+                        errorMessage.style.color = 'red'; // Сделать текст красным
+                        errorMessage.style.fontSize = '16px'; // Сделать текст более крупным
+                        errorMessage.style.textAlign = 'center'; // Выравнивание по центру
+
+                        return;
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);

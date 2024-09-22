@@ -2,11 +2,22 @@ import random
 import string
 import json
 
+from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from shop import settings
 from django.http import JsonResponse
+from .models import CustomUser
+
+
+def index(request):
+    if request.method == 'GET':
+        return render(request, "index.html")
+
+
+def test_load(request):
+    return render(request, 'test.html')
 
 
 def generate_verification_code(length=6):
@@ -14,11 +25,31 @@ def generate_verification_code(length=6):
     return ''.join(random.choices(string.digits, k=length))
 
 
-def check_code(request):
+def login(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            email
+            print(data)
+            email = data.get('email')
+            password = data.get('password')
+
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                django_login(request, user)
+                return JsonResponse(
+                    {'success': True}
+                )
+            else:
+                return JsonResponse(
+                    {'success': False, 'message': 'Неправильная почта или пароль'}
+                )
+        except Exception as ex:
+            return JsonResponse(
+                {'success': False, 'message': f'Error {ex}'}
+            )
+    elif request.method == 'GET':
+        return render(request, "login.html")
+
 
 def register(request):
     if request.method == 'POST':
@@ -27,15 +58,32 @@ def register(request):
             email = data.get('email')
             verification_code = data.get('verification_code', None)
 
+            if CustomUser.objects.filter(email=email).exists():
+                return JsonResponse({"success": False, "message": "Почта уже зарегистрирована"})
+
             if verification_code:
                 # Проверка кода
                 stored_code = request.session.get('verification_code')
                 if stored_code == verification_code:
                     # Код подтвержден
-                    # Здесь должна происходить регистрация пользователя
-                    return JsonResponse({'success': True, 'message': 'User registered successfully!'})
+                    first_name = data.get('first_name')
+                    last_name = data.get('last_name')
+                    email = data.get('email')
+                    password = data.get('password')
+                    if not all([first_name, last_name, email, password]):
+                        return JsonResponse({'success': False, 'message': 'Не хватает данных для регистрации.'})
+
+                    user = CustomUser.objects.create_user(
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        password=password
+                    )
+                    user.save()
+
+                    return JsonResponse({'success': True, 'message': 'Пользователь зарегистрирован успешно!'})
                 else:
-                    return JsonResponse({'success': False, 'message': 'Incorrect verification code.'})
+                    return JsonResponse({'success': False, 'message': 'Некорректный код'})
             else:
                 # Первый этап регистрации - отправка кода
                 code = generate_verification_code()
@@ -44,7 +92,7 @@ def register(request):
                     send_mail(
                         'Verification Code',
                         f'Your verification code is {code}',
-                        'kakoytann@gmail.com',  # Убедитесь, что это ваш email-адрес
+                        'kakoytann@gmail.com',
                         [email],
                         fail_silently=False,
                     )
@@ -54,18 +102,6 @@ def register(request):
         except json.JSONDecodeError:
             return JsonResponse({'success': False, 'message': 'Invalid JSON data.'})
     return render(request, 'registrate.html')
-
-
-def verify_code(request):
-    if request.method == 'POST':
-        entered_code = request.POST.get('verification_code')
-        saved_code = request.session.get('verification_code')
-
-        if entered_code == saved_code:
-            # Код верный, продолжаем регистрацию
-            return HttpResponse("Код подтвержден, регистрация успешна!")
-        else:
-            return HttpResponse("Неверный код подтверждения, попробуйте ещё раз.")
 
 
 def send_verification_code(request, email):

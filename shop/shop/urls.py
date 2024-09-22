@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from MainShop.views import register, test_email
+from MainShop.views import register, login, index, test_load
+from . import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', register),
-    path('register/check_code', register),
-    path('test/', test_email)
+    path('register/', register, name='register'),
+    path('login/', login, name='login'),
+    path('', index),
 ]
+# if settings.DEBUG:  # Только для режима отладки
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
