@@ -1,4 +1,16 @@
-
+.login-button-container {
+  display: flex;
+  justify-content: center; /* Центрирует кнопку по горизонтали */
+  align-items: center; /* Центрирует кнопку по вертикали */
+  border: 2px solid darkslategrey; /* Цвет границы */
+  border-radius: 10px; /* Скругление углов */
+  padding: 10px; /* Отступы вокруг кнопки */
+  margin: 0 10px;
+}
+.login-button-container:hover {
+  border-color: #9f9d9e;
+  color: #9f9d9e;
+}
 
 .usp-section {
     display: flex;
@@ -89,6 +101,10 @@
     padding: 10px 0;
 }
 
+.category-link:hover .category-text {
+    background: black; /* Полный черный фон при наведении */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -125,8 +141,8 @@ a {
 
 .header-menu {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 100%; /* Занимает всю ширину родителя */
 }
 
 .logo {
@@ -142,6 +158,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  margin-left: auto;
 }
 nav i {
   font-size: 20px;
@@ -153,18 +170,34 @@ nav i:hover {
   cursor: pointer;
 }
 
-.header-production-button, .header-contacts-button {
+.header-production-button, .header-contacts-button, .header-cart-button {
   height: 100%;
   display: flex;
   align-items: center;
   transition: 0.2s ease;
+  margin: 0 10px; /* Отступы по бокам: 10 пикселей слева и справа */
+
 }
+
+.header-cart-button svg {
+    margin-right: 5px;
+    transition: stroke 0.2s ease; /* Плавный переход цвета обводки */
+}
+
+.header-cart-button:hover svg {
+    fill: #b3bab2;
+}
+
+.header-cart-button:hover {
+    color: #9f9d9e;
+}
+
 .header-production-button svg, .header-contacts-button svg {
   padding-left: 4px;
 }
 
 .header-production-button:hover, .header-contacts-button:hover {
-  color: darkslategrey;
+  color: #9f9d9e;
   position: relative;
   cursor: pointer;
 }
@@ -193,7 +226,7 @@ nav i:hover {
   transition: 0.3s ease;
 }
 .menu-list a:hover {
-  background-color: whitesmoke;
+  background-color: #000;
 }
 
 .cart {
@@ -473,18 +506,22 @@ input[type=submit]:hover {
     height: 500px;
   }
   nav {
-    width: 220px;
+    width: auto; /* Убираем фиксированную ширину */
+    margin-left: auto; /* Убедитесь, что навигация выравнена вправо */
   }
 }
+
 @media (min-width: 550px) {
   .product-item {
     width: 220px;
     height: 500px;
   }
   nav {
-    width: 250px;
+    width: auto; /* Убираем фиксированную ширину */
+    margin-left: auto; /* Убедитесь, что навигация выравнена вправо */
   }
 }
+
 @media (min-width: 1200px) {
   .products-section-list {
     justify-content: left;

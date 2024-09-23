@@ -17,34 +17,41 @@
                 <div class="image-holder">
                     <img src="{% static 'registrate/images/registration-form-1.jpg' %}" alt="">
                 </div>
-                <form id="loginForm" method="post">
+                <form id="loginForm" method="post" action="{% url 'login' %}">
                     {% csrf_token %}
-                    <h3>Login Form</h3> <!-- Заголовок для формы авторизации -->
+                    <h3>Login Form</h3>
 
                     <!-- Поле для ввода Email -->
                     <div class="form-wrapper">
-                        <input type="text" placeholder="Email Address" class="form-control" id="email">
+                        <input type="email" name="email" placeholder="Email Address" class="form-control" required>
                         <i class="zmdi zmdi-email"></i>
                     </div>
+
                     <!-- Поле для ввода пароля -->
                     <div class="form-wrapper">
-                        <input type="password" placeholder="Password" class="form-control" id="password">
+                        <input type="password" name="password" placeholder="Password" class="form-control" required>
                         <i class="zmdi zmdi-lock" id="togglePassword" style="cursor: pointer;"></i>
                     </div>
+
                     <!-- Кнопка для входа -->
-                    <button id="loginButton">Login
+                    <button type="submit" id="loginButton">Login
                         <i class="zmdi zmdi-arrow-right"></i>
                     </button>
 
-                    <div class="error-message" id="errorMessage"></div> <!-- Сообщение об ошибке -->
-<!--                    Кликабельный текст-->
+                    <!-- Блок для отображения ошибки под кнопкой -->
+                    {% if error %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endif %}
+
+                    <!-- Кликабельный текст -->
                     <div class="link-text">
                         <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
                     </div>
                 </form>
             </div>
         </div>
-        <script src="{% static 'login/js/show_passwords.js' %}"></script> <!-- Скрипт для отображения пароля -->
-        <script src="{% static 'login/js/login.js' %}"></script> <!-- Скрипт для отображения пароля -->
+        <script src="{% static 'login/js/show_passwords.js' %}"></script>
     </body>
+
+
 </html>

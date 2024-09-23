@@ -3,7 +3,7 @@ import string
 import json
 
 from django.contrib.auth import authenticate, login as django_login
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from shop import settings
@@ -26,27 +26,21 @@ def generate_verification_code(length=6):
 
 
 def login(request):
+    print(request.method)
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)
-            print(data)
-            email = data.get('email')
-            password = data.get('password')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
 
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 django_login(request, user)
-                return JsonResponse(
-                    {'success': True}
-                )
+                return redirect('/')
             else:
-                return JsonResponse(
-                    {'success': False, 'message': 'Неправильная почта или пароль'}
-                )
+                return render(request, 'login.html', {"error": "Invalid login or password"})
         except Exception as ex:
-            return JsonResponse(
-                {'success': False, 'message': f'Error {ex}'}
-            )
+            return render(request, "login.html", {"error": ex})
+
     elif request.method == 'GET':
         return render(request, "login.html")
 

@@ -50,15 +50,13 @@
     display: none; /* Скрыть по умолчанию */
 }
 
-
-
-
-#errorMessage {
-    font-family: "Poppins-SemiBold"; /* Замените на нужный шрифт из вашего файла */
-    font-size: 14px; /* Размер шрифта */
-    color: red; /* Цвет текста */
-    text-align: center; /* Выравнивание текста */
+.error-message {
+    color: red;               /* Красный цвет текста */
+    text-align: center;       /* Выравнивание по центру */
+    margin-top: 10px;        /* Отступ сверху для разделения с кнопкой */
 }
+
+
 
 
 @font-face {
