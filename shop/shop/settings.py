@@ -146,3 +146,5 @@ EMAIL_HOST_PASSWORD = 'svfx wjbd uimo anfe'  # Замените на ваш па
 
 
 AUTH_USER_MODEL = 'MainShop.CustomUser'
+
+LOGOUT_REDIRECT_URL = '/'

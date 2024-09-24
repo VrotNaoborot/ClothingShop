@@ -52,13 +52,31 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)
-            email = data.get('email')
+            data = request.POST
+            email = data.get('email', None)
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            first_password = data.get('password')
+            second_password = data.get('confirm_password')
             verification_code = data.get('verification_code', None)
 
+            if email is None:
+                return render(request, "registrate.html", {"error": "Необходимо отправить почту",
+                                                           'first_name': first_name,
+                                                           'last_name': last_name,
+                                                           'email': email,
+                                                           'password': first_password,
+                                                           'confirm_password': second_password
+                                                           })
             # Проверка, зарегистрирована ли почта
             if mail_is_registrate(email):
-                return render(request, "registrate.html", {"error": "Данная почта уже зарегистрирована"})
+                return render(request, "registrate.html", {"error": "Данная почта уже зарегистрирована",
+                                                           'first_name': first_name,
+                                                           'last_name': last_name,
+                                                           'email': email,
+                                                           'password': first_password,
+                                                           'confirm_password': second_password
+                                                           })
 
             if verification_code:
                 # Проверка кода подтверждения
@@ -82,7 +100,14 @@ def register(request):
                     return redirect("/")  # Перенаправление на главную страницу
 
                 else:
-                    return render(request, "registrate.html", {"error": "Неправильный код доступа"})
+                    return render(request, "registrate.html", {"error": "Неправильный код доступа",
+                                                               'first_name': first_name,
+                                                               'last_name': last_name,
+                                                               'email': email,
+                                                               'password': first_password,
+                                                               'confirm_password': second_password,
+                                                               'verification_code': verification_code
+                                                               })
             else:
                 # Первый этап регистрации - отправка кода
                 code = generate_verification_code()
@@ -97,13 +122,27 @@ def register(request):
                     )
                     # Отправляем код и показываем форму для ввода кода
                     return render(request, 'registrate.html', {
-                        'error': 'Код подтверждения отправлен. Пожалуйста, введите его.',
-                        'show_verification_code': True  # Параметр для отображения поля кода
+                        'show_verification_code': True,  # Параметр для отображения поля кода,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'password': first_password,
+                        'confirm_password': second_password
                     })
-                except Exception:
-                    return render(request, 'registrate.html', {'error': "Не удалось отправить код доступа"})
-        except json.JSONDecodeError:
-            return render(request, 'registrate.html', {'error': 'Неверные данные JSON.'})
+                except Exception as ex:
+                    print(ex)
+                    return render(request, 'registrate.html', {'error': "Не удалось отправить код доступа",
+                                                               'first_name': first_name,
+                                                               'last_name': last_name,
+                                                               'email': email,
+                                                               'password': first_password,
+                                                               'confirm_password': second_password
+                                                               }
+                                  )
+        except json.JSONDecodeError as ex:
+            print(ex)
+            return render(request, 'registrate.html', {'error': 'Неверные данные JSON.'
+                                                       })
 
     return render(request, 'registrate.html')
 

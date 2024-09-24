@@ -19,11 +19,14 @@ from django.urls import path
 from MainShop.views import register, login, index, test_load
 from . import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', register, name='register'),
     path('login/', login, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', index),
 ]
 # if settings.DEBUG:  # Только для режима отладки
