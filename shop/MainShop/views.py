@@ -25,6 +25,10 @@ def generate_verification_code(length=6):
     return ''.join(random.choices(string.digits, k=length))
 
 
+def mail_is_registrate(mail):
+    return CustomUser.objects.filter(email=mail).exists()
+
+
 def login(request):
     print(request.method)
     if request.method == 'POST':
@@ -52,20 +56,21 @@ def register(request):
             email = data.get('email')
             verification_code = data.get('verification_code', None)
 
-            if CustomUser.objects.filter(email=email).exists():
-                return JsonResponse({"success": False, "message": "Почта уже зарегистрирована"})
+            # Проверка, зарегистрирована ли почта
+            if mail_is_registrate(email):
+                return render(request, "registrate.html", {"error": "Данная почта уже зарегистрирована"})
 
             if verification_code:
-                # Проверка кода
+                # Проверка кода подтверждения
                 stored_code = request.session.get('verification_code')
                 if stored_code == verification_code:
-                    # Код подтвержден
+                    # Код подтвержден, продолжаем регистрацию
                     first_name = data.get('first_name')
                     last_name = data.get('last_name')
-                    email = data.get('email')
                     password = data.get('password')
+
                     if not all([first_name, last_name, email, password]):
-                        return JsonResponse({'success': False, 'message': 'Не хватает данных для регистрации.'})
+                        return render(request, "registrate.html", {"error": "Введите все данные"})
 
                     user = CustomUser.objects.create_user(
                         first_name=first_name,
@@ -74,10 +79,10 @@ def register(request):
                         password=password
                     )
                     user.save()
+                    return redirect("/")  # Перенаправление на главную страницу
 
-                    return JsonResponse({'success': True, 'message': 'Пользователь зарегистрирован успешно!'})
                 else:
-                    return JsonResponse({'success': False, 'message': 'Некорректный код'})
+                    return render(request, "registrate.html", {"error": "Неправильный код доступа"})
             else:
                 # Первый этап регистрации - отправка кода
                 code = generate_verification_code()
@@ -90,11 +95,16 @@ def register(request):
                         [email],
                         fail_silently=False,
                     )
-                except Exception as ex:
-                    return JsonResponse({'success': False, 'message': str(ex)})
-                return JsonResponse({'success': True, 'message': 'Verification code sent.'})
+                    # Отправляем код и показываем форму для ввода кода
+                    return render(request, 'registrate.html', {
+                        'error': 'Код подтверждения отправлен. Пожалуйста, введите его.',
+                        'show_verification_code': True  # Параметр для отображения поля кода
+                    })
+                except Exception:
+                    return render(request, 'registrate.html', {'error': "Не удалось отправить код доступа"})
         except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'message': 'Invalid JSON data.'})
+            return render(request, 'registrate.html', {'error': 'Неверные данные JSON.'})
+
     return render(request, 'registrate.html')
 
 

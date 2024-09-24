@@ -4,11 +4,7 @@
         <meta charset="utf-8">
         <title>Registrate</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- MATERIAL DESIGN ICONIC FONT -->
         <link rel="stylesheet" href="{% static 'registrate/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
-
-        <!-- STYLE CSS -->
         <link rel="stylesheet" href="{% static 'registrate/css/style.css' %}">
     </head>
     <body>
@@ -21,42 +17,38 @@
                     {% csrf_token %}
                     <h3>Registration Form</h3>
                     <div class="form-group">
-                        <input type="text" placeholder="First Name" class="form-control" id="firstName">
-                        <input type="text" placeholder="Last Name" class="form-control" id="lastName">
+                        <input type="text" name="first_name" placeholder="First Name" class="form-control" required>
+                        <input type="text" name="last_name" placeholder="Last Name" class="form-control" required>
                     </div>
                     <div class="form-wrapper">
-                        <input type="text" placeholder="Email Address" class="form-control" id="email">
+                        <input type="text" name="email" placeholder="Email Address" class="form-control" required>
                         <i class="zmdi zmdi-email"></i>
                     </div>
-                    <div class="form-wrapper" id="verificationCodeWrapper" style="display: none;">
-                        <div class="input-container">
-                            <input type="text" placeholder="Verification Code" class="form-control" id="verificationCode">
-                            <i class="zmdi zmdi-check"></i>
-                        </div>
-                        <div class="resend-container">
-                            <span id="timer" style="display: none;">Отправить код повторно можно через 60 секунд</span>
-                            <span id="resendCodeText" style="display: none;">Отправить код повторно</span>
-                        </div>
-                    </div>
+                    {% if show_verification_code %}
                     <div class="form-wrapper">
-                        <input type="password" placeholder="Password" class="form-control" id="password">
+                        <input type="text" name="verification_code" placeholder="Verification Code" class="form-control" required>
+                        <i class="zmdi zmdi-check"></i>
+                    </div>
+                    {% endif %}
+                    <div class="form-wrapper">
+                        <input type="password" name="password" placeholder="Password" class="form-control" required>
                         <i class="zmdi zmdi-lock" id="togglePassword1" style="cursor: pointer;"></i>
                     </div>
                     <div class="form-wrapper">
-                        <input type="password" placeholder="Confirm Password" class="form-control" id="confirmPassword">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control" required>
                         <i class="zmdi zmdi-lock" id="togglePassword2" style="cursor: pointer;"></i>
                     </div>
-                    <button id="registerButton">Register
+                    <button type="submit">Register
                         <i class="zmdi zmdi-arrow-right"></i>
                     </button>
-                    <div class="error-message" id="errorMessage"></div> <!-- Сообщение об ошибке -->
+                    {% if error %}
+                    <div class="error-message">{{ error }}</div> <!-- Сообщение об ошибке -->
+                    {% endif %}
                     <div class="link-text">
                         <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                     </div>
                 </form>
             </div>
         </div>
-        <script src="{% static 'registrate/js/verification.js' %}"></script>
-        <script src="{% static 'registrate/js/show_passwords.js' %}"></script>
     </body>
 </html>
