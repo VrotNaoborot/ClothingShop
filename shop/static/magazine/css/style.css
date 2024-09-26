@@ -109,6 +109,7 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto Slab", sans-serif;
+  font-size: 14px;
 }
 
 header {
@@ -135,7 +136,7 @@ a {
 }
 
 .container {
-    max-width: 1200px; /* Максимальная ширина для контейнера */
+    max-width: 1800px; /* Максимальная ширина для контейнера */
     margin: 0 auto; /* Центрирует контейнер на странице */
 }
 

@@ -1,0 +1,86 @@
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница магазина</title>
+	<link rel="stylesheet" href="{% static 'magazine/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
+</head>
+<body>
+    <header>
+		<div class="container">
+			<div class="header-menu">
+				<div class="logo">
+					<a href="index.html">
+						<img src="{% static 'magazine/images/logo.png' %}" alt="logo">
+					</a>
+				</div>
+				<nav>
+					<div class="header-production-button">
+						ПРОДУКЦИЯ
+						<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 448 512">
+							<path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
+						</svg>
+					</div>
+					<div class="header-production-menu">
+						<div class="menu-list">
+							<a href="female.html">
+								Женское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+							<a href="male.html">
+								Мужское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+							<a href="male.html">
+								Детское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<a class="header-contacts-button" href="info.html">
+						КОНТАКТЫ
+					</a>
+					{% if user.is_authenticated %}
+						<form method="post" action="{% url 'logout' %}" style="display: inline;">
+							{% csrf_token %}
+							<button type="submit" class="login-button-container">ВЫЙТИ</button>
+						</form>
+					{% else %}
+						<a class="login-button-container" href="login/">ВОЙТИ</a>
+					{% endif %}
+					<a class="header-cart-button" href="checkout/cart/" role="link" rel="nofollow">
+						<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M18.5 2.5h-13L3.747 18.28a2 2 0 0 0 1.988 2.22h12.53a2 2 0 0 0 1.988-2.22L18.5 2.5z" stroke="#000"></path>
+							<path d="M15.5 9a3.5 3.5 0 1 1-7 0m0-2V5m7 2V5" stroke="#000"></path>
+						</svg>
+						<span>КОРЗИНА</span>
+					</a>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<div class="bottom-menu">
+		 <div class="container">
+			  <div class="categories">
+				  <a href="#">Новинки</a>
+				  <a href="#">Одежда</a>
+				  <a href="#">Обувь</a>
+				  <a href="#">Аксессуары</a>
+				  <a href="#" style="color: red;">Sale%</a>
+			  </div>
+			  <div class="search-container">
+				  <input type="text" placeholder="Поиск" class="search-input">
+				  <button class="search-button">Найти</button>
+        	</div>
+		</div>
+	</div>
+</body>
+</html>

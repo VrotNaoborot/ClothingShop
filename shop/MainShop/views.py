@@ -29,6 +29,10 @@ def mail_is_registrate(mail):
     return CustomUser.objects.filter(email=mail).exists()
 
 
+def home(request):
+    return render(request, "home.html")
+
+
 def login(request):
     print(request.method)
     if request.method == 'POST':
