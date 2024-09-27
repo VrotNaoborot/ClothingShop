@@ -136,7 +136,7 @@ a {
 }
 
 .container {
-    max-width: 1100px; /* Максимальная ширина для контейнера */
+    width: 65%; /* Максимальная ширина для контейнера */
     margin: 0 auto; /* Центрирует контейнер на странице */
 }
 
@@ -526,8 +526,5 @@ input[type=submit]:hover {
   }
   .header-menu {
     height: 100px;
-  }
-    .container {
-    width: 1044px;
   }
 }

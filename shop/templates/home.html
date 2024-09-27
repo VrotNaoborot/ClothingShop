@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Страница магазина</title>
-	<link rel="stylesheet" href="{% static 'magazine/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
 </head>
 <body>
@@ -78,8 +78,10 @@
 			  </div>
 			  <div class="search-container">
 				  <input type="text" placeholder="Поиск" class="search-input">
-				  <button class="search-button">Найти</button>
-        	</div>
+				  <a href="#" class="search-button">
+					  <img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
+				  </a>
+			  </div>
 		</div>
 	</div>
 </body>

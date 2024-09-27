@@ -4,9 +4,11 @@
 }
 
 .search-container input[type="text"] {
-    padding: 8px 15px; /* Добавьте необходимые отступы */
+    padding: 10px 15px; /* Добавьте необходимые отступы */
     margin-bottom: 0; /* Убедитесь, что отступ снизу равен 0 */
     width: 200px; /* Задайте нужную ширину */
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 
@@ -18,23 +20,24 @@
 }
 
 .search-button {
-    padding: 8px 15px; /* одинаковые отступы */
-    border: none;
-    border-radius: 4px;
-    background-color: #007BFF; /* Цвет кнопки */
-    color: white;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #
+}
+
+.search-icon {
+    height: 100%; /* Устанавливаем высоту изображения как у инпута */
+    max-height: 42px; /* Ограничиваем максимальную высоту, чтобы соответствовать полю */
+    width: auto; /* Сохраняем пропорции изображения */
+    cursor: pointer; /* Изменяет указатель на руку при наведении */
 }
 
 
 .search-button:hover {
-    background-color: #0056b3; /* Цвет кнопки при наведении */
+    background-color: #fffff; /* Цвет кнопки при наведении */
 }
 
-.container {
-    max-width: 1800px; /* Максимальная ширина для контейнера */
-    margin: 0 auto; /* Центрирует контейнер на странице */
-}
 
 .bottom-menu .container {
     display: flex; /* Включаем Flexbox */
@@ -43,7 +46,7 @@
 }
 
 .bottom-menu .categories a {
-    font-size: 14px; /* Задайте нужный размер шрифта */
+    font-size: 16px; /* Задайте нужный размер шрифта */
     margin-right: 15px;
 }
 
