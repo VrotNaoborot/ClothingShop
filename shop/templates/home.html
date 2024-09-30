@@ -6,6 +6,9 @@
     <title>Страница магазина</title>
 	<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
+	<link rel="stylesheet" href="{% static 'home/css/main-banner.css' %}">
+	<link rel="stylesheet" href="{% static 'home/css/recommendations-catalog.css' %}">
+	<link rel="stylesheet" href="{% static 'magazine/css/style-card.css' %}">
 </head>
 <body>
     <header>
@@ -84,5 +87,254 @@
 			  </div>
 		</div>
 	</div>
+	<div class="main-banner">
+		<div class="container banner-container">
+			<div class="banner-left">
+				<div class="slider-wrapper">
+					<div class="slider">
+						<a href="ссылка-на-страницу-1" class="slide">
+							<img src="{% static 'home/images/main_banner.webp' %}" alt="Баннер 1">
+							<div class="banner-text">
+								<div class="title">Осень в стильных новинках</div>
+								<div class="description">Коллекция O'Stin</div>
+							</div>
+						</a>
+						<a href="ссылка-на-страницу-2" class="slide">
+							<img src="{% static 'home/images/main_banner.webp' %}" alt="Баннер 2">
+							<div class="banner-text">
+								<div class="title">Экипировка для трекинга</div>
+								<div class="description">Маршрут построен</div>
+							</div>
+						</a>
+						<a href="ссылка-на-страницу-3" class="slide">
+							<img src="{% static 'home/images/main_banner.webp' %}" alt="Баннер 3">
+							<div class="banner-text">
+								<div class="title">Скидки от 15%</div>
+								<div class="description">на любимый бренд</div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="slider-controls">
+					<button class="prev">❮</button>
+					<span class="slide-number">1 / 3</span>
+					<button class="next">❯</button>
+				</div>
+			</div>
+
+			<div class="banner-right">
+				<a href="ссылка-на-страницу-1" class="small-banner">
+					<img src="{% static 'home/images/main_banner.webp' %}" alt="Маленький баннер 1">
+					<div class="small-banner-text">
+						<div class="title">Маршрут построен</div>
+						<div class="description">Экипировка для трекинга</div>
+					</div>
+				</a>
+				<a href="ссылка-на-страницу-2" class="small-banner">
+					<img src="{% static 'home/images/main_banner.webp' %}" alt="Маленький баннер 2">
+					<div class="small-banner-text">
+						<div class="title">Скидки от 15%</div>
+						<div class="description">на любимый бренд</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="mini-catalog">
+		<div class="container">
+			<h2 class="discount-title">Скидки для вас</h2>
+			<div class="catalog-container">
+				<button class="scroll-btn left" onclick="scrollCatalogLeft()">&#10094;</button>
+				<div class="catalog-items">
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-card">
+						<div class="product-image-container">
+							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+							<div class="discount-label">-49%</div>
+							<div class="wishlist-btn">
+							</div>
+						</div>
+						<div class="product-details">
+							<div class="old-price">13 599 ₽</div>
+							<div class="new-price">6 850 ₽</div>
+							<div class="product-title">Roberto Jordiani</div>
+							<div class="product-subtitle">Лоферы</div>
+							<div class="review-value">
+								<span class="rating-star">★</span>
+								<span class="rating-score">4.7</span>
+								<span class="review-count">(118)</span>
+							</div>
+							<div class="sizes">
+								<span>39</span>
+								<span>40</span>
+								<span>41</span>
+								<span>42</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button class="scroll-btn right" onclick="scrollCatalogRight()">&#10095;</button>
+			</div>
+		</div>
+	</div>
+	<script src="{% static 'home/js/slider.js' %}"></script>
+	<script src="{% static 'home/js/scroller.js' %}"></script>
 </body>
 </html>

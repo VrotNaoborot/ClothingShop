@@ -8,11 +8,8 @@
 
 
 .product-card {
-    width: 200px; /* Ширина карточки */
-    border: 1px solid #ddd;
-    padding: 10px;
-    transition: all 0.3s ease;
-    position: relative; /* Для абсолютного позиционирования элементов внутри карточки */
+    flex: 0 0 calc((100% - 5 * 10px) / 6); /* Ширина каждой карточки для 6 карточек с учетом отступов */
+    margin: 0; /* Обнуляем внешние отступы карточек, так как мы используем gap */
 }
 
 .product-card:hover {
@@ -61,6 +58,16 @@
     border: none;
     cursor: pointer;
     font-size: 18px;
+    height: 32px;
+    width: 32px;
+}
+.wishlist-btn {
+    background-image: url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%3e%3cg%20fill='none'%20fill-rule='evenodd'%3e%3cpath%20d='M0%2024h24V0H0z'/%3e%3cpath%20fill='%23FFF'%20stroke='%23000'%20d='M12%207.5h.5c0-2.026%202.194-4%204.44-4%203.024%200%204.56%202.412%204.56%205.262C21.5%2015.894%2012%2020.5%2012%2020.5S2.5%2015.894%202.5%208.762C2.5%205.912%204.036%203.5%207.06%203.5c2.246%200%204.44%201.974%204.44%204h.5z'/%3e%3c/g%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+}
+
+.wishlist-btn:hover {
+    background-image: url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%3e%3cg%20fill='none'%20fill-rule='evenodd'%3e%3cpath%20d='M0%2024h24V0H0z'/%3e%3cpath%20fill='%23FFF'%20stroke='%23F93C00'%20d='M12%207.5h.5c0-2.026%202.194-4%204.44-4%203.024%200%204.56%202.412%204.56%205.262C21.5%2015.894%2012%2020.5%2012%2020.5S2.5%2015.894%202.5%208.762C2.5%205.912%204.036%203.5%207.06%203.5c2.246%200%204.44%201.974%204.44%204h.5z'/%3e%3c/g%3e%3c/svg%3e"); /* Изменение изображения при наведении */
 }
 
 .product-details {
@@ -82,10 +89,6 @@
     margin: 5px 0;
 }
 
-.additional-info {
-    font-size: 12px;
-    color: #999;
-}
 
 .sizes {
     display: none;
@@ -108,3 +111,26 @@
 .sizes span:hover {
     color: #e60023;
 }
+
+
+.review-value {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+}
+
+.rating-star {
+    color: #000000; /* Цвет звезды */
+    margin-right: 5px;
+}
+
+.rating-score {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.review-count {
+    color: #888; /* Цвет количества отзывов */
+}
+

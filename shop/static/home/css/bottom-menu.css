@@ -6,31 +6,40 @@
 .search-container input[type="text"] {
     padding: 10px 15px; /* Добавьте необходимые отступы */
     margin-bottom: 0; /* Убедитесь, что отступ снизу равен 0 */
-    width: 200px; /* Задайте нужную ширину */
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 220px; /* Задайте нужную ширину */
+    border: 1px solid #000000;
 }
 
 
 .search-input {
-    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 4px 0 0 4px; /* Скругляем только левые углы */
     width: 200px; /* Задайте нужную ширину */
+    height: 40px; /* Задайте высоту, равную высоте инпута (плюс padding) */
+
+}
+
+.search-input:focus {
+    outline: none; /* Убираем стандартное обводку браузера */
+    border-radius: 4px 0 0 4px; /* Оставляем только скругление левых углов */
 }
 
 .search-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #
+    background-color: #000000;
+    height: 40px; /* Задайте высоту, равную высоте инпута (плюс padding) */
+    width: 50px;
+    padding: 0; /* Убираем внутренние отступы */
+    border: none; /* Убираем границы, если они есть */
+    border-radius: 0 4px 4px 0; /* Скругляем только правые углы */
 }
 
 .search-icon {
-    height: 100%; /* Устанавливаем высоту изображения как у инпута */
-    max-height: 42px; /* Ограничиваем максимальную высоту, чтобы соответствовать полю */
-    width: auto; /* Сохраняем пропорции изображения */
-    cursor: pointer; /* Изменяет указатель на руку при наведении */
+    height: 70%; /* Уменьшает размер иконки относительно кнопки */
+    width: auto;
+    cursor: pointer;
 }
 
 
@@ -46,8 +55,8 @@
 }
 
 .bottom-menu .categories a {
-    font-size: 16px; /* Задайте нужный размер шрифта */
-    margin-right: 15px;
+    font-size: 20px; /* Задайте нужный размер шрифта */
+    margin-right: 20px;
 }
 
 .bottom-menu .categories a:last-child {

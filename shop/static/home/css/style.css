@@ -136,8 +136,9 @@ a {
 }
 
 .container {
-    width: 65%; /* Максимальная ширина для контейнера */
+    width: 80%; /* Максимальная ширина для контейнера */
     margin: 0 auto; /* Центрирует контейнер на странице */
+    overflow-x: hidden;
 }
 
 .header-menu {
@@ -457,8 +458,6 @@ input[type=tel],
 textarea {
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 select {

@@ -161,20 +161,3 @@ def send_verification_code(request, email):
         [email],
         fail_silently=False,
     )
-
-
-def test_email(request):
-    try:
-        # Отправка тестового письма
-        send_mail(
-            'Test Email',  # Тема письма
-            'hi',  # Тело письма
-            settings.EMAIL_HOST_USER,  # Адрес отправителя
-            ['dimaodincov3334@gmail.com'],  # Список получателей
-            fail_silently=False  # Исключения при отправке не подавляются
-        )
-        # Возвращаем успешный ответ
-        return HttpResponse(f"Successfully sent email. Request method: {request.method}, Path: {request.path}")
-    except Exception as e:
-        # Возвращаем сообщение об ошибке
-        return HttpResponse(f"Failed to send email: {e}. Request method: {request.method}, Path: {request.path}")

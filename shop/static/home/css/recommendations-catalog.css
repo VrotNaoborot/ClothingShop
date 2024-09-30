@@ -1,0 +1,45 @@
+.mini-catalog {
+    width: 100%; /* Задаем ширину для мини-каталога */
+    overflow-x: hidden;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.catalog-container {
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.catalog-items {
+    display: flex;
+    flex-wrap: nowrap; /* Карточки будут располагаться в одну линию */
+    overflow-x: auto; /* Горизонтальная прокрутка для листания */
+    gap: 10px;
+    width: 100%;
+}
+
+
+.scroll-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* Размер стрелок */
+    z-index: 10; /* Чтобы кнопки были выше товаров */
+    position: absolute;
+    top: 130px;
+}
+
+.left {
+    left: 0; /* Позиция кнопки влево */
+}
+
+.right {
+    right: 0; /* Позиция кнопки вправо */
+}
+
+.discount-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,139 @@
+.main-banner {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.banner-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.banner-left {
+    width: 70%;
+    position: relative;
+    overflow: hidden; /* Скрываем выходящие за пределы изображения */
+}
+
+.slider-wrapper {
+    overflow: hidden; /* Ограничиваем видимую область слайдера */
+    width: 100%;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+}
+
+.slide {
+    min-width: 100%; /* Каждый слайд занимает 100% ширины контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выравниваем контент по левой стороне */
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.slide:hover img {
+    filter: brightness(1.2); /* Изображение становится светлее на 20% при наведении */
+}
+
+.slide:hover .banner-text .title {
+    color: #888;
+}
+
+.banner-text {
+    margin-top: 10px;
+    text-align: left; /* Выравниваем текст по левой стороне */
+}
+
+.banner-text .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+.banner-text .description {
+    font-size: 18px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.banner-right {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.small-banner {
+    position: relative;
+}
+
+.small-banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.small-banner:hover {
+    filter: brightness(1.2);
+}
+
+.small-banner:hover .small-banner-text .title {
+    color: #888;
+}
+
+.small-banner-text {
+    margin-top: 10px;
+    text-align: left; /* Выравниваем текст по левой стороне */
+}
+
+.small-banner-text .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.small-banner-text .description {
+    font-size: 18px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.slider-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Выравнивание по правому краю */
+    position: absolute; /* Позволяет размещать элементы относительно родителя */
+    bottom: 20px; /* Расстояние от низа */
+    right: 0; /* Расстояние от правого края (можно установить в 0) */
+    z-index: 10; /* Обеспечивает, что кнопки будут поверх других элементов */
+}
+
+.slider-controls button {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.slider-controls .slide-number {
+    font-size: 16px;
+    color: #333;
+}
+
+.prev {
+    margin-right: 10px;
+}
+
+.next {
+    margin-left: 10px;
+}
