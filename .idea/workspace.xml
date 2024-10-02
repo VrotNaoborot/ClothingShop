@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2c0ca54-9819-459a-b29e-6a8759d94a92" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/shop/static/home/css/main-banner.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shop/static/home/js/scroller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shop/static/home/js/slider.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shop/static/magazine/images/icon_heart_hover.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shop/static/magazine/images/icon_heart_normal.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/MainShop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/MainShop/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/shop/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/static/home/css/bottom-menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/shop/static/home/css/bottom-menu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/static/home/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/shop/static/home/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/static/magazine/css/style-card.css" beforeDir="false" afterPath="$PROJECT_DIR$/shop/static/magazine/css/style-card.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/static/magazine/images/svg_.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/templates/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/static/home/css/recommendations-catalog.css" beforeDir="false" afterPath="$PROJECT_DIR$/shop/static/home/css/recommendations-catalog.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +96,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14" />
+        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
       </set>
     </attachedChunks>
   </component>

@@ -20,23 +20,29 @@
     width: 100%;
 }
 
-
 .scroll-btn {
-    background: none;
-    border: none;
+    background: #fff; /* Белый фон */
+    border: none; /* Без границы */
     cursor: pointer;
     font-size: 24px; /* Размер стрелок */
-    z-index: 10; /* Чтобы кнопки были выше товаров */
+    z-index: 10; /* Кнопки выше других элементов */
     position: absolute;
-    top: 130px;
+    top: 130px; /* Расположение по высоте */
+    width: 70px; /* Фиксированная ширина */
+    height: 70px; /* Фиксированная высота */
+    border-radius: 50%; /* Округляем кнопки */
+    display: flex; /* Для центрирования стрелки */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для визуального эффекта */
 }
 
 .left {
-    left: 0; /* Позиция кнопки влево */
+    left: -20; /* Позиция кнопки влево */
 }
 
 .right {
-    right: 0; /* Позиция кнопки вправо */
+    right: -20; /* Позиция кнопки вправо */
 }
 
 .discount-title {
