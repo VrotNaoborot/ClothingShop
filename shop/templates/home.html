@@ -77,44 +77,38 @@
 			<div class="categories">
 				<a href="#" class="category-item" data-category="new">Новинки</a>
 				<a href="#" class="category-item" data-category="clothes">Одежда</a>
-				<!-- Выпадающее меню для одежды -->
-				<div class="dropdown-menu" id="clothes-menu">
-					<div class="container">
-						<div class="menu-column">
-							<h4>Вся одежда</h4>
-							<ul>
-								<li><a href="#">Брюки</a></li>
-								<li><a href="#">Верхняя одежда</a></li>
-								<li><a href="#">Джинсы</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<h4>От редакции</h4>
-							<ul>
-								<li><a href="#">Новинки</a></li>
-								<li><a href="#">Эксклюзивно на Lamoda</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<h4>Ситуации</h4>
-							<ul>
-								<li><a href="#">Дома</a></li>
-								<li><a href="#">На каждый день</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<img src="{% static 'home/images/banner.png' %}" alt="Баннер">
-							<p>Описание баннера</p>
-						</div>
-					</div>
-				</div>
-				<!-- Конец выпадающего меню -->
 				<a href="#" class="category-item" data-category="shoes">Обувь</a>
 				<a href="#" class="category-item" data-category="accessories">Аксессуары</a>
 				<a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
+			</div>
+			<!-- Перемещаем выпадающее меню сюда -->
+			<div class="dropdown-menu" id="clothes-menu">
+				<div class="menu-column">
+					<h4>Вся одежда</h4>
+					<ul>
+						<li><a href="#">Брюки</a></li>
+						<li><a href="#">Верхняя одежда</a></li>
+						<li><a href="#">Джинсы</a></li>
+					</ul>
+				</div>
+				<div class="menu-column">
+					<h4>От редакции</h4>
+					<ul>
+						<li><a href="#">Новинки</a></li>
+						<li><a href="#">Эксклюзивно на Lamoda</a></li>
+					</ul>
+				</div>
+				<div class="menu-column">
+					<h4>Ситуации</h4>
+					<ul>
+						<li><a href="#">Дома</a></li>
+						<li><a href="#">На каждый день</a></li>
+					</ul>
+				</div>
+				<div class="menu-column">
+					<img src="{% static 'home/images/banner.png' %}" alt="Баннер">
+					<p>Описание баннера</p>
+				</div>
 			</div>
 			<div class="search-container">
 				<input type="text" placeholder="Поиск" class="search-input">

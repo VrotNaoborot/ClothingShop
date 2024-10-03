@@ -4,64 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Card</title>
-    <link rel="stylesheet" href="{% static 'magazine/css/style-card.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
 </head>
 <body>
-    <div class="product-grid">
-        <!-- Добавь больше карточек товара здесь -->
-        <div class="product-card">
-            <div class="product-image-container">
-                <img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-                <img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-                <div class="discount-label">-49%</div>
-                <div class="wishlist-btn">
-                </div>
-            </div>
-            <div class="product-details">
-                <div class="old-price">13 599 ₽</div>
-                <div class="new-price">6 850 ₽</div>
-                <div class="product-title">Roberto Jordiani</div>
-                <div class="product-subtitle">Лоферы</div>
-                <div class="review-value">
-                    <span class="rating-star">★</span>
-                    <span class="rating-score">4.7</span>
-                    <span class="review-count">(118)</span>
-                </div>
-                <div class="sizes">
-                    <span>39</span>
-                    <span>40</span>
-                    <span>41</span>
-                    <span>42</span>
-                </div>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-image-container">
-                <img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-                <img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-                <div class="discount-label">-49%</div>
-                <div class="wishlist-btn">
-                </div>
-            </div>
-            <div class="product-details">
-                <div class="old-price">13 599 ₽</div>
-                <div class="new-price">6 850 ₽</div>
-                <div class="product-title">Roberto Jordiani</div>
-                <div class="product-subtitle">Лоферы</div>
-                <div class="review-value">
-                    <span class="rating-star">★</span>
-                    <span class="rating-score">4.7</span>
-                    <span class="review-count">(118)</span>
-                </div>
-                <div class="sizes">
-                    <span>39</span>
-                    <span>40</span>
-                    <span>41</span>
-                    <span>42</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="{% static 'magazine/js/view_image.js' %}"></script>
+    <div class="bottom-menu">
+		<div class="container">
+			<div class="categories">
+				<a href="#" class="category-item" data-category="new">Новинки</a>
+				<a href="#" class="category-item" data-category="clothes">Одежда</a>
+				<!-- Выпадающее меню для одежды -->
+				<div class="dropdown-menu" id="clothes-menu">
+					<div class="container">
+						<div class="menu-column">
+							<h4>Вся одежда</h4>
+							<ul>
+								<li><a href="#">Брюки</a></li>
+								<li><a href="#">Верхняя одежда</a></li>
+								<li><a href="#">Джинсы</a></li>
+								<!-- Добавь остальные элементы -->
+							</ul>
+						</div>
+						<div class="menu-column">
+							<h4>От редакции</h4>
+							<ul>
+								<li><a href="#">Новинки</a></li>
+								<li><a href="#">Эксклюзивно на Lamoda</a></li>
+								<!-- Добавь остальные элементы -->
+							</ul>
+						</div>
+						<div class="menu-column">
+							<h4>Ситуации</h4>
+							<ul>
+								<li><a href="#">Дома</a></li>
+								<li><a href="#">На каждый день</a></li>
+								<!-- Добавь остальные элементы -->
+							</ul>
+						</div>
+						<div class="menu-column">
+							<img src="{% static 'home/images/banner.png' %}" alt="Баннер">
+							<p>Описание баннера</p>
+						</div>
+					</div>
+				</div>
+				<!-- Конец выпадающего меню -->
+				<a href="#" class="category-item" data-category="shoes">Обувь</a>
+				<a href="#" class="category-item" data-category="accessories">Аксессуары</a>
+				<a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
+			</div>
+			<div class="search-container">
+				<input type="text" placeholder="Поиск" class="search-input">
+				<a href="#" class="search-button">
+					<img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
+				</a>
+			</div>
+		</div>
+	</div>
+    <script src="{% static 'home/js/menu.js' %}"></script>
 </body>
 </html>

@@ -10,13 +10,11 @@
     border: 1px solid #000000;
 }
 
-
 .search-input {
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px; /* Скругляем только левые углы */
     width: 200px; /* Задайте нужную ширину */
     height: 40px; /* Задайте высоту, равную высоте инпута (плюс padding) */
-
 }
 
 .search-input:focus {
@@ -42,11 +40,9 @@
     cursor: pointer;
 }
 
-
 .search-button:hover {
     background-color: #fffff; /* Цвет кнопки при наведении */
 }
-
 
 .bottom-menu .container {
     display: flex; /* Включаем Flexbox */
@@ -67,35 +63,46 @@
     margin-top: 20px;
 }
 
-/* Скрываем меню по умолчанию */
+/* Основные стили для меню */
+.bottom-menu .container {
+    position: relative; /* Позиционирование для родительского элемента */
+}
+
 .dropdown-menu {
-    display: none;
-    position: absolute; /* Позиционируем меню относительно ближайшего родительского элемента с position: relative */
+    display: none; /* Скрываем по умолчанию */
+    position: absolute; /* Позиционирование относительно родителя */
+    top: 100%; /* Располагаем меню под категориями */
+    left: 0; /* Выровнять меню по левому краю родителя */
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10; /* Увеличиваем z-index, чтобы меню было поверх других элементов */
-    top: 100%; /* Показываем меню непосредственно под категорией */
-    left: 0; /* Выравниваем меню по левому краю родителя */
-    width: 100%; /* Устанавливаем ширину меню */
-    padding: 20px;
+    z-index: 10; /* Чтобы меню отображалось над другими элементами */
+    width: 100vw; /* Устанавливаем ширину меню на 100% ширины окна */
+    margin-left: calc(-50vw + 50%); /* Центрируем меню относительно экрана */
+    padding: 20px; /* Добавляем отступы */
+    box-sizing: border-box; /* Учитываем padding и border в общей ширине */
 }
 
-/* Меню становится видимым при наведении */
-.category-item:hover + .dropdown-menu,
-.dropdown-menu:hover {
-    opacity: 1;
-    visibility: visible;
+
+/* Отображаем меню при наведении на соответствующий элемент */
+.category-item:hover + .dropdown-menu {
+    display: block; /* Показываем меню при наведении на категорию */
 }
 
+
+/* Стили для колонок в меню */
 .dropdown-menu .menu-column {
     display: inline-block;
     vertical-align: top;
-    width: 23%;
-    margin-right: 2%;
+    width: 23%; /* Ширина колонки */
+    margin-right: 2%; /* Отступы между колонками */
 }
 
 .dropdown-menu .menu-column img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Ширина изображения */
+    height: auto; /* Автоматическая высота */
 }
 
+/* Убираем последний отступ у последней колонки */
+.dropdown-menu .menu-column:last-child {
+    margin-right: 0;
+}
