@@ -66,3 +66,36 @@
 .bottom-menu {
     margin-top: 20px;
 }
+
+/* Скрываем меню по умолчанию */
+.dropdown-menu {
+    display: none;
+    position: absolute; /* Позиционируем меню относительно ближайшего родительского элемента с position: relative */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Увеличиваем z-index, чтобы меню было поверх других элементов */
+    top: 100%; /* Показываем меню непосредственно под категорией */
+    left: 0; /* Выравниваем меню по левому краю родителя */
+    width: 100%; /* Устанавливаем ширину меню */
+    padding: 20px;
+}
+
+/* Меню становится видимым при наведении */
+.category-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown-menu .menu-column {
+    display: inline-block;
+    vertical-align: top;
+    width: 23%;
+    margin-right: 2%;
+}
+
+.dropdown-menu .menu-column img {
+    width: 100%;
+    height: auto;
+}
+

@@ -4,6 +4,12 @@
     justify-content: space-between;
 }
 
+.second-banner {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .banner-container {
     display: flex;
@@ -14,6 +20,10 @@
     width: 70%;
     position: relative;
     overflow: hidden; /* Скрываем выходящие за пределы изображения */
+}
+
+.banner-left .slide {
+    position: relative; /* Для позиционирования подписи внутри слайдов */
 }
 
 .slider-wrapper {
@@ -136,4 +146,16 @@
 
 .next {
     margin-left: 10px;
+}
+
+.ad-label {
+    position: absolute; /* Абсолютное позиционирование для размещения в верхнем правом углу */
+    top: 4px; /* Расстояние от верхней границы */
+    right: 4px; /* Расстояние от правой границы */
+    background-color: rgba(0, 0, 0, 0.1); /* Фон для контраста */
+    padding: 5px 5px; /* Отступы вокруг текста */
+    font-size: 10px; /* Размер шрифта */
+    color: #ffff; /* Цвет текста */
+    border-radius: 3px; /* Закругленные углы */
+    z-index: 1; /* Устанавливаем z-index, чтобы текст был выше изображения */
 }

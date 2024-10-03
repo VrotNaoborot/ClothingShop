@@ -112,6 +112,8 @@
   font-size: 14px;
 }
 
+
+
 header {
   width: 100%;
   box-shadow: 4px 2px 17px -3px rgba(34, 60, 80, 0.2);
@@ -138,7 +140,7 @@ a {
 .container {
     width: 80%; /* Максимальная ширина для контейнера */
     margin: 0 auto; /* Центрирует контейнер на странице */
-    overflow-x: hidden;
+    overflow: visible;
 }
 
 .header-menu {
@@ -377,13 +379,15 @@ nav i:hover {
 }
 
 .footer-section {
-  margin: 20px auto;
+  margin: 100px auto 20px auto; /* отступ сверху 50px, снизу 20px, а по бокам auto */
   padding: 8px;
   width: 100%;
   height: 50px;
   display: flex;
   justify-content: center;
 }
+
+
 .footer-section a:hover {
   color: darkcyan;
   cursor: pointer;
@@ -527,3 +531,4 @@ input[type=submit]:hover {
     height: 100px;
   }
 }
+

@@ -1,40 +1,48 @@
 .mini-catalog {
     width: 100%; /* Задаем ширину для мини-каталога */
     overflow-x: hidden;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .catalog-container {
     display: flex;
     align-items: center;
-    overflow-x: hidden;
+    overflow-x: visible;
     position: relative;
 }
+
 
 .catalog-items {
     display: flex;
     flex-wrap: nowrap; /* Карточки будут располагаться в одну линию */
-    overflow-x: auto; /* Горизонтальная прокрутка для листания */
+    overflow-x: hidden; /* Горизонтальная прокрутка для листания */
     gap: 10px;
     width: 100%;
+    white-space: nowrap;
 }
 
 .scroll-btn {
-    background: #fff; /* Белый фон */
+    background: #ffff; /* Белый фон */
     border: none; /* Без границы */
     cursor: pointer;
     font-size: 24px; /* Размер стрелок */
     z-index: 10; /* Кнопки выше других элементов */
     position: absolute;
-    top: 130px; /* Расположение по высоте */
+    top: 180px; /* Расположение по высоте */
     width: 70px; /* Фиксированная ширина */
     height: 70px; /* Фиксированная высота */
     border-radius: 50%; /* Округляем кнопки */
     display: flex; /* Для центрирования стрелки */
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для визуального эффекта */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для визуального эффекта */
+    transition: color 0.4s ease, background-color 0.4s ease;
+}
+
+.scroll-btn:hover {
+    background: #333232;
+    color: white;
 }
 
 .left {
