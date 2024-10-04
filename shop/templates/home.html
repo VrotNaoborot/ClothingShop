@@ -81,8 +81,15 @@
 				<a href="#" class="category-item" data-category="accessories">Аксессуары</a>
 				<a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
 			</div>
-			<!-- Перемещаем выпадающее меню сюда -->
-			<div class="dropdown-menu" id="clothes-menu">
+			<div class="search-container">
+				<input type="text" placeholder="Поиск" class="search-input">
+				<a href="#" class="search-button">
+					<img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
+				</a>
+			</div>
+		</div>
+		<div class="dropdown-menu" id="clothes-menu">
+			<div class="container">
 				<div class="menu-column">
 					<h4>Вся одежда</h4>
 					<ul>
@@ -91,30 +98,18 @@
 						<li><a href="#">Джинсы</a></li>
 					</ul>
 				</div>
-				<div class="menu-column">
-					<h4>От редакции</h4>
-					<ul>
-						<li><a href="#">Новинки</a></li>
-						<li><a href="#">Эксклюзивно на Lamoda</a></li>
-					</ul>
-				</div>
-				<div class="menu-column">
-					<h4>Ситуации</h4>
-					<ul>
-						<li><a href="#">Дома</a></li>
-						<li><a href="#">На каждый день</a></li>
-					</ul>
-				</div>
-				<div class="menu-column">
-					<img src="{% static 'home/images/banner.png' %}" alt="Баннер">
-					<p>Описание баннера</p>
-				</div>
 			</div>
-			<div class="search-container">
-				<input type="text" placeholder="Поиск" class="search-input">
-				<a href="#" class="search-button">
-					<img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
-				</a>
+		</div>
+		<div class="dropdown-menu" id="shoes-menu">
+			<div class="container">
+				<div class="menu-column">
+					<h4>Вся обувь</h4>
+					<ul>
+						<li><a href="#">Кроссовки</a></li>
+						<li><a href="#">Туфли</a></li>
+						<li><a href="#">Кеды</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -856,6 +851,6 @@
 	</footer>
 	<script src="{% static 'home/js/slider.js' %}"></script>
 	<script src="{% static 'home/js/scroller.js' %}"></script>
-	<script src="{% static 'home/js/menu.js' %}"></script>
+	<script src="{% static 'home/js/view_menu.js' %}"></script>
 </body>
 </html>

@@ -61,6 +61,7 @@
 
 .bottom-menu {
     margin-top: 20px;
+    position: relative;
 }
 
 /* Основные стили для меню */
@@ -73,20 +74,14 @@
     position: absolute; /* Позиционирование относительно родителя */
     top: 100%; /* Располагаем меню под категориями */
     left: 0; /* Выровнять меню по левому краю родителя */
+    width: 100%; /* Ширина меню */
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 10; /* Чтобы меню отображалось над другими элементами */
-    width: 100vw; /* Устанавливаем ширину меню на 100% ширины окна */
-    margin-left: calc(-50vw + 50%); /* Центрируем меню относительно экрана */
-    padding: 20px; /* Добавляем отступы */
-    box-sizing: border-box; /* Учитываем padding и border в общей ширине */
 }
 
 
-/* Отображаем меню при наведении на соответствующий элемент */
-.category-item:hover + .dropdown-menu {
-    display: block; /* Показываем меню при наведении на категорию */
-}
+
 
 
 /* Стили для колонок в меню */
@@ -105,4 +100,9 @@
 /* Убираем последний отступ у последней колонки */
 .dropdown-menu .menu-column:last-child {
     margin-right: 0;
+}
+
+.category-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+    display: block; /* Показываем меню при наведении на элемент или само меню */
 }
