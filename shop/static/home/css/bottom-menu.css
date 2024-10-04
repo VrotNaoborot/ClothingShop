@@ -51,9 +51,19 @@
 }
 
 .bottom-menu .categories a {
+    color: black;
     font-size: 20px; /* Задайте нужный размер шрифта */
     margin-right: 20px;
 }
+
+.categories a.active {
+    color: #black; /* Цвет выделенной категории */
+}
+
+.categories a.inactive {
+    color: #999; /* Серый цвет для неактивных категорий */
+}
+
 
 .bottom-menu .categories a:last-child {
     margin-right: 0;
@@ -80,29 +90,76 @@
     z-index: 10; /* Чтобы меню отображалось над другими элементами */
 }
 
-
-
-
-
-/* Стили для колонок в меню */
-.dropdown-menu .menu-column {
-    display: inline-block;
-    vertical-align: top;
-    width: 23%; /* Ширина колонки */
-    margin-right: 2%; /* Отступы между колонками */
-}
-
-.dropdown-menu .menu-column img {
-    width: 100%; /* Ширина изображения */
-    height: auto; /* Автоматическая высота */
-}
-
-/* Убираем последний отступ у последней колонки */
-.dropdown-menu .menu-column:last-child {
-    margin-right: 0;
-}
-
 .category-item:hover + .dropdown-menu,
 .dropdown-menu:hover {
     display: block; /* Показываем меню при наведении на элемент или само меню */
 }
+
+.menu-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.menu-columns {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+}
+
+.menu-row {
+    width: 30%; /* Колонки равной ширины */
+}
+
+.menu-row h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.menu-row ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-row ul li {
+    margin-bottom: 8px;
+}
+
+.menu-row ul li a {
+    text-decoration: none;
+    color: #000;
+}
+
+.menu-row ul li a:hover {
+    text-decoration: underline;
+}
+
+.ad-section {
+    width: 28%; /* Оставшиеся 30% для рекламы */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.ad-banner {
+    display: block;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ad-banner img {
+    max-width: 100%;
+    height: auto;
+}
+
+.ad-label {
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.ad-section .ad-label {
+    margin-top: 25px;
+}
+

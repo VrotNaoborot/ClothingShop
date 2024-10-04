@@ -101,6 +101,7 @@ def register(request):
                         password=password
                     )
                     user.save()
+                    django_login(request, user)
                     return redirect("/")  # Перенаправление на главную страницу
 
                 else:
