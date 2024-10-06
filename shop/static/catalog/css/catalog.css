@@ -2,6 +2,7 @@
     display: flex;              /* Включаем flexbox */
     align-items: flex-end;     /* Выравниваем элементы по нижнему краю */
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 h3 {
@@ -16,4 +17,50 @@ span {
     color: #888;               /* Цвет текста */
     margin-left: 10px;         /* Отступ слева для расстояния между заголовком и количеством товаров */
     padding-bottom: 2px;
+}
+
+.catalog-body {
+    display: flex;              /* Используем flexbox для расположения левого столбца и основного контента */
+}
+
+.left-column {
+    width: 250px;              /* Ширина левого столбца */
+}
+
+.main-content {
+    flex: 1;                   /* Основной контент займет оставшееся пространство */
+    padding: 15px;             /* Отступы внутри основного контента */
+}
+
+
+
+.category {
+    margin-bottom: 8px;       /* Отступ между категориями */
+}
+
+.category-name {
+    cursor: pointer;           /* Указатель при наведении для раскрытия подкатегорий */
+    font-size: 18px;
+    text-align: left;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.category-name:hover {
+    background: #e6e8e8;
+
+}
+
+.subcategory {
+    display: none;             /* Скрываем подкатегории по умолчанию */
+    padding-left: 15px;       /* Отступ для подкатегорий */
+}
+
+.category-title:hover {
+    color: #007BFF;            /* Цвет при наведении */
+}
+
+/* Стили для раскрытия подкатегорий при клике */
+.category.active .subcategory {
+    display: block;            /* Показываем подкатегории при активации */
 }
