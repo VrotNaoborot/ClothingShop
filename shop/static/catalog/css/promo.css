@@ -1,0 +1,38 @@
+.promo-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.promo-item {
+    width: calc((100% - 4 * 20px) / 4); /* Ширина с учетом отступов */
+    text-align: center;
+    position: relative;
+}
+
+.promo-item:hover {
+    filter: brightness(1.2);
+}
+
+.promo-item:hover .banner-text .title {
+    color: #888;
+}
+
+
+.promo-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.promo-item h3 {
+    font-size: 18px;
+
+}
+
+.promo-item p {
+    font-size: 14px;
+    color: #666;
+}

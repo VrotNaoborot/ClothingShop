@@ -33,6 +33,10 @@ def home(request):
     return render(request, "home.html")
 
 
+def catalog(request):
+    return render(request, "catalog.html")
+
+
 def login(request):
     print(request.method)
     if request.method == 'POST':
