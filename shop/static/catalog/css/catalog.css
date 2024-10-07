@@ -43,17 +43,82 @@ span {
     font-size: 18px;
     text-align: left;
     border-radius: 3px;
-    padding: 2px;
+    padding: 5px;
+    position: relative; /* для позиционирования псевдоэлемента */
+    display: flex; /* добавлено для выравнивания текста и иконки */
+    align-items: center; /* выравнивание по вертикали */
+    justify-content: space-between; /* выравнивание текста и иконки по краям */
+    font-weight: bold;
 }
 
 .category-name:hover {
     background: #e6e8e8;
-
 }
 
+.arrow {
+    background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 width%3D%2716%27 height%3D%2716%27%3E%3Cg fill%3D%27none%27 fill-rule%3D%27evenodd%27%3E%3Cpath d%3D%27M0 16h16V0H0z%27 opacity%3D%27.098%27/%3E%3Cpath stroke%3D%27%23000%27 d%3D%27M2 6l6 5 6-5%27/%3E%3C/g%3E%3C/svg%3E');
+    background-size: contain; /* Установка фона в соответствии с размером */
+    background-repeat: no-repeat; /* Избегаем повторения фона */
+    width: 18px; /* Ширина элемента */
+    height: 16px; /* Высота элемента */
+    opacity: 0; /* Изначально скрываем иконку */
+    transition: opacity 0.3s ease; /* Плавная анимация появления */
+}
+
+.arrow.white {
+    background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 width%3D%2716%27 height%3D%2716%27%3E%3Cg fill%3D%27none%27 fill-rule%3D%27evenodd%27%3E%3Cpath d%3D%27M0 16h16V0H0z%27 opacity%3D%27.098%27/%3E%3Cpath stroke%3D%27%23FFF%27 d%3D%27M2 6l6 5 6-5%27/%3E%3C/g%3E%3C/svg%3E'); /* Белая иконка */
+}
+
+
+.category:hover .arrow {
+    opacity: 1; /* Показываем иконку при наведении */
+}
+
+
 .subcategory {
-    display: none;             /* Скрываем подкатегории по умолчанию */
-    padding-left: 15px;       /* Отступ для подкатегорий */
+    padding-top: 8px; /* Отступ сверху для всей сабкатегории (опционально) */
+    opacity: 0; /* Начальное состояние - скрыто */
+    max-height: 0; /* Начальная максимальная высота - 0 */
+    overflow: hidden; /* Скрываем переполнение */
+    transition: opacity 0.2s ease, max-height 0.2s ease; /* Плавная анимация */
+}
+
+.subcategory.active {
+    opacity: 1; /* Изменение на видимое состояние */
+    max-height: auto; /* Установите значение, которое соответствует максимальной высоте ваших элементов */
+}
+
+.subcategory li {
+    margin-bottom: 8px; /* Отступ между сабкатегориями */
+    opacity: 0; /* Начальное состояние - скрыто */
+    transform: translateY(10px); /* Сдвигаем вниз для эффекта появления */
+    transition: opacity 0.2s ease, transform 0.2s ease; /* Плавная анимация */
+}
+
+.subcategory.active li {
+    opacity: 1; /* Изменение на видимое состояние */
+    transform: translateY(0); /* Возвращаем на место */
+}
+
+.subcategory ul li {
+    margin-bottom: 8px;
+}
+
+.subcategory ul li:first-child {
+    margin-top: 8px
+}
+
+.subcategory ul li {
+    list-style: none;
+    cursor: pointer;           /* Указатель при наведении для раскрытия подкатегорий */
+    font-size: 16px;
+    text-align: left;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.subcategory ul li:hover {
+    background: #e6e8e8;
 }
 
 .category-title:hover {
@@ -64,3 +129,12 @@ span {
 .category.active .subcategory {
     display: block;            /* Показываем подкатегории при активации */
 }
+.category.active .category-name {
+    background-color: black; /* Черный фон при активном состоянии */
+    color: white;
+}
+
+.category-name.active .arrow {
+    stroke: white;
+}
+
