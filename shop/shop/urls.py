@@ -29,6 +29,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('men-home/', home, name='men-home'),
     path('catalog/', catalog),
+    path('test/', test_load),
     path('', index),
 ]
 # if settings.DEBUG:  # Только для режима отладки

@@ -24,7 +24,16 @@ span {
 }
 
 .left-column {
-    width: 250px;              /* Ширина левого столбца */
+    width: 20%;              /* Ширина левого столбца */
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
+
+}
+
+.right-column {
+    width: 80%; /* 80% для основного контента */
+    margin-left: 20px;
+    box-sizing: border-box; /* Учитываем padding и border */
+
 }
 
 .main-content {
@@ -138,3 +147,64 @@ span {
     stroke: white;
 }
 
+/**************************************************************************************/
+
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  position: relative; /* Чтобы иконка позиционировалась внутри кнопки */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Это выровняет текст слева, и иконку справа */
+  padding: 10px 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-btn .arrow {
+  margin-left: 10px; /* Отступ между текстом и иконкой */
+  opacity: 1;
+}
+
+.filter-btn:hover {
+  border: 1px solid #1a1919;
+}
+
+.category-products {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
+    gap: 10px; /* Отступы между карточками */
+    justify-content: flex-start; /* Выравнивание карточек по левому краю */
+
+}
+
+.category-products .product-card {
+    flex: 0 0 calc((100% - 5 * 10px) / 4); /* Ширина каждой карточки для 6 карточек с учетом отступов */
+    margin: 0; /* Обнуляем внешние отступы карточек, так как мы используем gap */
+}
+
+.category-products .review-value .rating-star {
+    font-size: 10px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.category-products .review-value .rating-score {
+    font-size: 14px;
+}
+
+.category-products .review-value .review-count {
+    font-size: 14px;
+    margin-left: 2px;
+}
