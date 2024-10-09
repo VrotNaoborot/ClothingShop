@@ -218,7 +218,6 @@ span {
 .dropdown-content {
   display: none;
   position: absolute;
-  top: calc(100% + 5px); /* Меню появится ниже кнопки с отступом */
   left: 0;
   background-color: #fff;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);

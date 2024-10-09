@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     const filterBtns = document.querySelectorAll(".filter-btn");
 
@@ -18,6 +19,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Если текущее меню было закрыто, открываем его и добавляем стиль к кнопке
             if (!isOpen) {
+                // Получаем координаты кнопки относительно родительского контейнера
+                const btnRect = btn.getBoundingClientRect();
+                const parentRect = btn.parentElement.getBoundingClientRect();
+
+                // Задаем позицию меню относительно родителя (не окна браузера)
+                dropdownContent.style.left = `${btnRect.left - parentRect.left}px`; // Привязываем левую сторону меню к кнопке
+                dropdownContent.style.top = `${btnRect.bottom - parentRect.top}px`;  // Меню появляется сразу под кнопкой
+
                 dropdownContent.classList.add("show");
                 btn.classList.add("is-active"); // Заменили active на is-active
             }
