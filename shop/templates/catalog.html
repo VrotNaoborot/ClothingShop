@@ -301,55 +301,159 @@
 				<div class="right-column">
 					<!-- Здесь будет основной контент каталога -->
 					<div class="filter-container">
-						<button class="filter-btn">
-							Подобрали для вас
-							<span class="arrow"></span>
-						</button>
-						<button class="filter-btn">
+						<button class="filter-btn" id="fmaterials">
 							Материалы
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
+						<div class="dropdown-content" id="fmaterials-menu">
+							<div class="filter-section">
+								<h4>Основной материал</h4>
+								<ul>
+									<li><label><input type="checkbox"> Камни</label></li>
+									<li><label><input type="checkbox"> Кашемир</label></li>
+									<li><label><input type="checkbox"> Лайкра</label></li>
+									<li><label><input type="checkbox"> Лён</label></li>
+								</ul>
+							</div>
+							<div class="filter-section">
+								<h4>Утеплитель</h4>
+								<ul>
+									<li><label><input type="checkbox"> Полиамид</label></li>
+									<li><label><input type="checkbox"> Полимер</label></li>
+									<li><label><input type="checkbox"> Пух и перо</label></li>
+								</ul>
+							</div>
+							<button class="apply-btn">Применить</button>
+						</div>
+
+						<button class="filter-btn" id="fcolor">
 							Цвет
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
+						<div class="dropdown-content" id="fcolor-menu">
+							<!-- Здесь содержимое для фильтра Цвет -->
+						</div>
+
+						<button class="filter-btn" id="fsize">
 							Размер
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
+						<div class="dropdown-content" id="fsize-menu">
+							<!-- Здесь содержимое для фильтра Размер -->
+						</div>
+
+						<button class="filter-btn" id="fbrand">
 							Бренд
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
+						<div class="dropdown-content" id="fbrand-menu">
+							<!-- Здесь содержимое для фильтра Бренд -->
+						</div>
+
+						<button class="filter-btn" id="fprice">
 							Цена
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
-							Стиль
+						<div class="dropdown-content" id="fprice-menu">
+							<!-- Здесь содержимое для фильтра Цена -->
+						</div>
+
+						<button class="filter-btn" id="fcountry">
+							Страна производства
 							<span class="arrow"></span>
 						</button>
-						<button class="filter-btn">
-							Страна
-							производства
-							<span class="arrow"></span>
-						</button>
-						<button class="filter-btn">
-							Узор
-							<span class="arrow"></span>
-						</button>
-						<button class="filter-btn">
-							Только
-							со скидкой
-							<span class="arrow"></span>
-						</button>
-						<button class="filter-btn">
-							Помогаю планете
-							<span class="arrow"></span>
+						<div class="dropdown-content" id="fcountry-menu">
+							<!-- Здесь содержимое для фильтра Страна производства -->
+						</div>
+
+						<button class="filter-btn" id="fdiscount">
+							Только со скидкой
 						</button>
 					</div>
 
 					<div class="category-products">
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+									<span>42</span>
+									<span>42</span>
+									<span>42</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
 						<div class="product-card">
 							<div class="product-image-container">
 								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
@@ -468,4 +572,5 @@
 	<script src="{% static 'home/js/view_menu.js' %}"></script>
 	<script src="{% static 'home/js/menu-condition.js' %}"></script>
 	<script src="{% static 'catalog/js/category-up.js' %}"></script>
+	<script src="{% static 'catalog/js/filter-buttons.js' %}"></script>
 </body>
