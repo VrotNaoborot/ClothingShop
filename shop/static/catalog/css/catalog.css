@@ -219,9 +219,9 @@ span {
   display: none;
   position: absolute;
   left: 0;
+  padding: 20px; /* Увеличиваем внутренние отступы */
   background-color: #fff;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-  padding: 15px;
   z-index: 1;
 }
 
@@ -235,13 +235,13 @@ span {
 }
 
 .dropdown-content .filter-section {
-  display: inline-block;
-  width: 50%;
+  display: block;
   vertical-align: top;
 }
 
 .dropdown-content h4 {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  font-size: 18px;
 }
 
 .dropdown-content ul {
@@ -250,15 +250,102 @@ span {
 }
 
 .dropdown-content ul li {
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
+
+.dropdown-content ul li:first-child {
+  margin-top: 15px; /* Отступ сверху у первого элемента */
+}ёё
 
 .apply-btn {
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  margin: 10px;
+  background-color: #000000;
+  border: none;
+  color: #fff;
   cursor: pointer;
-  margin-top: 15px;
+  opacity: 1; /* Обычная непрозрачность */
+  pointer-events: auto; /* Кнопка кликабельна по умолчанию */
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.apply-btn:disabled {
+  background-color: #e0e0e0; /* Меняем цвет фона для неактивной кнопки */
+  color: #888; /* Меняем цвет текста для неактивной кнопки */
+  cursor: not-allowed; /* Меняем указатель мыши */
+  opacity: 0.6; /* Слегка уменьшаем непрозрачность */
+  pointer-events: none; /* Отключаем кликабельность */
+}
+
+.filter-section label {
+  cursor: pointer; /* Курсор меняется на указатель при наведении */
+  font-size: 18px;
+  padding: 10px;
+}
+
+.filter-section label:hover {
+  color: #888;
+}
+
+label input[type="checkbox"] {
+  margin-right: 4px; /* Отступ между чекбоксом и текстом */
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5); /* Увеличение чекбокса */
+  cursor: pointer;
+}
+
+.color-search {
+    width: calc(100% - 20px); /* Устанавливаем ширину для поля поиска, оставляя место для отступов */
+    padding: 10px; /* Добавляем внутренний отступ */
+    margin: 10px; /* Отступ снизу */
+    box-sizing: border-box; /* Учитываем внутренние отступы в ширине */
+}
+
+
+
+.color-box {
+    display: inline-block;
+    width: 18px; /* Ширина квадратика */
+    height: 18px; /* Высота квадратика */
+    margin-right: 5px; /* Отступ между квадратиком и текстом */
+    vertical-align: middle; /* Выравнивание по вертикали */
+    border: 1px solid #ccc; /* Граница квадратика */
+    border-radius: 6px;
+    transition: opacity 0.3s; /* Плавный переход для прозрачности */
+}
+
+label:hover .color-box {
+    opacity: 0.3; /* Прозрачность квадратика при наведении */
+}
+
+.color-list {
+    max-height: 200px; /* Максимальная высота для прокрутки */
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    margin-left: 10px; /* Отступ сверху от поля поиска */
+    padding-right: 10px; /* Отступ справа для скролла */
+}
+
+.button-container {
+    padding-top: 10px; /* Отступ сверху */
+    padding-bottom: 10px; /* Отступ снизу */
+}
+
+#fcolor-menu {
+    padding: 0px;
+}
+
+#fsize-menu {
+    padding: 0px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Центрируем кнопку */
+    padding-top: 10px; /* Отступ сверху */
+    padding-bottom: 10px; /* Отступ снизу */
 }
