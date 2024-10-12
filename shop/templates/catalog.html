@@ -331,7 +331,9 @@
 									</li>
 								</ul>
 							</div>
-							<button class="apply-btn">Применить</button>
+							<div class="button-container">
+								<button class="apply-btn" disabled>Применить</button>
+							</div>
 						</div>
 
 						<button class="filter-btn" id="fcolor">
@@ -504,7 +506,101 @@
 							<span class="arrow"></span>
 						</button>
 						<div class="dropdown-content" id="fbrand-menu">
-							<!-- Здесь содержимое для фильтра Бренд -->
+							<div class="filter-section">
+								<input type="text" placeholder="Поиск бренда" class="color-search">
+								<div class="color-list">
+									<ul>
+										<li>
+											<label for="color-red">
+												<input type="checkbox" id="color-red"> Бренд 1111111
+											</label>
+										</li>
+										<li>
+											<label for="color-green">
+												<input type="checkbox" id="color-green"> Бренд 1
+											</label>
+										</li>
+										<li>
+											<label for="color-blue">
+												<input type="checkbox" id="color-blue"> Бренд 1
+											</label>
+										</li>
+										<li>
+											<label for="color-yellow">
+												<input type="checkbox" id="color-yellow">
+											</label>
+										</li>
+										<li>
+											<label for="color-black">
+												<input type="checkbox" id="color-black">
+											</label>
+										</li>
+										<li>
+											<label for="color-orange">
+												<input type="checkbox" id="color-orange">
+											</label>
+										</li>
+										<li>
+											<label for="color-purple">
+												<input type="checkbox" id="color-purple">
+											</label>
+										</li>
+										<li>
+											<label for="color-pink">
+												<input type="checkbox" id="color-pink">
+											</label>
+										</li>
+										<li>
+											<label for="color-brown">
+												<input type="checkbox" id="color-brown">
+											</label>
+										</li>
+										<li>
+											<label for="color-gray">
+												<input type="checkbox" id="color-gray">
+											</label>
+										</li>
+										<li>
+											<label for="color-teal">
+												<input type="checkbox" id="color-teal">
+											</label>
+										</li>
+										<li>
+											<label for="color-olive">
+												<input type="checkbox" id="color-olive">
+											</label>
+										</li>
+										<li>
+											<label for="color-navy">
+												<input type="checkbox" id="color-navy">
+											</label>
+										</li>
+										<li>
+											<label for="color-salmon">
+												<input type="checkbox" id="color-salmon">
+											</label>
+										</li>
+										<li>
+											<label for="color-lime">
+												<input type="checkbox" id="color-lime">
+											</label>
+										</li>
+										<li>
+											<label for="color-maroon">
+												<input type="checkbox" id="color-maroon">
+											</label>
+										</li>
+										<li>
+											<label for="color-cyan">
+												<input type="checkbox" id="color-cyan">
+											</label>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="button-container">
+								<button class="apply-btn" disabled>Применить</button>
+							</div>
 						</div>
 
 						<button class="filter-btn" id="fprice">
@@ -512,7 +608,15 @@
 							<span class="arrow"></span>
 						</button>
 						<div class="dropdown-content" id="fprice-menu">
-							<!-- Здесь содержимое для фильтра Цена -->
+							<div class="vue-slider">
+							    <div class="vue-slider-rail">
+								  <div class="vue-slider-process"></div>
+								  <div class="vue-slider-dot" id="min-handle"></div>
+								  <div class="vue-slider-dot" id="max-handle"></div>
+							    </div>
+							</div>
+
+
 						</div>
 
 						<button class="filter-btn" id="fcountry">
@@ -520,7 +624,101 @@
 							<span class="arrow"></span>
 						</button>
 						<div class="dropdown-content" id="fcountry-menu">
-							<!-- Здесь содержимое для фильтра Страна производства -->
+							<div class="filter-section">
+								<input type="text" placeholder="Поиск страны" class="color-search">
+								<div class="color-list">
+									<ul>
+										<li>
+											<label for="color-red">
+												<input type="checkbox" id="color-red"> Россия
+											</label>
+										</li>
+										<li>
+											<label for="color-green">
+												<input type="checkbox" id="color-green"> Турция
+											</label>
+										</li>
+										<li>
+											<label for="color-blue">
+												<input type="checkbox" id="color-blue"> Китай
+											</label>
+										</li>
+										<li>
+											<label for="color-yellow">
+												<input type="checkbox" id="color-yellow">
+											</label>
+										</li>
+										<li>
+											<label for="color-black">
+												<input type="checkbox" id="color-black">
+											</label>
+										</li>
+										<li>
+											<label for="color-orange">
+												<input type="checkbox" id="color-orange">
+											</label>
+										</li>
+										<li>
+											<label for="color-purple">
+												<input type="checkbox" id="color-purple">
+											</label>
+										</li>
+										<li>
+											<label for="color-pink">
+												<input type="checkbox" id="color-pink">
+											</label>
+										</li>
+										<li>
+											<label for="color-brown">
+												<input type="checkbox" id="color-brown">
+											</label>
+										</li>
+										<li>
+											<label for="color-gray">
+												<input type="checkbox" id="color-gray">
+											</label>
+										</li>
+										<li>
+											<label for="color-teal">
+												<input type="checkbox" id="color-teal">
+											</label>
+										</li>
+										<li>
+											<label for="color-olive">
+												<input type="checkbox" id="color-olive">
+											</label>
+										</li>
+										<li>
+											<label for="color-navy">
+												<input type="checkbox" id="color-navy">
+											</label>
+										</li>
+										<li>
+											<label for="color-salmon">
+												<input type="checkbox" id="color-salmon">
+											</label>
+										</li>
+										<li>
+											<label for="color-lime">
+												<input type="checkbox" id="color-lime">
+											</label>
+										</li>
+										<li>
+											<label for="color-maroon">
+												<input type="checkbox" id="color-maroon">
+											</label>
+										</li>
+										<li>
+											<label for="color-cyan">
+												<input type="checkbox" id="color-cyan">
+											</label>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="button-container">
+								<button class="apply-btn" disabled>Применить</button>
+							</div>
 						</div>
 
 						<button class="filter-btn" id="fdiscount">
@@ -715,6 +913,292 @@
 								</div>
 							</div>
 						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
+								<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
+								<div class="discount-label">-49%</div>
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								<div class="old-price">13 599 ₽</div>
+								<div class="new-price">6 850 ₽</div>
+								<div class="product-title">Roberto Jordiani</div>
+								<div class="product-subtitle">Лоферы</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">4.7</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									<span>39</span>
+									<span>40</span>
+									<span>41</span>
+									<span>42</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -729,5 +1213,7 @@
 	<script src="{% static 'catalog/js/category-up.js' %}"></script>
 	<script src="{% static 'catalog/js/filter-buttons.js' %}"></script>
 	<script src="{% static 'catalog/js/dropdownmenu-listenner.js' %}"></script>
-	<script src="{% static 'catalog/js/color_filter.js' %}"></script>
+	<script src="{% static 'catalog/js/searcher-filters.js' %}"></script>
+	<script src="{% static 'catalog/js/filter-container.js' %}"></script>
+	<script src="{% static 'catalog/js/price-slider.js' %}"></script>
 </body>
