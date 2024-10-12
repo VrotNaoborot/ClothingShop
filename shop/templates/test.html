@@ -4,61 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Card</title>
-    <link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
+    <link rel="stylesheet" href="{% static 'catalog/css/test.css' %}">
 </head>
 <body>
-    <div class="bottom-menu">
-		<div class="container">
-			<div class="categories">
-				<a href="#" class="category-item" data-category="new">Новинки</a>
-				<a href="#" class="category-item" data-category="clothes">Одежда</a>
-				<!-- Выпадающее меню для одежды -->
-				<div class="dropdown-menu" id="clothes-menu">
-					<div class="container">
-						<div class="menu-column">
-							<h4>Вся одежда</h4>
-							<ul>
-								<li><a href="#">Брюки</a></li>
-								<li><a href="#">Верхняя одежда</a></li>
-								<li><a href="#">Джинсы</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<h4>От редакции</h4>
-							<ul>
-								<li><a href="#">Новинки</a></li>
-								<li><a href="#">Эксклюзивно на Lamoda</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<h4>Ситуации</h4>
-							<ul>
-								<li><a href="#">Дома</a></li>
-								<li><a href="#">На каждый день</a></li>
-								<!-- Добавь остальные элементы -->
-							</ul>
-						</div>
-						<div class="menu-column">
-							<img src="{% static 'home/images/banner.png' %}" alt="Баннер">
-							<p>Описание баннера</p>
-						</div>
-					</div>
-				</div>
-				<!-- Конец выпадающего меню -->
-				<a href="#" class="category-item" data-category="shoes">Обувь</a>
-				<a href="#" class="category-item" data-category="accessories">Аксессуары</a>
-				<a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
-			</div>
-			<div class="search-container">
-				<input type="text" placeholder="Поиск" class="search-input">
-				<a href="#" class="search-button">
-					<img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
-				</a>
-			</div>
-		</div>
-	</div>
-    <script src="{% static 'home/js/menu.js' %}"></script>
+    <div class="wrapper">
+        <div class="values">
+            <span id="range1">
+                0
+            </span>
+            <span> &dash; </span>
+            <span id="range2">
+                100
+            </span>
+        </div>
+        <div class="container">
+            <div class="slider-track"></div>
+            <input type="range" min="0" max="100" value="30" id="slider-1" oninput="slideOne()">
+            <input type="range" min="0" max="100" value="70" id="slider-2" oninput="slideTwo()">
+        </div>
+    </div>
+
+    <!--Script-->
+    <script src="{% static 'catalog/js/test.js' %}"></script>
 </body>
 </html>

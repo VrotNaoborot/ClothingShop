@@ -346,7 +346,7 @@ label:hover .color-box {
 }
 
 #fprice-menu {
-    width: 200px;
+
 }
 
 #fcountry-menu {
@@ -375,47 +375,155 @@ label:hover .color-box {
 
 /**************************************************************************/
 
-.vue-slider {
-  position: relative;
-  width: 100%;
-  height: 6px;
-  margin: 24px 8px;
+/* Обернем все стили в класс .price-filter для локализации */
+
+.price-filter {
+    display: flex;
+    flex-direction: column;
 }
 
-.vue-slider-rail {
-  position: relative;
-  background-color: #ddd;
-  height: 100%;
-  border-radius: 100px;
+
+
+.price-filter .container {
+    position: relative;
+    width: 100%;
+    height: 100px;
 }
 
-.vue-slider-process {
-  position: absolute;
-  background-color: #4CAF50; /* Активный трек */
-  height: 100%;
-  border-radius: 100px;
-  z-index: 1;
+.price-filter input[type="range"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    outline: none;
+    position: absolute;
+    background-color: transparent;
+    pointer-events: none;
+    top: 0; /* Ползунок теперь будет расположен сверху */
+    margin-top: 0; /* Убираем лишние отступы */
 }
 
-.vue-slider-dot {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24), 0 2px 1px rgba(0, 0, 0, 0.19), 0 1px 3px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  z-index: 5;
+
+.price-filter .slider-track {
+    width: 100%;
+    height: 5px;
+    margin-top: 10px;
+    position: absolute;
+    margin: auto;
+    border-radius: 5px;
 }
 
-.vue-slider-dot-handle {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: var(--backgroundColor);
-  cursor: pointer;
+.price-filter input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 5px;
 }
+
+.price-filter input[type="range"]::-moz-range-track {
+    -moz-appearance: none;
+    height: 5px;
+}
+
+.price-filter input[type="range"]::-ms-track {
+    appearance: none;
+    height: 5px;
+}
+
+.price-filter input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 1.7em;
+    width: 1.7em;
+    background-color: #3264fe;
+    cursor: pointer;
+    margin-top: -9px;
+    pointer-events: auto;
+    border-radius: 50%;
+}
+
+.price-filter input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 1.7em;
+    width: 1.7em;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #3264fe;
+    pointer-events: auto;
+}
+
+.price-filter input[type="range"]::-ms-thumb {
+    appearance: none;
+    height: 1.7em;
+    width: 1.7em;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #3264fe;
+    pointer-events: auto;
+}
+
+.price-filter input[type="range"]:active::-webkit-slider-thumb {
+    background-color: #ffffff;
+    border: 3px solid #3264fe;
+}
+
+.price-filter .values {
+    background-color: #3264fe;
+    width: 32%;
+    position: relative;
+    margin: auto;
+    padding: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.price-filter .values:before {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-top: 15px solid #3264fe;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    margin: auto;
+    bottom: -14px;
+    left: 0;
+    right: 0;
+}
+
+.price-filter .price-inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.price-filter .price-inputs div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-filter .price-inputs input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.price-filter .apply-button {
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.price-filter .apply-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+
 

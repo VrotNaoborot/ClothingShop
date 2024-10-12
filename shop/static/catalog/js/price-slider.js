@@ -1,59 +1,80 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const minHandle = document.getElementById('min-handle');
-    const maxHandle = document.getElementById('max-handle');
-    const sliderProcess = document.querySelector('.vue-slider-process');
-    const sliderRail = document.querySelector('.vue-slider-rail');
-    const sliderWidth = sliderRail.offsetWidth;
+// Инициализация элементов при загрузке страницы
+window.onload = function() {
+    updateSliderValues();
+}
 
-    let minValue = 0; // Минимальное значение
-    let maxValue = 100; // Максимальное значение
-    let currentMinValue = 10; // Текущая минимальная цена
-    let currentMaxValue = 90; // Текущая максимальная цена
+// Получаем элементы слайдеров и полей ввода
+let sliderOne = document.getElementById("slider-1");
+let sliderTwo = document.getElementById("slider-2");
+let minPriceInput = document.getElementById("minPrice");
+let maxPriceInput = document.getElementById("maxPrice");
+let minGap = 1; // Минимальная разница между ползунками
+let sliderTrack = document.querySelector(".slider-track");
 
-    function updateSlider() {
-        const minPercent = (currentMinValue / maxValue) * 100;
-        const maxPercent = (currentMaxValue / maxValue) * 100;
+// Получаем минимальные и максимальные значения из полей ввода
+const minValue = parseInt(minPriceInput.value);
+const maxValue = parseInt(maxPriceInput.value);
 
-        minHandle.style.left = `${minPercent}%`;
-        maxHandle.style.left = `${maxPercent}%`;
-        sliderProcess.style.left = `${minPercent}%`;
-        sliderProcess.style.width = `${maxPercent - minPercent}%`;
+// Функция для обновления значений слайдеров
+function updateSliderValues() {
+    sliderOne.value = minValue;
+    sliderTwo.value = maxValue;
+    fillColor(); // Обновляем цвет слайдера
+}
+
+// Обработка изменения первого слайдера
+sliderOne.oninput = function() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderOne.value = parseInt(sliderTwo.value) - minGap; // Устанавливаем ползунок 1
+    }
+    minPriceInput.value = sliderOne.value; // Обновляем поле ввода
+    fillColor(); // Обновляем цвет слайдера
+}
+
+// Обработка изменения второго слайдера
+sliderTwo.oninput = function() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderTwo.value = parseInt(sliderOne.value) + minGap; // Устанавливаем ползунок 2
+    }
+    maxPriceInput.value = sliderTwo.value; // Обновляем поле ввода
+    fillColor(); // Обновляем цвет слайдера
+}
+
+// Функция для обновления ползунков из полей ввода
+function updateSliderFromInput() {
+    let minPrice = Math.max(minValue, parseInt(minPriceInput.value) || minValue); // Устанавливаем минимум
+    let maxPrice = Math.min(maxValue, parseInt(maxPriceInput.value) || maxValue); // Устанавливаем максимум
+
+    // Ограничиваем вводимые значения
+    if (minPrice + minGap > maxPrice) {
+        maxPrice = minPrice + minGap; // Обновляем максимум, если разница меньше minGap
     }
 
-    function handleDrag(handle, event) {
-        const startX = event.pageX;
-        const startValue = handle === minHandle ? currentMinValue : currentMaxValue;
+    sliderOne.value = minPrice; // Обновляем ползунок 1
+    sliderTwo.value = maxPrice; // Обновляем ползунок 2
+    fillColor(); // Обновляем цвет слайдера
+}
 
-        function onMouseMove(e) {
-            const diff = e.pageX - startX;
-            const movePercent = (diff / sliderWidth) * maxValue;
-            const newValue = Math.min(Math.max(startValue + movePercent, minValue), maxValue);
-
-            if (handle === minHandle && newValue < currentMaxValue) {
-                currentMinValue = newValue;
-            } else if (handle === maxHandle && newValue > currentMinValue) {
-                currentMaxValue = newValue;
-            }
-
-            updateSlider();
-        }
-
-        function onMouseUp() {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        }
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+// Обновление значений слайдеров при потере фокуса
+function adjustMinPrice() {
+    let minPrice = parseInt(minPriceInput.value);
+    if (isNaN(minPrice) || minPrice < minValue) {
+        minPriceInput.value = minValue; // Устанавливаем минимальную цену на minValue
     }
+    updateSliderFromInput(); // Обновляем слайдеры
+}
 
-    minHandle.addEventListener('mousedown', function(event) {
-        handleDrag(minHandle, event);
-    });
+function adjustMaxPrice() {
+    let maxPrice = parseInt(maxPriceInput.value);
+    if (isNaN(maxPrice) || maxPrice > maxValue) {
+        maxPriceInput.value = maxValue; // Устанавливаем максимальную цену на maxValue
+    }
+    updateSliderFromInput(); // Обновляем слайдеры
+}
 
-    maxHandle.addEventListener('mousedown', function(event) {
-        handleDrag(maxHandle, event);
-    });
-
-    updateSlider();
-});
+// Функция для обновления цвета слайдера
+function fillColor() {
+    const percent1 = (sliderOne.value / maxValue) * 100; // Процент для первого слайдера
+    const percent2 = (sliderTwo.value / maxValue) * 100; // Процент для второго слайдера
+    sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}%, #3264fe ${percent1}%, #3264fe ${percent2}%, #dadae5 ${percent2}%)`;
+}

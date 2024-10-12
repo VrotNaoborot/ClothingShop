@@ -608,16 +608,26 @@
 							<span class="arrow"></span>
 						</button>
 						<div class="dropdown-content" id="fprice-menu">
-							<div class="vue-slider">
-							    <div class="vue-slider-rail">
-								  <div class="vue-slider-process"></div>
-								  <div class="vue-slider-dot" id="min-handle"></div>
-								  <div class="vue-slider-dot" id="max-handle"></div>
-							    </div>
+							<div class="price-filter">
+								<div class="container">
+									<div class="slider-track"></div>
+									<input type="range" min="89" max="89990" value="89" id="slider-1" oninput="slideOne()">
+									<input type="range" min="89" max="89990" value="89990" id="slider-2" oninput="slideTwo()">
+								</div>
+								<div class="price-inputs">
+									<div>
+										<label>Мин. цена</label>
+										<input type="number" value="89" id="minPrice" oninput="updateSliderFromInput()" onblur="adjustMinPrice()">
+									</div>
+									<div>
+										<label>Макс. цена</label>
+										<input type="number" value="89990" id="maxPrice" oninput="updateSliderFromInput()" onblur="adjustMaxPrice()">
+									</div>
+								</div>
+								<button class="apply-button">Применить</button>
 							</div>
-
-
 						</div>
+
 
 						<button class="filter-btn" id="fcountry">
 							Страна производства
