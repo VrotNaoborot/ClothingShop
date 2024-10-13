@@ -1,0 +1,236 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница магазина</title>
+	<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'home/css/bottom-menu.css' %}">
+<!--	<link rel="stylesheet" href="{% static 'home/css/main-banner.css' %}">-->
+<!--	<link rel="stylesheet" href="{% static 'home/css/recommendations-catalog.css' %}">-->
+	<link rel="stylesheet" href="{% static 'magazine/css/style-card.css' %}">
+<!--	<link rel="stylesheet" href="{% static 'home/css/promo.css' %}">-->
+<!--	<link rel="stylesheet" href="{% static 'catalog/css/promo.css' %}">-->
+	<link rel="stylesheet" href="{% static 'catalog/css/catalog.css' %}">
+	<link rel="stylesheet" href="{% static 'cardViewProduct/css/cardViewProduct.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <header>
+		<div class="container">
+			<div class="header-menu">
+				<div class="logo">
+					<a href="index.html">
+						<img src="{% static 'magazine/images/logo.png' %}" alt="logo">
+					</a>
+				</div>
+				<nav>
+					<div class="header-production-button">
+						ПРОДУКЦИЯ
+						<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 448 512">
+							<path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
+						</svg>
+					</div>
+					<div class="header-production-menu">
+						<div class="menu-list">
+							<a href="female.html">
+								Женское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+							<a href="male.html">
+								Мужское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+							<a href="male.html">
+								Детское
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
+									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<a class="header-contacts-button" href="info.html">
+						КОНТАКТЫ
+					</a>
+					{% if user.is_authenticated %}
+						<form method="post" action="{% url 'logout' %}" style="display: inline;">
+							{% csrf_token %}
+							<button type="submit" class="login-button-container">ВЫЙТИ</button>
+						</form>
+					{% else %}
+						<a class="login-button-container" href="login/">ВОЙТИ</a>
+					{% endif %}
+					<a class="header-cart-button" href="checkout/cart/" role="link" rel="nofollow">
+						<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M18.5 2.5h-13L3.747 18.28a2 2 0 0 0 1.988 2.22h12.53a2 2 0 0 0 1.988-2.22L18.5 2.5z" stroke="#000"></path>
+							<path d="M15.5 9a3.5 3.5 0 1 1-7 0m0-2V5m7 2V5" stroke="#000"></path>
+						</svg>
+						<span>КОРЗИНА</span>
+					</a>
+				</nav>
+			</div>
+		</div>
+	</header>
+    <div class="bottom-menu">
+		<div class="container">
+			<div class="categories">
+				<a href="#" class="category-item" data-category="new">Новинки</a>
+				<a href="#" class="category-item" data-category="clothes">Одежда</a>
+				<a href="#" class="category-item" data-category="shoes">Обувь</a>
+				<a href="#" class="category-item" data-category="accessories">Аксессуары</a>
+				<a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
+			</div>
+			<div class="search-container">
+				<input type="text" placeholder="Поиск" class="search-input">
+				<a href="#" class="search-button">
+					<img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
+				</a>
+			</div>
+		</div>
+		<div class="dropdown-menu" id="clothes-menu">
+			<div class="container">
+				<div class="menu-content">
+					<div class="menu-columns">
+						<div class="menu-row">
+							<h4>Вся одежда</h4>
+							<ul>
+								<li><a href="#">Брюки</a></li>
+								<li><a href="#">Верхняя одежда</a></li>
+								<li><a href="#">Джинсы</a></li>
+							</ul>
+						</div>
+						<div class="menu-row">
+							<h4>По сезону</h4>
+							<ul>
+								<li><a href="#">Летняя одежда</a></li>
+								<li><a href="#">Зимняя одежда</a></li>
+								<li><a href="#">Осенние коллекции</a></li>
+								<li><a href="#">Весенние коллекции</a></li>
+							</ul>
+						</div>
+						<div class="menu-row">
+							<h4>Бренды</h4>
+							<ul>
+								<li><a href="#">Nike</a></li>
+								<li><a href="#">Adidas</a></li>
+								<li><a href="#">Zara</a></li>
+								<li><a href="#">H&M</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="ad-section">
+						<a href="ссылка-на-рекламу" class="ad-banner">
+							<img src="{% static 'home/images/main_banner_2.webp' %}" alt="Рекламный баннер">
+							<div class="small-banner-text">
+								<div class="title">Маршрут построен</div>
+								<div class="description">Экипировка для трекинга</div>
+							</div>
+							<div class="ad-label">Реклама</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dropdown-menu" id="shoes-menu">
+			<div class="container">
+				<div class="menu-content">
+					<div class="menu-columns">
+						<div class="menu-row">
+							<h4>Вся обувь</h4>
+							<ul>
+								<li><a href="#">Кроссовки</a></li>
+								<li><a href="#">Кеды</a></li>
+								<li><a href="#">Сандали</a></li>
+								<li><a href="#">Тапки</a></li>
+							</ul>
+						</div>
+						<div class="menu-row">
+							<h4>По сезону</h4>
+							<ul>
+								<li><a href="#">Летняя одежда</a></li>
+								<li><a href="#">Зимняя одежда</a></li>
+								<li><a href="#">Осенние коллекции</a></li>
+								<li><a href="#">Весенние коллекции</a></li>
+							</ul>
+						</div>
+						<div class="menu-row">
+							<h4>Бренды</h4>
+							<ul>
+								<li><a href="#">Nike</a></li>
+								<li><a href="#">Adidas</a></li>
+								<li><a href="#">Zara</a></li>
+								<li><a href="#">H&M</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="ad-section">
+						<a href="ссылка-на-рекламу" class="ad-banner">
+							<img src="{% static 'home/images/main_banner_2.webp' %}" alt="Рекламный баннер">
+							<div class="small-banner-text">
+								<div class="title">Маршрут построен</div>
+								<div class="description">Экипировка для трекинга</div>
+							</div>
+							<div class="ad-label">Реклама</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="product-card-view">
+		<div class="container">
+			<div class="column-layout">
+				<div class="product-gallery">
+					<div class="gallery-row">
+						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 1">
+						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 2">
+					</div>
+					<div class="gallery-row">
+						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 3">
+						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 4">
+						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 5">
+					</div>
+				</div>
+				<div class="product-info">
+					<div class="rating">
+						<div class="rating__body">
+							<div class="rating__active">
+								<div class="rating__items">
+									<input type="radio" class="rating__item" value="1" name="rating">
+									<input type="radio" class="rating__item" value="2" name="rating">
+									<input type="radio" class="rating__item" value="3" name="rating">
+									<input type="radio" class="rating__item" value="4" name="rating">
+									<input type="radio" class="rating__item" value="5" name="rating">
+								</div>
+							</div>
+						</div>
+						<div class="rating__value">3.6</div>
+					</div>
+
+					<div class="brand">Бренд: Adidas</div>
+					<div class="name">Название: Кеды</div>
+					<div class="price">Цена: 4999 руб.</div>
+					<div class="size-selection">
+						<label for="size">Выберите размер:</label>
+						<select id="size">
+							<option value="38">38</option>
+							<option value="39">39</option>
+							<option value="40">40</option>
+							<option value="41">41</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<script src="{% static 'home/js/view_menu.js' %}"></script>
+	<script src="{% static 'cardViewProduct/js/stars-rating.js' %}"></script>
+
+</body>

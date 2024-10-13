@@ -20,6 +20,10 @@ def test_load(request):
     return render(request, 'test.html')
 
 
+def card(request):
+    return render(request, 'cardViewProduct.html')
+
+
 def generate_verification_code(length=6):
     """Генерирует случайный код подтверждения."""
     return ''.join(random.choices(string.digits, k=length))
