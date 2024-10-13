@@ -40,8 +40,14 @@ img {
 }
 
 
-.brand, .name, .price, .size-selection {
+.brand {
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.model {
     font-size: 16px;
+    color: #999;
 }
 
 .size-selection select {
@@ -49,6 +55,27 @@ img {
     font-size: 14px;
 }
 
+.price-info {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.price-info .old-price {
+    font-size: 20px;
+    color: #000;
+}
+
+.price-info .new-price {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+
+.price-info .discount-label {
+    position: static;
+    padding: 5px;
+}
 /*****************************************************************/
 
 .rating {
@@ -65,6 +92,8 @@ img {
 .rating__body::before {
     content: "★★★★★";
     display: block;
+    color: #999;
+    font-size: 20px;
 }
 
 .rating__items {
@@ -76,9 +105,39 @@ img {
     left: 0;
 }
 
+.rating__active {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.rating__active:before {
+    content: "★★★★★";
+    position: absolute;
+    width: 10%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: #000;
+    font-size: 20px;
+}
+
+.rating__item {
+    flex: 0 0 20%;
+    height: 100%;
+    opacity: 0;
+
+}
+
 .rating__value {
     font-size: 50%;
-    line-height: 1;
     padding: 0px 0px 0px 10px;
+}
 
+.count__feedback {
+    padding-left: 10px;
+    color: #999;
 }
