@@ -346,7 +346,9 @@ label:hover .color-box {
 }
 
 #fprice-menu {
-
+    padding-top: 30px;
+    width: 300px;
+    padding-bottom: 0px;
 }
 
 #fcountry-menu {
@@ -387,7 +389,7 @@ label:hover .color-box {
 .price-filter .container {
     position: relative;
     width: 100%;
-    height: 100px;
+    height: 50px;
 }
 
 .price-filter input[type="range"] {
@@ -432,11 +434,12 @@ label:hover .color-box {
     -webkit-appearance: none;
     height: 1.7em;
     width: 1.7em;
-    background-color: #3264fe;
+    background-color: #ffffff;
     cursor: pointer;
     margin-top: -9px;
     pointer-events: auto;
     border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .price-filter input[type="range"]::-moz-range-thumb {
@@ -445,7 +448,7 @@ label:hover .color-box {
     width: 1.7em;
     cursor: pointer;
     border-radius: 50%;
-    background-color: #3264fe;
+    background-color: #999;
     pointer-events: auto;
 }
 
@@ -455,13 +458,13 @@ label:hover .color-box {
     width: 1.7em;
     cursor: pointer;
     border-radius: 50%;
-    background-color: #3264fe;
+    background-color: #999;
     pointer-events: auto;
 }
 
 .price-filter input[type="range"]:active::-webkit-slider-thumb {
     background-color: #ffffff;
-    border: 3px solid #3264fe;
+    border: 3px solid #999;
 }
 
 .price-filter .values {
@@ -496,20 +499,24 @@ label:hover .color-box {
     justify-content: space-between;
     width: 100%;
     margin-bottom: 10px;
+    align-items: center;
+
 }
 
 .price-filter .price-inputs div {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
 }
 
 .price-filter .price-inputs input {
-    width: 80px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
+    padding: 0px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    padding-bottom: 3px;
+    font-size: 16px;
+    color: #999;
 }
 
 .price-filter .apply-button {
@@ -524,6 +531,19 @@ label:hover .color-box {
     background-color: #e0e0e0;
 }
 
+.price-inputs label{
+    font-size: 12px;
+    color: #999;
+    text-align: left;
+}
 
+.priceInputsDash {
+    vertical-align: center;
+    margin: 0px;
+    padding: 0px;
+    margin: 0 16px;
+}
 
-
+.price-filter .price-inputs input.sliderIsActive {
+    color: #000; /* Цвет текста при активности */
+}
