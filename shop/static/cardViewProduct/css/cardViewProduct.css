@@ -149,6 +149,13 @@ img {
     position: relative;
     display: inline-block;
     width: 100%;
+    margin-top: 10px;
+}
+
+.color-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
     margin-top: 20px;
 }
 
@@ -174,6 +181,29 @@ img {
     cursor: pointer; /* Указываем курсор как указатель */
 }
 
+.color-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    color: #999;
+}
+
+.color-button .arrow {
+    opacity: 1;
+    flex-shrink: 0; /* Не позволяет стрелке сжиматься */
+    cursor: pointer; /* Указываем курсор как указатель */
+}
+
+
 .size-list {
     display: none; /* Скрываем список по умолчанию */
     position: absolute;
@@ -186,6 +216,8 @@ img {
     padding: 0;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .size-list li {
@@ -194,6 +226,31 @@ img {
 }
 
 .size-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.color-dropdown .color-list {
+    display: none; /* Скрываем список по умолчанию */
+    position: absolute;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    list-style-type: none;
+    padding: 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    margin: 0px;
+    margin-top: 5px;
+}
+
+.color-dropdown .color-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.color-dropdown .color-list li:hover {
     background-color: #f0f0f0;
 }
 

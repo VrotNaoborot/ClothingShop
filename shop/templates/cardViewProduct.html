@@ -19,7 +19,7 @@
 		<div class="container">
 			<div class="header-menu">
 				<div class="logo">
-					<a href="index.html">
+					<a href="catalog/">
 						<img src="{% static 'magazine/images/logo.png' %}" alt="logo">
 					</a>
 				</div>
@@ -185,13 +185,13 @@
 			<div class="column-layout">
 				<div class="product-gallery">
 					<div class="gallery-row">
-						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 1">
-						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 2">
+						<img src="{{ product.image1.url }}" alt="Изображение 1" class="gallery-image">
+						<img src="{{ product.image2.url }}" alt="Изображение 2" class="gallery-image">
 					</div>
 					<div class="gallery-row">
-						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 3">
-						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 4">
-						<img src="{% static 'cardViewProduct/images/img.webp' %}" alt="Image 5">
+						<img src="{{ product.image3.url }}" alt="Изображение 3" class="gallery-image">
+						<img src="{{ product.image4.url }}" alt="Изображение 4" class="gallery-image">
+						<img src="{{ product.image5.url }}" alt="Изображение 5" class="gallery-image">
 					</div>
 				</div>
 				<div class="product-info">
@@ -211,23 +211,33 @@
 						<div class="count__feedback">12 отзывов</div>
 					</div>
 
-					<div class="brand">adidas</div>
-					<div class="model">Кеды BREAK START MID WINTERIZED</div>
+					<div class="brand">{{ product.name }}</div>
+					<div class="model">{{ product.category.name }}</div>
 					<div class="price-info">
 						<div class="old-price">11 999</div>
 						<div class="new-price">5 999 ₽</div>
 						<div class="discount-label">-50%</div>
+					</div>
+					<div class="color-dropdown">
+						<button class="color-button">Выберите цвет
+							<span class="arrow"></span>
+						</button>
+						<ul class="color-list">
+							{% for color in colors %}
+							<li>
+								<span class="color-box" style="background-color: {{ color.color|lower }};"></span> {{ color.color|capfirst }}
+							</li>
+							{% endfor %}
+						</ul>
 					</div>
 					<div class="size-dropdown">
 						<button class="size-button">Выберите размер
 							<span class="arrow"></span>
 						</button>
 						<ul class="size-list">
-							<li>34</li>
-							<li>35</li>
-							<li>36.5</li>
-							<li>38</li>
-							<li>39</li>
+							{% for size in sizes %}
+								<li>{{ size.value }}</li>
+							{% endfor %}
 						</ul>
 					</div>
 					<div class="cart-add">
@@ -245,6 +255,6 @@
 
 	<script src="{% static 'home/js/view_menu.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/stars-rating.js' %}"></script>
-	<script src="{% static 'cardViewProduct/js/size-list.js' %}"></script>
+	<script src="{% static 'cardViewProduct/js/dropdown-lists.js' %}"></script>
 
 </body>

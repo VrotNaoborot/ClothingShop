@@ -80,7 +80,12 @@
     color: #999;
 }
 
+.current-price {
+    color: #000;
+}
+
 .new-price {
+    margin-left: 10px;
     color: #e60023;
     font-weight: bold;
 }

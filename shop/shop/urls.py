@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from MainShop.views import register, login, index, home, test_load, catalog, card
+from MainShop.views import register, login, index, home, test_load, catalog, product_card
 from . import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
@@ -30,8 +30,8 @@ urlpatterns = [
     path('men-home/', home, name='men-home'),
     path('catalog/', catalog),
     path('test/', test_load),
-    path('card/', card),
+    path('card/<int:pk>', product_card, name='card'),
     path('', index),
 ]
-# if settings.DEBUG:  # Только для режима отладки
-#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

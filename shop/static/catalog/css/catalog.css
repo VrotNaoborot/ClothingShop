@@ -195,7 +195,7 @@ span {
 }
 
 .category-products .product-card {
-    flex: 0 0 calc((100% - 3 * 10px) / 4); /* Ширина каждой карточки для 6 карточек с учетом отступов */
+    flex: 0 0 calc((100% - 4 * 10px) / 5); /* Ширина каждой карточки для 6 карточек с учетом отступов */
     margin: 0; /* Обнуляем внешние отступы карточек, так как мы используем gap */
 }
 
@@ -546,4 +546,12 @@ label:hover .color-box {
 
 .price-filter .price-inputs input.sliderIsActive {
     color: #000; /* Цвет текста при активности */
+}
+
+.old-price, .new-price, .current-price {
+    font-size: 18px;
+}
+
+.price-container {
+    display: flex;
 }

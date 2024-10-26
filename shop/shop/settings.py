@@ -148,3 +148,10 @@ EMAIL_HOST_PASSWORD = 'svfx wjbd uimo anfe'  # Замените на ваш па
 AUTH_USER_MODEL = 'MainShop.CustomUser'
 
 LOGOUT_REDIRECT_URL = '/'
+
+# images
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_URL = '/products/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'products')

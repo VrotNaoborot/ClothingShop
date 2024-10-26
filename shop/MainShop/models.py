@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from shop import settings
 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -17,13 +20,15 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        # Убедитесь, что для суперпользователя установлены необходимые поля
         extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):  # Добавляем PermissionsMixin
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -33,7 +38,7 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = []  # Можно оставить пустым, если не нужны другие поля
 
     def __str__(self):
         return self.email
@@ -51,23 +56,67 @@ class ClothingCategory(models.Model):
         verbose_name_plural = "Категории одежды"
 
 
-class Clothing(models.Model):
-    id = models.AutoField(primary_key=True, verbose_name="ID одежды")
-    name = models.CharField(max_length=100, verbose_name="Название")
-    sex = models.CharField(max_length=100, verbose_name="Пол")
-    color = models.CharField(max_length=40, verbose_name="Цвет")
-    price = models.DecimalField(max_digits=15, decimal_places=2, verbose_name="Цена")
-    size = models.CharField(max_length=10, verbose_name="Размер")
-    description = models.CharField(max_length=300, verbose_name="Описание")
-    count = models.IntegerField(verbose_name="Количество в наличии")
-    category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
+class Color(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name="ID цвета")
+    color = models.CharField(max_length=50, verbose_name="Цвет")
 
     def __str__(self):
-        return f'{self.name}: {self.price}'
+        return self.color
+
+
+class Sizes(models.Model):
+    value = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.value
+
+
+# Одежда
+class Clothing(models.Model):
+    SEX_CHOICES = [
+        ('M', 'Мужской'),
+        ('F', 'Женский'),
+        ('U', 'Унисекс'),
+    ]
+
+    id = models.AutoField(primary_key=True, verbose_name="ID одежды")
+    name = models.CharField(max_length=100, verbose_name="Название")
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES, verbose_name="Пол")
+    colors = models.ManyToManyField(Color, verbose_name="Цвета")
+    sizes = models.ManyToManyField(Sizes, verbose_name="Размеры")
+    description = models.CharField(max_length=300, verbose_name="Описание")
+    category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
+    image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image4 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}: {self.category.name}'
 
     class Meta:
         verbose_name = "Одежда"
         verbose_name_plural = "Одежда"
+
+
+class PriceHistory(models.Model):
+    price = models.IntegerField(verbose_name="Цена")
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время добавления")
+    clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
+
+    def __str__(self):
+        return f"{self.price} - {self.date_create}"
+
+
+class Stock(models.Model):
+    clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name="Цвет")
+    size = models.ForeignKey(Sizes, on_delete=models.CASCADE, verbose_name="Размер")
+    count = models.IntegerField(verbose_name="Количество")
+
+    def __str__(self):
+        return f'{self.clothing.name} - {self.color.color} - {self.size.value}: {self.count} шт.'
 
 
 class Orders(models.Model):
