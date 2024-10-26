@@ -218,14 +218,22 @@
 						<div class="new-price">5 999 ₽</div>
 						<div class="discount-label">-50%</div>
 					</div>
-					<div class="size-selection">
-						<label for="size">Выберите размер:</label>
-						<select id="size">
-							<option value="38">38</option>
-							<option value="39">39</option>
-							<option value="40">40</option>
-							<option value="41">41</option>
-						</select>
+					<div class="size-dropdown">
+						<button class="size-button">Выберите размер
+							<span class="arrow"></span>
+						</button>
+						<ul class="size-list">
+							<li>34</li>
+							<li>35</li>
+							<li>36.5</li>
+							<li>38</li>
+							<li>39</li>
+						</ul>
+					</div>
+					<div class="cart-add">
+						<button class="cart-add-button">
+							Добавить в корзину
+						</button>
 					</div>
 				</div>
 			</div>
@@ -237,5 +245,6 @@
 
 	<script src="{% static 'home/js/view_menu.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/stars-rating.js' %}"></script>
+	<script src="{% static 'cardViewProduct/js/size-list.js' %}"></script>
 
 </body>
