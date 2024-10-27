@@ -1,14 +1,15 @@
 import random
 import string
 import json
-
+from django.db import models
+from django.db.models import Prefetch
 from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from shop import settings
 from django.http import JsonResponse
-from .models import CustomUser, Clothing, PriceHistory
+from .models import CustomUser, Clothing, PriceHistory, Stock
 
 
 def index(request):
@@ -21,12 +22,34 @@ def test_load(request):
 
 
 def product_card(request, pk):
-    product = Clothing.objects.filter(pk=pk).prefetch_related('stock_set', 'category', 'colors', 'sizes').first()
-    if product is not None:
-        colors = product.colors.all()
-        sizes = product.sizes.all()
-        print(f"Colors - {colors}")
-        return render(request, 'cardViewProduct.html', {'product': product, 'colors': colors, 'sizes': sizes})
+    product = get_object_or_404(Clothing, id=pk)
+    stock_items = Stock.objects.filter(clothing=product, count__gt=0)
+    print(f"stock: {stock_items}")
+    price_history = PriceHistory.objects.filter(clothing=product).order_by('-date_create')
+    colors = list(set(stock.color for stock in stock_items))
+    print(f"colors: {colors}")
+
+    if len(price_history) == 1:
+        product.discount = False
+        current_price = price_history[0].price
+        product.current_price = f"{current_price:,}".replace(',', ' ')
+    elif len(price_history) >= 2:
+        new_price = price_history[0].price
+        old_price = price_history[1].price
+        if new_price < old_price:
+            product.discount = True
+            product.old_price = f"{old_price:,}".replace(',', ' ')
+            product.new_price = f"{new_price:,}".replace(',', ' ')
+            product.discount_value = int(((old_price - new_price) / old_price) * 100)
+        else:
+            product.discount = False
+            product.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+
+    context = {'product': product,
+               'colors': colors,
+               }
+
+    return render(request, 'cardViewProduct.html', context=context)
 
 
 def generate_verification_code(length=6):
@@ -43,30 +66,31 @@ def home(request):
 
 
 def catalog(request):
-    products = Clothing.objects.prefetch_related('stock_set', 'category').all()
+    clothing_items = Clothing.objects.all()
+    for item in clothing_items:
+        # Все доступные в наличии цвета и размеры
+        item.stock_items = Stock.objects.filter(clothing=item, count__gt=0)
+        available_colors = list(set(stock.color for stock in item.stock_items))
 
-    for product in products:
-        # Получаем все записи истории цен для текущего продукта
-        product.price_history = PriceHistory.objects.filter(clothing=product).order_by('-date_create')
-        product.discount = None  # Инициализируем скидку
-
-        # Проверяем, есть ли записи в истории цен
-        if product.price_history.count() >= 2:
-            old_price = product.price_history[1].price
-            new_price = product.price_history[0].price
-
-            # Рассчитываем скидку
+        # Получаем историю цен, отсортированную от новой даты к старой
+        price_history = PriceHistory.objects.filter(clothing=item).order_by('-date_create')
+        if len(price_history) == 1:
+            item.discount = False
+            current_price = price_history[0].price
+            item.current_price = f"{current_price:,}".replace(',', ' ')
+        elif len(price_history) >= 2:
+            new_price = price_history[0].price
+            old_price = price_history[1].price
             if new_price < old_price:
-                product.discount = ((old_price - new_price) / old_price) * 100
+                item.discount = True
+                item.old_price = f"{old_price:,}".replace(',', ' ')
+                item.new_price = f"{new_price:,}".replace(',', ' ')
+                item.discount_value = int(((old_price - new_price) / old_price) * 100)
+            else:
+                item.discount = False
+                item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
 
-            # Форматируем старую и новую цену с разделением тысяч
-            product.old_price_formatted = f"{old_price:,}".replace(',', ' ')  # Заменяем запятую на пробел
-            product.new_price_formatted = f"{new_price:,}".replace(',', ' ')  # Заменяем запятую на пробел
-        elif product.price_history.count() == 1:
-            product.new_price_formatted = f"{product.price_history[0].price:,}".replace(',', ' ')
-
-    return render(request, 'catalog.html', {'products': products})
-
+    return render(request, 'catalog.html', {'clothing_items': clothing_items})
 
 
 def login(request):

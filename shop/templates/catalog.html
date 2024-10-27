@@ -748,45 +748,39 @@
                     </div>
 
                     <div class="category-products">
-                        {% for product in products %}
-                            <a href="{% url 'card' product.id %}" class="product-card">
+                        {% for clothing in clothing_items %}
+                            <a href="{% url 'card' clothing.id %}" class="product-card">
                                 <div class="product-image-container">
-                                    <img src="{{ product.image1.url }}"
-                                         data-src="{{ product.image1.url }}" alt="{{ product.name }}"
+                                    <img src="{{ clothing.image1.url }}"
+                                         data-src="{{ clothing.image1.url }}" alt="{{ clothing.model }}"
                                          class="product-image" id="main-image">
-                                    <img src="{{ product.image2.url }}" alt="{{ product.name }}"
+                                    <img src="{{ clothing.image2.url }}" alt="{{ clothing.model }}"
                                          class="additional-images" data-index="0">
-                                    {% if product.discount %}
-                                        <div class="discount-label">-{{ product.discount|floatformat:0 }}%</div>
+                                    {% if clothing.discount %}
+                                        <div class="discount-label">-{{ clothing.discount_value }}%</div>
                                     {% endif %}
                                     <div class="wishlist-btn"></div>
                                 </div>
                                 <div class="product-details">
-                                    {% if product.price_history.count == 1 %}
-                                        <div class="current-price">{{ product.new_price_formatted }} ₽</div>
-                                    {% elif product.price_history.count >= 2 %}
-                                        {% with old_price=product.price_history.1.price new_price=product.price_history.0.price %}
-                                            <div class="price-container">
-                                                {% if new_price < old_price %}
-                                                    <div class="old-price">{{ product.old_price_formatted }}</div>
-                                                    <div class="new-price">{{ product.new_price_formatted }} ₽</div>
-                                                {% else %}
-                                                    <div class="current-price">{{ product.new_price_formatted }} ₽</div>
-                                                {% endif %}
-                                            </div>
-                                        {% endwith %}
+                                    {% if not clothing.discount %}
+                                        <div class="current-price">{{ clothing.current_price }} ₽</div>
+                                    {% elif clothing.discount %}
+                                        <div class="price-container">
+                                            <div class="old-price">{{ clothing.old_price }}</div>
+                                            <div class="new-price">{{ clothing.new_price }} ₽</div>
+                                        </div>
                                     {% endif %}
 
-                                    <div class="product-title">{{ product.name }}</div>
-                                    <div class="product-subtitle">{{ product.category.name }}</div>
+                                    <div class="product-title">{{ clothing.brand.name }}</div>
+                                    <div class="product-subtitle">{{ clothing.category.name }} {{ clothing.model }}</div>
                                     <div class="review-value">
                                         <span class="rating-star">★</span>
                                         <span class="rating-score">4.7</span>
                                         <span class="review-count">(118)</span>
                                     </div>
                                     <div class="sizes">
-                                        {% for stock in product.stock_set.all %}
-                                            <span>{{ stock.size.value }}</span> <!-- Выводим размеры -->
+                                        {% for size in clothing.stock_items %}
+                                            <span>{{ size.size.value }}</span> <!-- Выводим размеры -->
                                         {% endfor %}
                                     </div>
                                 </div>

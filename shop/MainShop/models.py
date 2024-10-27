@@ -71,6 +71,13 @@ class Sizes(models.Model):
         return self.value
 
 
+class Brand(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Бренд")
+
+    def __str__(self):
+        return self.name
+
+
 # Одежда
 class Clothing(models.Model):
     SEX_CHOICES = [
@@ -80,12 +87,11 @@ class Clothing(models.Model):
     ]
 
     id = models.AutoField(primary_key=True, verbose_name="ID одежды")
-    name = models.CharField(max_length=100, verbose_name="Название")
+    model = models.CharField(max_length=100, verbose_name="Название модели")
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, verbose_name="Пол")
-    colors = models.ManyToManyField(Color, verbose_name="Цвета")
-    sizes = models.ManyToManyField(Sizes, verbose_name="Размеры")
     description = models.CharField(max_length=300, verbose_name="Описание")
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Бренд")
     image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
     image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
     image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
@@ -93,7 +99,7 @@ class Clothing(models.Model):
     image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
 
     def __str__(self):
-        return f'{self.name}: {self.category.name}'
+        return f'{self.category.name}: {self.model}'
 
     class Meta:
         verbose_name = "Одежда"
@@ -116,7 +122,7 @@ class Stock(models.Model):
     count = models.IntegerField(verbose_name="Количество")
 
     def __str__(self):
-        return f'{self.clothing.name} - {self.color.color} - {self.size.value}: {self.count} шт.'
+        return f'{self.clothing.model} - {self.color.color} - {self.size.value}: {self.count} шт.'
 
 
 class Orders(models.Model):

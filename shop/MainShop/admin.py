@@ -9,8 +9,8 @@ class PriceHistoryInline(admin.TabularInline):
 
 @admin.register(Clothing)
 class ClothingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_latest_price', 'category')
-    search_fields = ('name',)
+    list_display = ('model', 'get_latest_price', 'category')
+    search_fields = ('model',)
     inlines = [PriceHistoryInline]  # Добавляем inline для PriceHistory
 
     def get_latest_price(self, obj):

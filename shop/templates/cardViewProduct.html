@@ -211,12 +211,16 @@
 						<div class="count__feedback">12 отзывов</div>
 					</div>
 
-					<div class="brand">{{ product.name }}</div>
-					<div class="model">{{ product.category.name }}</div>
+					<div class="brand">{{ product.brand.name }}</div>
+					<div class="model">{{ product.category.name }}  {{ product.model }}</div>
 					<div class="price-info">
-						<div class="old-price">11 999</div>
-						<div class="new-price">5 999 ₽</div>
-						<div class="discount-label">-50%</div>
+						{% if product.discount %}
+							<div class="old-price">{{ product.old_price }}</div>
+							<div class="new-price">{{ product.new_price }} ₽</div>
+							<div class="discount-label">-{{ product.discount_value }}%</div>
+						{% elif not product.discount %}
+							<div class="current-price">{{ product.current_price }} ₽</div>
+						{% endif %}
 					</div>
 					<div class="color-dropdown">
 						<button class="color-button">Выберите цвет
@@ -236,7 +240,7 @@
 						</button>
 						<ul class="size-list">
 							{% for size in sizes %}
-								<li>{{ size.value }}</li>
+								<li>{{ size.size.value }}</li>
 							{% endfor %}
 						</ul>
 					</div>
