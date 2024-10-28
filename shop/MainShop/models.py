@@ -70,12 +70,20 @@ class Sizes(models.Model):
     def __str__(self):
         return self.value
 
+    class Meta:
+        verbose_name = "Размер"
+        verbose_name_plural = "Размеры"
+
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, verbose_name="Бренд")
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Бренд"
+        verbose_name_plural = "Бренд"
 
 
 # Одежда
@@ -92,11 +100,6 @@ class Clothing(models.Model):
     description = models.CharField(max_length=300, verbose_name="Описание")
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Бренд")
-    image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image4 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
 
     def __str__(self):
         return f'{self.category.name}: {self.model}'
@@ -120,6 +123,11 @@ class Stock(models.Model):
     color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name="Цвет")
     size = models.ForeignKey(Sizes, on_delete=models.CASCADE, verbose_name="Размер")
     count = models.IntegerField(verbose_name="Количество")
+    image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image4 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
 
     def __str__(self):
         return f'{self.clothing.model} - {self.color.color} - {self.size.value}: {self.count} шт.'

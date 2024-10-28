@@ -9,7 +9,8 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from shop import settings
 from django.http import JsonResponse
-from .models import CustomUser, Clothing, PriceHistory, Stock
+from .models import CustomUser, Clothing, PriceHistory, Stock, Color
+from django.urls import reverse
 
 
 def index(request):
@@ -21,12 +22,15 @@ def test_load(request):
     return render(request, 'test.html')
 
 
-def product_card(request, pk):
+def product_card(request, pk, color_id):
     product = get_object_or_404(Clothing, id=pk)
-    stock_items = Stock.objects.filter(clothing=product, count__gt=0)
-    print(f"stock: {stock_items}")
+    # Получаем объект цвета по color_id
+    color = get_object_or_404(Color, id=color_id)
+
+    stock_items = Stock.objects.filter(clothing=product, color=color, count__gt=0)
+    stock_first_item = stock_items[0]
     price_history = PriceHistory.objects.filter(clothing=product).order_by('-date_create')
-    colors = list(set(stock.color for stock in stock_items))
+    colors = list(set(stock.color for stock in Stock.objects.filter(clothing=product, count__gt=0)))
     print(f"colors: {colors}")
 
     if len(price_history) == 1:
@@ -47,7 +51,8 @@ def product_card(request, pk):
 
     context = {'product': product,
                'colors': colors,
-               }
+               'stock': stock_first_item,
+               'current_color': color_id}
 
     return render(request, 'cardViewProduct.html', context=context)
 
@@ -70,7 +75,17 @@ def catalog(request):
     for item in clothing_items:
         # Все доступные в наличии цвета и размеры
         item.stock_items = Stock.objects.filter(clothing=item, count__gt=0)
-        available_colors = list(set(stock.color for stock in item.stock_items))
+
+        if item.stock_items.exists():
+            first_stock_item = item.stock_items.first()
+            item.color_id = first_stock_item.color.id
+            item.size_id = first_stock_item.size.id
+            item.url = reverse('card', args=[item.id, item.color_id])
+            item.image1 = first_stock_item.image1
+            item.image2 = first_stock_item.image2
+        # available_colors = list(set(stock.color for stock in item.stock_items))
+
+
 
         # Получаем историю цен, отсортированную от новой даты к старой
         price_history = PriceHistory.objects.filter(clothing=item).order_by('-date_create')

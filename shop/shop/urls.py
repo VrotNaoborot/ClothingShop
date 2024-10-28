@@ -30,8 +30,6 @@ urlpatterns = [
     path('men-home/', home, name='men-home'),
     path('catalog/', catalog),
     path('test/', test_load),
-    path('card/<int:pk>', product_card, name='card'),
+    path('card/<int:pk>/color/<int:color_id>/', product_card, name='card'),
     path('', index),
-]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

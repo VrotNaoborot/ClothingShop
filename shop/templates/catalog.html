@@ -749,7 +749,7 @@
 
                     <div class="category-products">
                         {% for clothing in clothing_items %}
-                            <a href="{% url 'card' clothing.id %}" class="product-card">
+                            <a href="{{ clothing.url }}" class="product-card">
                                 <div class="product-image-container">
                                     <img src="{{ clothing.image1.url }}"
                                          data-src="{{ clothing.image1.url }}" alt="{{ clothing.model }}"

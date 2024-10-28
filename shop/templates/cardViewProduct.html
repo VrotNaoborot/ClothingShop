@@ -185,13 +185,13 @@
 			<div class="column-layout">
 				<div class="product-gallery">
 					<div class="gallery-row">
-						<img src="{{ product.image1.url }}" alt="Изображение 1" class="gallery-image">
-						<img src="{{ product.image2.url }}" alt="Изображение 2" class="gallery-image">
+						<img src="{{ stock.image1.url }}" alt="Изображение 1" class="gallery-image">
+						<img src="{{ stock.image2.url }}" alt="Изображение 2" class="gallery-image">
 					</div>
 					<div class="gallery-row">
-						<img src="{{ product.image3.url }}" alt="Изображение 3" class="gallery-image">
-						<img src="{{ product.image4.url }}" alt="Изображение 4" class="gallery-image">
-						<img src="{{ product.image5.url }}" alt="Изображение 5" class="gallery-image">
+						<img src="{{ stock.image3.url }}" alt="Изображение 3" class="gallery-image">
+						<img src="{{ stock.image4.url }}" alt="Изображение 4" class="gallery-image">
+						<img src="{{ stock.image5.url }}" alt="Изображение 5" class="gallery-image">
 					</div>
 				</div>
 				<div class="product-info">
@@ -228,11 +228,12 @@
 						</button>
 						<ul class="color-list">
 							{% for color in colors %}
-							<li>
+							<li data-id="{{ color.id }}" style="cursor: pointer;" onclick="selectColor('{{ product.id }}', '{{ color.id }}')">
 								<span class="color-box" style="background-color: {{ color.color|lower }};"></span> {{ color.color|capfirst }}
 							</li>
 							{% endfor %}
 						</ul>
+						<input type="hidden" id="selected-color-id" value="{{ current_color }}">
 					</div>
 					<div class="size-dropdown">
 						<button class="size-button">Выберите размер
@@ -260,5 +261,6 @@
 	<script src="{% static 'home/js/view_menu.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/stars-rating.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/dropdown-lists.js' %}"></script>
+	<script src="{% static 'cardViewProduct/js/color-select.js' %}"></script>
 
 </body>
