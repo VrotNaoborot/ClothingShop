@@ -76,6 +76,7 @@
 }
 
 .old-price {
+    font-size: 16px;
     text-decoration: line-through;
     color: #999;
 }
@@ -88,6 +89,8 @@
     margin-left: 10px;
     color: #e60023;
     font-weight: bold;
+    font-size: 16px;
+
 }
 
 .product-title, .product-subtitle {

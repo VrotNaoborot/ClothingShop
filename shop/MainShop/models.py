@@ -88,18 +88,20 @@ class Brand(models.Model):
 
 # Одежда
 class Clothing(models.Model):
-    SEX_CHOICES = [
+    TARGET_CHOICES = [
         ('M', 'Мужской'),
         ('F', 'Женский'),
         ('U', 'Унисекс'),
+        ('C', 'Детский')
     ]
 
     id = models.AutoField(primary_key=True, verbose_name="ID одежды")
     model = models.CharField(max_length=100, verbose_name="Название модели")
-    sex = models.CharField(max_length=1, choices=SEX_CHOICES, verbose_name="Пол")
+    target = models.CharField(max_length=1, choices=TARGET_CHOICES, verbose_name="Пол")
     description = models.CharField(max_length=300, verbose_name="Описание")
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Бренд")
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name="Средний рейтинг")
 
     def __str__(self):
         return f'{self.category.name}: {self.model}'

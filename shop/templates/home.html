@@ -30,19 +30,19 @@
 					</div>
 					<div class="header-production-menu">
 						<div class="menu-list">
-							<a href="female.html">
+							<a href="{% url 'target' target='woman' %}">
 								Женское
 								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
 									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
 								</svg>
 							</a>
-							<a href="male.html">
+							<a href="{% url 'target' target='men' %}">
 								Мужское
 								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
 									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
 								</svg>
 							</a>
-							<a href="male.html">
+							<a href="{% url 'target' target='child' %}">
 								Детское
 								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
 									<path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
@@ -247,240 +247,43 @@
 			<div class="catalog-container">
 				<button class="scroll-btn left" onclick="scrollCatalogLeft()">&#10094;</button>
 				<div class="catalog-items">
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
+					{% for popular_item in popular_items %}
+						<div class="product-card">
+							<div class="product-image-container">
+								<img src="{{ popular_item.image1.url }}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="{{ popular_item.model }}" class="product-image" id="main-image">
+								<img src="{{ popular_item.image2.url }}" alt="{{ popular_item.model }}" class="additional-images" data-index="0">
+								{% if popular_item.discount %}
+									<div class="discount-label">-{{ popular_item.discount_value }}%</div>
+								{% endif %}
+								<div class="wishlist-btn">
+								</div>
+							</div>
+							<div class="product-details">
+								{% if not popular_item.discount %}
+									<div class="current-price">{{ popular_item.current_price }} ₽</div>
+								{% elif popular_item.discount %}
+									<div class="price-container">
+										<div class="old-price">{{ popular_item.old_price }}</div>
+										<div class="new-price">{{ popular_item.new_price }} ₽</div>
+									</div>
+								{% endif %}
+								<div class="product-title">{{ popular_item.brand.name }}</div>
+								<div class="product-subtitle">{{ popular_item.category.name }} {{ popular_item.model }}</div>
+								<div class="review-value">
+									<span class="rating-star">★</span>
+									<span class="rating-score">{{ popular_item.avg_rating }}</span>
+									<span class="review-count">(118)</span>
+								</div>
+								<div class="sizes">
+									{% for size in popular_item.sizes %}
+										<span>{{ size.value }}</span> <!-- Выводим размеры -->
+									{% endfor %}
+								</div>
 							</div>
 						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-card">
-						<div class="product-image-container">
-							<img src="{% static 'magazine/images/test/1.webp' %}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="Loafers" class="product-image" id="main-image">
-							<img src="{% static 'magazine/images/test/2.webp' %}" alt="Loafers" class="additional-images" data-index="0">
-							<div class="discount-label">-49%</div>
-							<div class="wishlist-btn">
-							</div>
-						</div>
-						<div class="product-details">
-							<div class="old-price">13 599 ₽</div>
-							<div class="new-price">6 850 ₽</div>
-							<div class="product-title">Roberto Jordiani</div>
-							<div class="product-subtitle">Лоферы</div>
-							<div class="review-value">
-								<span class="rating-star">★</span>
-								<span class="rating-score">4.7</span>
-								<span class="review-count">(118)</span>
-							</div>
-							<div class="sizes">
-								<span>39</span>
-								<span>40</span>
-								<span>41</span>
-								<span>42</span>
-							</div>
-						</div>
-					</div>
+					{% empty %}
+                            <p>Нет доступных товаров.</p>
+					{% endfor %}
 				</div>
 				<button class="scroll-btn right" onclick="scrollCatalogRight()">&#10095;</button>
 			</div>

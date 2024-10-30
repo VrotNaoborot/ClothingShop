@@ -12,6 +12,8 @@ from django.http import JsonResponse
 from .models import CustomUser, Clothing, PriceHistory, Stock, Color
 from django.urls import reverse
 
+from django.db.models import Q
+
 
 def index(request):
     if request.method == 'GET':
@@ -66,8 +68,52 @@ def mail_is_registrate(mail):
     return CustomUser.objects.filter(email=mail).exists()
 
 
-def home(request):
-    return render(request, "home.html")
+def home(request, target):
+    v = ""
+    if target == 'men':
+        v = "M"
+    elif target == 'women':
+        v = "F"
+    elif target == 'child':
+        v = "C"
+    else:
+        pass
+    target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
+    print(f"Cl: {target_clothing_items}")
+    available_clothing_items = []
+    for clothing_item in target_clothing_items:
+        stock_items = Stock.objects.filter(clothing=clothing_item, count__gt=0)
+        if stock_items:
+            stock_item_first = stock_items.first()
+            clothing_item.image1 = stock_item_first.image1
+            clothing_item.image2 = stock_item_first.image2
+            color_obj = stock_item_first.color
+            clothing_item.color_id = color_obj.id
+            clothing_item.url = reverse('card', args=[stock_item_first.id, stock_item_first.color_id])
+
+            price_history = PriceHistory.objects.filter(clothing=clothing_item).order_by('-date_create')
+            if len(price_history) == 1:
+                clothing_item.discount = False
+                current_price = price_history[0].price
+                clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
+            elif len(price_history) >= 2:
+                new_price = price_history[0].price
+                old_price = price_history[1].price
+                if new_price < old_price:
+                    clothing_item.discount = True
+                    clothing_item.old_price = f"{old_price:,}".replace(',', ' ')
+                    clothing_item.new_price = f"{new_price:,}".replace(',', ' ')
+                    clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
+                else:
+                    clothing_item.discount = False
+                    clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+            else:
+                continue
+            stock_for_color_item = Stock.objects.filter(clothing=clothing_item, count__gt=0, color=color_obj)
+
+            clothing_item.sizes = sorted(set(stock.size for stock in stock_for_color_item), key=lambda s: s.value)
+            available_clothing_items.append(clothing_item)
+    return render(request, "home.html", {'popular_items': available_clothing_items})
 
 
 def catalog(request):
@@ -84,8 +130,6 @@ def catalog(request):
             item.image1 = first_stock_item.image1
             item.image2 = first_stock_item.image2
         # available_colors = list(set(stock.color for stock in item.stock_items))
-
-
 
         # Получаем историю цен, отсортированную от новой даты к старой
         price_history = PriceHistory.objects.filter(clothing=item).order_by('-date_create')
