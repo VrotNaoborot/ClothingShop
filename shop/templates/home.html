@@ -248,7 +248,7 @@
 				<button class="scroll-btn left" onclick="scrollCatalogLeft()">&#10094;</button>
 				<div class="catalog-items">
 					{% for popular_item in popular_items %}
-						<div class="product-card">
+						<a href="{{ popular_item.url }}" class="product-card">
 							<div class="product-image-container">
 								<img src="{{ popular_item.image1.url }}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="{{ popular_item.model }}" class="product-image" id="main-image">
 								<img src="{{ popular_item.image2.url }}" alt="{{ popular_item.model }}" class="additional-images" data-index="0">
@@ -280,7 +280,7 @@
 									{% endfor %}
 								</div>
 							</div>
-						</div>
+						</a>
 					{% empty %}
                             <p>Нет доступных товаров.</p>
 					{% endfor %}

@@ -63,6 +63,10 @@ class Color(models.Model):
     def __str__(self):
         return self.color
 
+    class Meta:
+        verbose_name = "Цвет"
+        verbose_name_plural = "Цвета"
+
 
 class Sizes(models.Model):
     value = models.CharField(max_length=10)
@@ -107,8 +111,8 @@ class Clothing(models.Model):
         return f'{self.category.name}: {self.model}'
 
     class Meta:
-        verbose_name = "Одежда"
-        verbose_name_plural = "Одежда"
+        verbose_name = "Модель одежды"
+        verbose_name_plural = "Модель одежды"
 
 
 class PriceHistory(models.Model):
@@ -120,11 +124,9 @@ class PriceHistory(models.Model):
         return f"{self.price} - {self.date_create}"
 
 
-class Stock(models.Model):
+class ColorsClothing(models.Model):
     clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
     color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name="Цвет")
-    size = models.ForeignKey(Sizes, on_delete=models.CASCADE, verbose_name="Размер")
-    count = models.IntegerField(verbose_name="Количество")
     image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
     image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
     image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
@@ -132,7 +134,21 @@ class Stock(models.Model):
     image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
 
     def __str__(self):
-        return f'{self.clothing.model} - {self.color.color} - {self.size.value}: {self.count} шт.'
+        return f"{self.clothing.model}"
+
+    class Meta:
+        verbose_name = "Одежда"
+        verbose_name_plural = "Одежда"
+
+
+class Stock(models.Model):
+    colors_clothing = models.ForeignKey(ColorsClothing, on_delete=models.CASCADE, verbose_name="Цвета_одежды",
+                                        default=-1)
+    size = models.ForeignKey(Sizes, on_delete=models.CASCADE, verbose_name="Размер")
+    count = models.IntegerField(verbose_name="Количество")
+
+    def __str__(self):
+        return f'{self.colors_clothing.clothing.model} - {self.colors_clothing.color.color} - {self.size.value}: {self.count} шт.'
 
 
 class Orders(models.Model):

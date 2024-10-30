@@ -89,7 +89,7 @@ def home(request, target):
             clothing_item.image2 = stock_item_first.image2
             color_obj = stock_item_first.color
             clothing_item.color_id = color_obj.id
-            clothing_item.url = reverse('card', args=[stock_item_first.id, stock_item_first.color_id])
+            clothing_item.url = reverse('card', args=[clothing_item.id, stock_item_first.color_id])
 
             price_history = PriceHistory.objects.filter(clothing=clothing_item).order_by('-date_create')
             if len(price_history) == 1:
