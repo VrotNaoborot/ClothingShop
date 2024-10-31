@@ -32,12 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.parentElement.style.display = 'none';
             }
         });
+        console.log('selected-color');
         highlightSelectedColor();
     }
 
     // Инициализация отображения выбранного размера
     if (selectedSizeId) {
+        console.log('Selected size ID:', selectedSizeId);
         document.querySelectorAll('.size-list li').forEach(function(item) {
+            console.log('Checking item:', item.dataset.id);
             if (item.dataset.id === selectedSizeId) {
                 var button = document.querySelector('.size-button');
                 button.innerHTML = 'Размер: ' + item.textContent + '<span class="arrow"></span>';
@@ -45,60 +48,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.parentElement.style.display = 'none';
             }
         });
-        highlightSelectedSize();
+    } else {
+        console.log('Selected size ID not set');
     }
-
-    // Обработчик для показа/скрытия списка цветов
-    document.querySelector('.color-button').addEventListener('click', function() {
-        var colorDropdown = this.nextElementSibling;
-        var sizeDropdown = document.querySelector('.size-list');
-
-        if (sizeDropdown.style.display === 'block') {
-            sizeDropdown.style.display = 'none';
-        }
-
-        colorDropdown.style.display = colorDropdown.style.display === 'block' ? 'none' : 'block';
-
-        if (colorDropdown.style.display === 'block') {
-            highlightSelectedColor();
-        }
-    });
 
     // Обработчик для показа/скрытия списка размеров
     document.querySelector('.size-button').addEventListener('click', function() {
         var sizeDropdown = this.nextElementSibling;
-        var colorDropdown = document.querySelector('.color-list');
-
-        if (colorDropdown.style.display === 'block') {
-            colorDropdown.style.display = 'none';
-        }
-
         sizeDropdown.style.display = sizeDropdown.style.display === 'block' ? 'none' : 'block';
-
-        if (sizeDropdown.style.display === 'block') {
-            highlightSelectedSize();
-        }
+        highlightSelectedSize();
     });
 
-    // Обработчик кликов на элементах списка цветов
-    document.querySelectorAll('.color-list li').forEach(function(item) {
-        item.addEventListener('click', function() {
-            if (item.classList.contains('selected-color')) {
-                document.querySelector('.color-list').style.display = 'none';
-                return;
-            }
-
-            var button = document.querySelector('.color-button');
-            button.innerHTML = 'Цвет: ' + this.textContent + '<span class="arrow"></span>';
-            button.style.color = this.querySelector('.color-box').style.backgroundColor;
-
-            selectedColorId = item.dataset.id;
-            document.getElementById('selected-color-id').value = selectedColorId;
-
-            this.parentElement.style.display = 'none';
-            highlightSelectedColor();
-        });
+    // Обработчик для показа/скрытия списка цветов
+    document.querySelector('.color-button').addEventListener('click', function() {
+        var colorDropdown = this.nextElementSibling;
+        colorDropdown.style.display = colorDropdown.style.display === 'block' ? 'none' : 'block';
+        highlightSelectedColor();
     });
+
+
 
     // Обработчик кликов на элементах списка размеров
     document.querySelectorAll('.size-list li').forEach(function(item) {
@@ -120,11 +88,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Обработчик кликов на элементах списка цветов
+    document.querySelectorAll('.color-list li').forEach(function(item) {
+        item.addEventListener('click', function() {
+            if (item.classList.contains('selected-color')) {
+                document.querySelector('.color-list').style.display = 'none';
+                return;
+            }
+
+            var button = document.querySelector('.color-button');
+            button.innerHTML = 'Цвет: ' + this.textContent + '<span class="arrow"></span>';
+            button.style.color = this.style.backgroundColor;
+
+            selectedColorId = item.dataset.id;
+            document.getElementById('selected-color-id').value = selectedColorId;
+
+            this.parentElement.style.display = 'none';
+            highlightSelectedColor();
+        });
+    });
+
     // Закрытие списков при клике вне их области
     window.addEventListener('click', function(event) {
         if (!event.target.closest('.size-dropdown') && !event.target.closest('.color-dropdown')) {
             document.querySelector('.size-list').style.display = 'none';
-            document.querySelector('.color-list').style.display = 'none';
+            if (document.querySelector('.color-list')) {
+                document.querySelector('.color-list').style.display = 'none';
+            }
         }
     });
 });
