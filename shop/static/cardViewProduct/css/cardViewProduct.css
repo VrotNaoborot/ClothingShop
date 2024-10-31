@@ -268,3 +268,14 @@ img {
 .cart-add {
     margin-top: 15px;
 }
+
+.selected-color {
+    background-color: #999; /* Цвет фона для выделенного элемента */
+    font-weight: bold; /* Увеличивает жирность шрифта для выделенного элемента */
+    cursor: default !important;
+}
+
+.color-dropdown .color-list .selected-color:hover {
+    background-color: #999;
+}
+

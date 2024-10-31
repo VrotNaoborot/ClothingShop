@@ -1,84 +1,130 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем выбранный color_id из скрытого поля, если оно есть
     var selectedColorId = document.getElementById('selected-color-id') ? document.getElementById('selected-color-id').value : null;
+    var selectedSizeId = document.getElementById('selected-size-id') ? document.getElementById('selected-size-id').value : null;
 
-    // Если color_id передан, находим соответствующий элемент списка
-    if (selectedColorId) {
-        var colorListItems = document.querySelectorAll('.color-list li');
-        var colorFound = false; // Флаг для отслеживания, найден ли цвет
-
-        colorListItems.forEach(function(item) {
-            var colorId = item.dataset.id; // Получаем id цвета из data-id
-
-            if (colorId === selectedColorId) {
-                var button = document.querySelector('.color-button');
-                button.textContent = 'Цвет: ' + item.textContent; // Устанавливаем текст кнопки
-                button.style.color = 'black'; // Устанавливаем цвет текста кнопки в черный
-                item.parentElement.style.display = 'none'; // Закрываем выпадающее меню
-                colorFound = true; // Цвет найден
+    function highlightSelectedColor() {
+        document.querySelectorAll('.color-list li').forEach(function(item) {
+            if (item.dataset.id === selectedColorId) {
+                item.classList.add('selected-color');
+            } else {
+                item.classList.remove('selected-color');
             }
         });
     }
 
-
-    // Обработчик клика на кнопке или стрелке для размера
-    document.querySelector('.size-button').addEventListener('click', function() {
-        var dropdown = this.nextElementSibling;
-        var colorDropdown = document.querySelector('.color-list');
-
-        // Если выпадающее меню цвета открыто, закрываем его
-        if (colorDropdown.style.display === 'block') {
-            colorDropdown.style.display = 'none';
-        }
-
-        // Переключаем текущее меню размера
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // Обработчик клика на элементах списка размеров
-    document.querySelectorAll('.size-list li').forEach(function(item) {
-        item.addEventListener('click', function() {
-            var button = this.closest('.size-dropdown').querySelector('.size-button');
-            var arrow = button.querySelector('.arrow');
-            button.textContent = 'Размер: ' + this.textContent; // Обновляем текст кнопки
-            button.style.color = '#000'; // Меняем цвет текста на черный
-            button.appendChild(arrow); // Добавляем стрелку обратно в кнопку
-            var dropdown = this.parentElement; // Получаем родительский элемент ul
-            dropdown.style.display = 'none'; // Закрываем выпадающее меню
+    function highlightSelectedSize() {
+        document.querySelectorAll('.size-list li').forEach(function(item) {
+            if (item.dataset.id === selectedSizeId) {
+                item.classList.add('selected-size');
+            } else {
+                item.classList.remove('selected-size');
+            }
         });
-    });
+    }
 
-    // Обработчик клика на кнопке или стрелке для цвета
+    // Инициализация отображения выбранного цвета
+    if (selectedColorId) {
+        document.querySelectorAll('.color-list li').forEach(function(item) {
+            if (item.dataset.id === selectedColorId) {
+                var button = document.querySelector('.color-button');
+                button.innerHTML = 'Цвет: ' + item.textContent + '<span class="arrow"></span>';
+                button.style.color = 'black';
+                item.parentElement.style.display = 'none';
+            }
+        });
+        highlightSelectedColor();
+    }
+
+    // Инициализация отображения выбранного размера
+    if (selectedSizeId) {
+        document.querySelectorAll('.size-list li').forEach(function(item) {
+            if (item.dataset.id === selectedSizeId) {
+                var button = document.querySelector('.size-button');
+                button.innerHTML = 'Размер: ' + item.textContent + '<span class="arrow"></span>';
+                button.style.color = 'black';
+                item.parentElement.style.display = 'none';
+            }
+        });
+        highlightSelectedSize();
+    }
+
+    // Обработчик для показа/скрытия списка цветов
     document.querySelector('.color-button').addEventListener('click', function() {
-        var dropdown = this.nextElementSibling;
+        var colorDropdown = this.nextElementSibling;
         var sizeDropdown = document.querySelector('.size-list');
 
-        // Если выпадающее меню размера открыто, закрываем его
         if (sizeDropdown.style.display === 'block') {
             sizeDropdown.style.display = 'none';
         }
 
-        // Переключаем текущее меню цвета
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        colorDropdown.style.display = colorDropdown.style.display === 'block' ? 'none' : 'block';
+
+        if (colorDropdown.style.display === 'block') {
+            highlightSelectedColor();
+        }
     });
 
-    // Обработчик клика на элементах списка цветов
+    // Обработчик для показа/скрытия списка размеров
+    document.querySelector('.size-button').addEventListener('click', function() {
+        var sizeDropdown = this.nextElementSibling;
+        var colorDropdown = document.querySelector('.color-list');
+
+        if (colorDropdown.style.display === 'block') {
+            colorDropdown.style.display = 'none';
+        }
+
+        sizeDropdown.style.display = sizeDropdown.style.display === 'block' ? 'none' : 'block';
+
+        if (sizeDropdown.style.display === 'block') {
+            highlightSelectedSize();
+        }
+    });
+
+    // Обработчик кликов на элементах списка цветов
     document.querySelectorAll('.color-list li').forEach(function(item) {
         item.addEventListener('click', function() {
+            if (item.classList.contains('selected-color')) {
+                document.querySelector('.color-list').style.display = 'none';
+                return;
+            }
+
             var button = document.querySelector('.color-button');
-            button.textContent = 'Цвет: ' + this.textContent; // Обновляем текст кнопки
-            button.style.color = this.querySelector('.color-box').style.backgroundColor; // Меняем цвет текста на цвет элемента
-            button.appendChild(button.querySelector('.arrow')); // Добавляем стрелку обратно в кнопку
-            var dropdown = this.parentElement; // Получаем родительский элемент ul
-            dropdown.style.display = 'none'; // Закрываем выпадающее меню
+            button.innerHTML = 'Цвет: ' + this.textContent + '<span class="arrow"></span>';
+            button.style.color = this.querySelector('.color-box').style.backgroundColor;
+
+            selectedColorId = item.dataset.id;
+            document.getElementById('selected-color-id').value = selectedColorId;
+
+            this.parentElement.style.display = 'none';
+            highlightSelectedColor();
         });
     });
 
-    // Закрытие выпадающего списка при клике вне кнопки или списка
+    // Обработчик кликов на элементах списка размеров
+    document.querySelectorAll('.size-list li').forEach(function(item) {
+        item.addEventListener('click', function() {
+            if (item.classList.contains('selected-size')) {
+                document.querySelector('.size-list').style.display = 'none';
+                return;
+            }
+
+            var button = document.querySelector('.size-button');
+            button.innerHTML = 'Размер: ' + this.textContent + '<span class="arrow"></span>';
+            button.style.color = 'black';
+
+            selectedSizeId = item.dataset.id;
+            document.getElementById('selected-size-id').value = selectedSizeId;
+
+            this.parentElement.style.display = 'none';
+            highlightSelectedSize();
+        });
+    });
+
+    // Закрытие списков при клике вне их области
     window.addEventListener('click', function(event) {
         if (!event.target.closest('.size-dropdown') && !event.target.closest('.color-dropdown')) {
-            document.querySelector('.size-list').style.display = 'none'; // Закрываем меню размера
-            document.querySelector('.color-list').style.display = 'none'; // Закрываем меню цвета
+            document.querySelector('.size-list').style.display = 'none';
+            document.querySelector('.color-list').style.display = 'none';
         }
     });
 });

@@ -9,9 +9,9 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from shop import settings
 from django.http import JsonResponse
-from .models import CustomUser, Clothing, PriceHistory, Stock, Color
+from .models import CustomUser, Clothing, PriceHistory, Stock, Color, ColorsClothing
 from django.urls import reverse
-
+from django.db.models import Count
 from django.db.models import Q
 
 
@@ -24,39 +24,68 @@ def test_load(request):
     return render(request, 'test.html')
 
 
-def product_card(request, pk, color_id):
+def product_card(request, pk, color_id, size_id=None):
     product = get_object_or_404(Clothing, id=pk)
+
     # Получаем объект цвета по color_id
     color = get_object_or_404(Color, id=color_id)
 
-    stock_items = Stock.objects.filter(clothing=product, color=color, count__gt=0)
-    stock_first_item = stock_items[0]
-    price_history = PriceHistory.objects.filter(clothing=product).order_by('-date_create')
-    colors = list(set(stock.color for stock in Stock.objects.filter(clothing=product, count__gt=0)))
-    print(f"colors: {colors}")
+    clothing_color = get_object_or_404(ColorsClothing, clothing=product, color=color)
+    stock_items = Stock.objects.filter(colors_clothing=clothing_color, count__gt=0)
+    if size_id:
+        sizes = list(i.size for i in stock_items if i.count > 0)
+        stock_items = Stock.objects.filter(size_id=size_id)
+    else:
+        sizes = list(i.size for i in stock_items if i.count > 0)
 
-    if len(price_history) == 1:
-        product.discount = False
-        current_price = price_history[0].price
-        product.current_price = f"{current_price:,}".replace(',', ' ')
-    elif len(price_history) >= 2:
-        new_price = price_history[0].price
-        old_price = price_history[1].price
-        if new_price < old_price:
-            product.discount = True
-            product.old_price = f"{old_price:,}".replace(',', ' ')
-            product.new_price = f"{new_price:,}".replace(',', ' ')
-            product.discount_value = int(((old_price - new_price) / old_price) * 100)
+    # Проверяем, есть ли на складе
+    if stock_items.exists():
+        stock_first_item = stock_items[0]
+        price_history = PriceHistory.objects.filter(color_clothing=clothing_color).order_by('-date_create')
+
+        # Получаем доступные цвета с количеством на складе больше 0
+        available_colors = (
+            ColorsClothing.objects
+            .filter(clothing=product)
+            .annotate(stock_count=Count('stock', filter=Q(stock__count__gt=0)))
+            .filter(stock_count__gt=0)
+        )
+
+        print(f"available_colors: {[color.color for color in available_colors]}")
+
+        # Обработка цен и скидок
+        if len(price_history) == 1:
+            product.discount = False
+            current_price = price_history[0].price
+            product.current_price = f"{current_price:,}".replace(',', ' ')
+        elif len(price_history) >= 2:
+            new_price = price_history[0].price
+            old_price = price_history[1].price
+            if new_price < old_price:
+                product.discount = True
+                product.old_price = f"{old_price:,}".replace(',', ' ')
+                product.new_price = f"{new_price:,}".replace(',', ' ')
+                product.discount_value = int(((old_price - new_price) / old_price) * 100)
+            else:
+                product.discount = False
+                product.current_price = f"{price_history[0].price:,}".replace(',', ' ')
         else:
             product.discount = False
-            product.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+            product.current_price = "Нет цен"
 
-    context = {'product': product,
-               'colors': colors,
-               'stock': stock_first_item,
-               'current_color': color_id}
+        # Формируем контекст для передачи в шаблон
+        context = {
+            'product': product,
+            'colors': available_colors,  # Список доступных цветов
+            'stock': stock_first_item,
+            'current_color': color_id,
+            'clothing_colors': clothing_color,
+            'sizes': sizes
+        }
+        if size_id:
+            context['current_size'] = size_id
 
-    return render(request, 'cardViewProduct.html', context=context)
+        return render(request, 'cardViewProduct.html', context=context)
 
 
 def generate_verification_code(length=6):
@@ -78,41 +107,47 @@ def home(request, target):
         v = "C"
     else:
         pass
+
+    #   query со всей одеждой подходящей по таргету
     target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
     print(f"Cl: {target_clothing_items}")
     available_clothing_items = []
     for clothing_item in target_clothing_items:
-        stock_items = Stock.objects.filter(clothing=clothing_item, count__gt=0)
-        if stock_items:
-            stock_item_first = stock_items.first()
-            clothing_item.image1 = stock_item_first.image1
-            clothing_item.image2 = stock_item_first.image2
-            color_obj = stock_item_first.color
-            clothing_item.color_id = color_obj.id
-            clothing_item.url = reverse('card', args=[clothing_item.id, stock_item_first.color_id])
+        # все цвета этой одежды
+        colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
+        for color_clothing in colors_clothing:
 
-            price_history = PriceHistory.objects.filter(clothing=clothing_item).order_by('-date_create')
-            if len(price_history) == 1:
-                clothing_item.discount = False
-                current_price = price_history[0].price
-                clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
-            elif len(price_history) >= 2:
-                new_price = price_history[0].price
-                old_price = price_history[1].price
-                if new_price < old_price:
-                    clothing_item.discount = True
-                    clothing_item.old_price = f"{old_price:,}".replace(',', ' ')
-                    clothing_item.new_price = f"{new_price:,}".replace(',', ' ')
-                    clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
-                else:
+            stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
+            if stock_items:
+                stock_item_first = stock_items.first()
+                clothing_item.image1 = color_clothing.image1
+                clothing_item.image2 = color_clothing.image2
+                color_obj = color_clothing.color
+                clothing_item.color_id = color_obj.id
+                clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
+
+                price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+                if len(price_history) == 1:
                     clothing_item.discount = False
-                    clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
-            else:
-                continue
-            stock_for_color_item = Stock.objects.filter(clothing=clothing_item, count__gt=0, color=color_obj)
+                    current_price = price_history[0].price
+                    clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
+                elif len(price_history) >= 2:
+                    new_price = price_history[0].price
+                    old_price = price_history[1].price
+                    if new_price < old_price:
+                        clothing_item.discount = True
+                        clothing_item.old_price = f"{old_price:,}".replace(',', ' ')
+                        clothing_item.new_price = f"{new_price:,}".replace(',', ' ')
+                        clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
+                    else:
+                        clothing_item.discount = False
+                        clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+                else:
+                    continue
 
-            clothing_item.sizes = sorted(set(stock.size for stock in stock_for_color_item), key=lambda s: s.value)
-            available_clothing_items.append(clothing_item)
+                clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
+                available_clothing_items.append(clothing_item)
+                break
     return render(request, "home.html", {'popular_items': available_clothing_items})
 
 

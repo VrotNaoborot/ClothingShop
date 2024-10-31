@@ -31,5 +31,6 @@ urlpatterns = [
     path('catalog/', catalog),
     path('test/', test_load),
     path('card/<int:pk>/color/<int:color_id>/', product_card, name='card'),
+    path('card/<int:pk>/color/<int:color_id>/size/<int:size_id>/', product_card, name='card_with_size'),
     path('', index),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

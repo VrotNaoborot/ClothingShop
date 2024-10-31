@@ -16,6 +16,13 @@ function getCookie(name) {
 
 // Функция для выбора цвета и редиректа
 function selectColor(productId, colorId) {
+    // Проверяем, является ли цвет уже выбранным
+    const selectedColorElement = document.querySelector(`.color-list li[data-id="${colorId}"]`);
+    if (selectedColorElement.classList.contains('selected-color')) {
+        // Если цвет уже выбран, просто выходим из функции
+        return;
+    }
+
     const csrfToken = getCookie('csrftoken');
 
     // Создаем AJAX-запрос
@@ -37,3 +44,12 @@ function selectColor(productId, colorId) {
         console.error('Ошибка:', error);
     });
 }
+
+// Обработчик кликов на элементах списка
+document.querySelectorAll('.color-list li').forEach(function(item) {
+    item.addEventListener('click', function() {
+        const productId = '1'; // Укажите ваш productId здесь
+        const colorId = this.dataset.id;
+        selectColor(productId, colorId);
+    });
+});

@@ -115,15 +115,6 @@ class Clothing(models.Model):
         verbose_name_plural = "Модель одежды"
 
 
-class PriceHistory(models.Model):
-    price = models.IntegerField(verbose_name="Цена")
-    date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время добавления")
-    clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
-
-    def __str__(self):
-        return f"{self.price} - {self.date_create}"
-
-
 class ColorsClothing(models.Model):
     clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
     color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name="Цвет")
@@ -134,11 +125,20 @@ class ColorsClothing(models.Model):
     image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.clothing.model}"
+        return f"{self.clothing.model}: {self.color}"
 
     class Meta:
         verbose_name = "Одежда"
         verbose_name_plural = "Одежда"
+
+
+class PriceHistory(models.Model):
+    price = models.IntegerField(verbose_name="Цена")
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время добавления")
+    color_clothing = models.ForeignKey(ColorsClothing, on_delete=models.CASCADE, verbose_name="Одежда")
+
+    def __str__(self):
+        return f"{self.price} - {self.date_create}"
 
 
 class Stock(models.Model):

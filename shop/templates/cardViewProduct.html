@@ -185,13 +185,13 @@
 			<div class="column-layout">
 				<div class="product-gallery">
 					<div class="gallery-row">
-						<img src="{{ stock.image1.url }}" alt="Изображение 1" class="gallery-image">
-						<img src="{{ stock.image2.url }}" alt="Изображение 2" class="gallery-image">
+						<img src="{{ clothing_colors.image1.url }}" alt="Изображение 1" class="gallery-image">
+						<img src="{{ clothing_colors.image2.url }}" alt="Изображение 2" class="gallery-image">
 					</div>
 					<div class="gallery-row">
-						<img src="{{ stock.image3.url }}" alt="Изображение 3" class="gallery-image">
-						<img src="{{ stock.image4.url }}" alt="Изображение 4" class="gallery-image">
-						<img src="{{ stock.image5.url }}" alt="Изображение 5" class="gallery-image">
+						<img src="{{ clothing_colors.image3.url }}" alt="Изображение 3" class="gallery-image">
+						<img src="{{ clothing_colors.image4.url }}" alt="Изображение 4" class="gallery-image">
+						<img src="{{ clothing_colors.image5.url }}" alt="Изображение 5" class="gallery-image">
 					</div>
 				</div>
 				<div class="product-info">
@@ -228,9 +228,9 @@
 						</button>
 						<ul class="color-list">
 							{% for color in colors %}
-							<li data-id="{{ color.id }}" style="cursor: pointer;" onclick="selectColor('{{ product.id }}', '{{ color.id }}')">
-								<span class="color-box" style="background-color: {{ color.color|lower }};"></span> {{ color.color|capfirst }}
-							</li>
+								<li data-id="{{ color.id }}" style="cursor: pointer;" onclick="selectColor('{{ product.id }}', '{{ color.id }}')">
+									<span class="color-box" style="background-color: {{ color.color|lower }};"></span> {{ color.color|capfirst }}
+								</li>
 							{% endfor %}
 						</ul>
 						<input type="hidden" id="selected-color-id" value="{{ current_color }}">
@@ -241,9 +241,10 @@
 						</button>
 						<ul class="size-list">
 							{% for size in sizes %}
-								<li>{{ size.size.value }}</li>
+								<li>{{ size.value }}</li>
 							{% endfor %}
 						</ul>
+						<input type="hidden" id="selected-size-id" value="{{ current_size }}">
 					</div>
 					<div class="cart-add">
 						<button class="cart-add-button">
