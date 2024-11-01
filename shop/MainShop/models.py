@@ -108,7 +108,7 @@ class Clothing(models.Model):
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name="Средний рейтинг")
 
     def __str__(self):
-        return f'{self.category.name}: {self.model}'
+        return f'{self.category.name}: {self.model} Rating: {self.avg_rating}'
 
     class Meta:
         verbose_name = "Модель одежды"
@@ -128,8 +128,8 @@ class ColorsClothing(models.Model):
         return f"{self.clothing.model}: {self.color}"
 
     class Meta:
-        verbose_name = "Одежда"
-        verbose_name_plural = "Одежда"
+        verbose_name = "Цвета_Одежда"
+        verbose_name_plural = "Цвета_Одежды"
 
 
 class PriceHistory(models.Model):

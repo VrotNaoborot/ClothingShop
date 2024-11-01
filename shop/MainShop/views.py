@@ -111,15 +111,17 @@ def home(request, target):
     #   query со всей одеждой подходящей по таргету
     target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
     print(f"Cl: {target_clothing_items}")
-    available_clothing_items = []
-    for clothing_item in target_clothing_items:
+    popular_clothing_items = []
+    for clothing_item in target_clothing_items.order_by("-avg_rating"):
+        if len(popular_clothing_items) == 20:
+            break
         # все цвета этой одежды
         colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
+        print(f"Colors clotning: {colors_clothing}")
         for color_clothing in colors_clothing:
 
             stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
             if stock_items:
-                stock_item_first = stock_items.first()
                 clothing_item.image1 = color_clothing.image1
                 clothing_item.image2 = color_clothing.image2
                 color_obj = color_clothing.color
@@ -146,9 +148,34 @@ def home(request, target):
                     continue
 
                 clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
-                available_clothing_items.append(clothing_item)
+                popular_clothing_items.append(clothing_item)
                 break
-    return render(request, "home.html", {'popular_items': available_clothing_items})
+
+    # discount_catalog
+
+    discount_clothing = []
+    for clothing_item_discount in target_clothing_items:
+        if len(discount_clothing) == 20:
+            break
+        colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item_discount)
+        for color_clothing in colors_clothing:
+            price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+            if len(price_history) >= 2 and (price_history[0].price < price_history[1].price):
+                new_price = price_history[0].price
+                old_price = price_history[1].price
+                clothing_item_discount.discount = True
+                clothing_item_discount.newprice = new_price
+                clothing_item_discount.oldprice = old_price
+                clothing_item_discount.old_price = f"{old_price:,}".replace(',', ' ')
+                clothing_item_discount.new_price = f"{new_price:,}".replace(',', ' ')
+                clothing_item_discount.discount_value = int(((old_price - new_price) / old_price) * 100)
+                discount_clothing.append(clothing_item_discount)
+                break
+
+    filter_discount_clothing = list(filter(lambda x: x.oldprice - x.newprice, discount_clothing))
+    print(filter_discount_clothing)
+
+    return render(request, "home.html", {'popular_items': popular_clothing_items})
 
 
 def catalog(request):
