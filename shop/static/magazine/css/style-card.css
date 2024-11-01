@@ -109,12 +109,13 @@
     display: block;
 }
 
-.sizes span {
+.sizes a {
     margin-right: 6px;
     color: #333;
     font-weight: 500;
     font-size: 14px;
-    cursor: pointer;
+    cursor: pointer; /* Курсор меняется на указатель при наведении */
+    text-decoration: none; /* Убирает подчеркивание у ссылок */
 }
 
 .sizes span:hover {

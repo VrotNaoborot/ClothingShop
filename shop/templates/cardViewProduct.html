@@ -241,7 +241,9 @@
 						</button>
 						<ul class="size-list">
 							{% for size in sizes %}
-								<li>{{ size.value }}</li>
+								<li data-id="{{ size.id }}">
+									{{ size.value }}
+								</li>
 							{% endfor %}
 						</ul>
 						<input type="hidden" id="selected-size-id" value="{{ current_size }}">

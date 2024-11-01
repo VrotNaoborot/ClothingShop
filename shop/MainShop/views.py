@@ -7,12 +7,12 @@ from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from shop import settings
 from django.http import JsonResponse
 from .models import CustomUser, Clothing, PriceHistory, Stock, Color, ColorsClothing
 from django.urls import reverse
 from django.db.models import Count
 from django.db.models import Q
+from shop import settings
 
 
 def index(request):
@@ -152,7 +152,6 @@ def home(request, target):
                 break
 
     # discount_catalog
-
     discount_clothing = []
     for clothing_item_discount in target_clothing_items:
         if len(discount_clothing) == 20:

@@ -248,42 +248,42 @@
 				<button class="scroll-btn left" onclick="scrollCatalogLeft()">&#10094;</button>
 				<div class="catalog-items">
 					{% for popular_item in popular_items %}
-						<a href="{{ popular_item.url }}" class="product-card">
-							<div class="product-image-container">
-								<img src="{{ popular_item.image1.url }}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="{{ popular_item.model }}" class="product-image" id="main-image">
-								<img src="{{ popular_item.image2.url }}" alt="{{ popular_item.model }}" class="additional-images" data-index="0">
-								{% if popular_item.discount %}
-									<div class="discount-label">-{{ popular_item.discount_value }}%</div>
-								{% endif %}
-								<div class="wishlist-btn">
-								</div>
-							</div>
-							<div class="product-details">
-								{% if not popular_item.discount %}
-									<div class="current-price">{{ popular_item.current_price }} ₽</div>
-								{% elif popular_item.discount %}
-									<div class="price-container">
-										<div class="old-price">{{ popular_item.old_price }}</div>
-										<div class="new-price">{{ popular_item.new_price }} ₽</div>
-									</div>
-								{% endif %}
-								<div class="product-title">{{ popular_item.brand.name }}</div>
-								<div class="product-subtitle">{{ popular_item.category.name }} {{ popular_item.model }}</div>
-								<div class="review-value">
-									<span class="rating-star">★</span>
-									<span class="rating-score">{{ popular_item.avg_rating }}</span>
-									<span class="review-count">(118)</span>
-								</div>
-								<div class="sizes">
-									{% for size in popular_item.sizes %}
-										<span>{{ size.value }}</span> <!-- Выводим размеры -->
-									{% endfor %}
-								</div>
-							</div>
-						</a>
-					{% empty %}
-                            <p>Нет доступных товаров.</p>
-					{% endfor %}
+                        <div class="product-card">
+                            <a href="{{ popular_item.url }}" class="product-image-container">
+                                <img src="{{ popular_item.image1.url }}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="{{ popular_item.model }}" class="product-image" id="main-image">
+                                <img src="{{ popular_item.image2.url }}" alt="{{ popular_item.model }}" class="additional-images" data-index="0">
+                                {% if popular_item.discount %}
+                                    <div class="discount-label">-{{ popular_item.discount_value }}%</div>
+                                {% endif %}
+                                <div class="wishlist-btn"></div>
+                            </a>
+                            <div class="product-details">
+                                {% if not popular_item.discount %}
+                                    <div class="current-price">{{ popular_item.current_price }} ₽</div>
+                                {% elif popular_item.discount %}
+                                    <div class="price-container">
+                                        <div class="old-price">{{ popular_item.old_price }}</div>
+                                        <div class="new-price">{{ popular_item.new_price }} ₽</div>
+                                    </div>
+                                {% endif %}
+                                <div class="product-title">{{ popular_item.brand.name }}</div>
+                                <div class="product-subtitle">{{ popular_item.category.name }} {{ popular_item.model }}</div>
+                                <div class="review-value">
+                                    <span class="rating-star">★</span>
+                                    <span class="rating-score">{{ popular_item.avg_rating }}</span>
+                                    <span class="review-count">(118)</span>
+                                </div>
+                                <div class="sizes">
+                                    {% for size in popular_item.sizes %}
+                                        <a href="{{ popular_item.url }}size/{{ size.id }}">{{ size.value }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>Нет доступных товаров.</p>
+                    {% endfor %}
+
 				</div>
 				<button class="scroll-btn right" onclick="scrollCatalogRight()">&#10095;</button>
 			</div>
