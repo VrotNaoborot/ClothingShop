@@ -26,7 +26,7 @@ function selectColor(productId, colorId) {
     const csrfToken = getCookie('csrftoken');
 
     // Создаем AJAX-запрос
-    fetch(`/card/${productId}/color/${colorId}/`, {
+    fetch(`/card/${productId}/%3Fcolor=${colorId}`, {
         method: 'GET',  // Можно изменить на 'POST', если это необходимо
         headers: {
             'X-CSRFToken': csrfToken,

@@ -279,3 +279,6 @@ img {
     background-color: #999;
 }
 
+.error-message {
+    margin-bottom: 10px;
+}

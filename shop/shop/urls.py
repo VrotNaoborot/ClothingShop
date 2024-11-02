@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from MainShop.views import register, login, index, home, test_load, catalog, product_card
+from MainShop.views import register, login, index, home, test_load, catalog, product_card, load_cart, add_to_cart
 from . import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
@@ -30,7 +30,9 @@ urlpatterns = [
     path('<str:target>-home/', home, name='target'),
     path('catalog/', catalog),
     path('test/', test_load),
-    path('card/<int:pk>/color/<int:color_id>/', product_card, name='card'),
-    path('card/<int:pk>/color/<int:color_id>/size/<int:size_id>/', product_card, name='card_with_size'),
+    path('card/<int:pk>/?color=<int:color_id>', product_card, name='card'),
+    path('card/<int:pk>/?color=<int:color_id>&size=<int:size_id>', product_card, name='card_with_size'),
     path('', index),
+    path('cart', load_cart),
+    path('add-to-cart/<int:product_id>/color=<int:color_id>&/size<int:size_id>', add_to_cart, name='add_to_cart'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
