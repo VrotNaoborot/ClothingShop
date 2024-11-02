@@ -228,8 +228,8 @@
 						</button>
 						<ul class="color-list">
 							{% for color in colors %}
-								<li data-id="{{ color.id }}" style="cursor: pointer;" onclick="selectColor('{{ product.id }}', '{{ color.id }}')">
-									<span class="color-box" style="background-color: {{ color.color|lower }};"></span> {{ color.color|capfirst }}
+								<li data-id="{{ color.color.id }}" style="cursor: pointer;" onclick="selectColor('{{ product.id }}', '{{ color.color.id  }}')">
+									<span class="color-box" style="background-color: {{ color.color.color|lower }};"></span> {{ color.color|capfirst }}
 								</li>
 							{% endfor %}
 						</ul>
@@ -249,7 +249,13 @@
 						<input type="hidden" id="selected-size-id" value="{{ current_size }}">
 					</div>
 					<div class="cart-add">
-						<button class="cart-add-button">
+						<div class="error-message" id="color-error" style="display: none; color: red;">
+							Пожалуйста, выберите цвет.
+						</div>
+						<div class="error-message" id="size-error" style="display: none; color: red;">
+							Пожалуйста, выберите размер.
+						</div>
+						<button class="cart-add-button" onclick="addToCart()">
 							Добавить в корзину
 						</button>
 					</div>
@@ -265,5 +271,6 @@
 	<script src="{% static 'cardViewProduct/js/stars-rating.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/dropdown-lists.js' %}"></script>
 	<script src="{% static 'cardViewProduct/js/color-select.js' %}"></script>
+	<script src="{% static 'cardViewProduct/js/add-to-cart.js' %}"></script>
 
 </body>

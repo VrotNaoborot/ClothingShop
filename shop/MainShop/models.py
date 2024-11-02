@@ -195,12 +195,19 @@ class OrdersDetail(models.Model):
 class Cart(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID корзины")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart_user")
-    clothes = models.ForeignKey(Clothing, on_delete=models.CASCADE, related_name="clothes_cart")
-    count = models.IntegerField(verbose_name="Количество в корзине")
 
     def __str__(self):
-        return f"{self.user} {self.clothes} {self.count}"
+        return f"Корзина пользователя: {self.user}"
 
     class Meta:
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    colors_clothing = models.ForeignKey(ColorsClothing, on_delete=models.CASCADE, related_name='cart_items')
+    count = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.clothes.name} (x{self.count})"
