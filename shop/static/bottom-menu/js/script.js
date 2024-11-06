@@ -1,47 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Обработчик для основного выбора категорий
+    // Обработчик для клика по категории (редирект на категорию)
     document.querySelectorAll('.category-item').forEach(item => {
-        item.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // Получаем текущий URL
+        item.addEventListener('click', function(event) {
+            event.preventDefault(); // Останавливаем обычный клик
+            const category = this.dataset.category; // Получаем категорию
             const currentPath = window.location.pathname;
-            const category = this.getAttribute('data-category');
-            let baseUrl;
 
-            // Проверяем, есть ли '/catalog/' в текущем пути
-            if (currentPath.includes('/catalog/')) {
-                // Если находимся на странице с каталогом, формируем URL без повторного добавления 'catalog'
-                baseUrl = currentPath.split('/catalog/')[0]; // Получаем часть пути до 'catalog'
-            } else {
-                // Если каталога нет, используем текущий путь и добавляем '/catalog'
-                baseUrl = currentPath;
+            // Проверяем, что если в URL нет '/catalog/', то добавляем его в начало
+            let baseUrl = currentPath.includes('/catalog/') ? currentPath.split('/catalog/')[0] : currentPath;
+
+            // Убираем лишний слэш, если он есть
+            if (baseUrl.endsWith('/')) {
+                baseUrl = baseUrl.slice(0, -1);
             }
 
-            // Формируем полный URL для подкатегории без дублирования слэша
-            const fullUrl = `${baseUrl}/catalog/${category}`.replace(/\/+/g, '/'); // Удаляем дублирующиеся слэши
+            // Формируем URL для категории
+            const fullUrl = `${baseUrl}/catalog/${category}`;
+            window.location.href = fullUrl;
+        });
+    });
 
-            // Проверяем, есть ли выпадающее меню для этой категории
-            const dropdownMenu = document.querySelector(`#${category}-menu`);
+    // Обработчик для клика по подкатегории (редирект на категорию с подкатегорией)
+    document.querySelectorAll('.dropdown-menu a[data-url]').forEach(subItem => {
+        subItem.addEventListener('click', function(event) {
+            event.preventDefault(); // Останавливаем обычный клик
 
-            if (dropdownMenu) {
-                // Показываем выпадающее меню
-                dropdownMenu.style.display = 'block';
+            const category = this.closest('.dropdown-menu').getAttribute('id').split('-')[0]; // Получаем категорию
+            const subCategory = this.getAttribute('data-url'); // Получаем подкатегорию
 
-                // Устанавливаем обработчики для подкатегорий
-                dropdownMenu.querySelectorAll('a[data-url]').forEach(subItem => {
-                    subItem.addEventListener('click', function (subEvent) {
-                        subEvent.preventDefault();
+            const currentPath = window.location.pathname;
+            let baseUrl = currentPath.includes('/catalog/') ? currentPath.split('/catalog/')[0] : currentPath;
 
-                        // Формируем URL для подкатегории
-                        const subFullUrl = `${fullUrl}/${this.getAttribute('data-url')}`.replace(/\/+/g, '/'); // Удаляем дублирующиеся слэши
-                        window.location.href = subFullUrl;
-                    });
-                });
-            } else {
-                // Если подменю нет, переходим сразу к основной категории
-                window.location.href = fullUrl;
+            // Убираем лишний слэш, если он есть
+            if (baseUrl.endsWith('/')) {
+                baseUrl = baseUrl.slice(0, -1);
             }
+
+            // Формируем полный URL для подкатегории
+            const fullUrl = `${baseUrl}/catalog/${category}/${subCategory}`;
+            window.location.href = fullUrl;
         });
     });
 });

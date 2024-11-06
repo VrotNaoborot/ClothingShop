@@ -1,5 +1,3 @@
-// Выделяет категории и подкатегории если они переаны в юрлы
-
 document.addEventListener('DOMContentLoaded', function() {
     const categoryTitles = document.querySelectorAll('.category-name');
     const currentUrl = window.location.pathname;
@@ -8,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let categoryFromUrl = null;
     let subcategoryFromUrl = null;
 
+    console.log("Текущий URL:", currentUrl); // Логируем текущий URL
+
     // Извлекаем категорию и подкатегорию из URL
     if (urlParts.length >= 3) {
         categoryFromUrl = urlParts[2]; // категория, например, shoes
@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
             subcategoryFromUrl = urlParts[3]; // подкатегория, например, boots
         }
     }
+
+    console.log("Категория из URL:", categoryFromUrl); // Логируем извлеченную категорию
+    console.log("Подкатегория из URL:", subcategoryFromUrl); // Логируем извлеченную подкатегорию
 
     categoryTitles.forEach(title => {
         title.addEventListener('click', function() {
@@ -25,7 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = title.parentElement;
         const categoryData = category.getAttribute('data-category');
 
-        if (categoryData === categoryFromUrl) {
+        console.log("Проверка категории:", categoryData); // Логируем категорию для каждого элемента
+
+        if (categoryData && categoryData === categoryFromUrl) {
+            console.log("Категория совпала:", categoryData); // Логируем, если категории совпали
             openCategory(category, title.querySelector('.arrow'));
 
             // Если есть подкатегория в URL, выделяем соответствующий элемент
@@ -33,16 +39,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const subcategoryItems = category.querySelectorAll('.subcategory li');
                 let subcategoryFound = false;  // Флаг, чтобы остановить дальнейший поиск
 
-                subcategoryItems.forEach(item => {
+                for (let item of subcategoryItems) {
+                    console.log("Проверка подкатегории:", item.getAttribute('data-subcategory')); // Логируем подкатегорию каждого элемента
                     if (!subcategoryFound && item.getAttribute('data-subcategory') === subcategoryFromUrl) {
+                        console.log("Подкатегория найдена:", item.getAttribute('data-subcategory')); // Логируем, когда подкатегория найдена
                         item.classList.add('highlighted'); // добавляем класс для выделения подкатегории
                         subcategoryFound = true; // Подкатегория найдена, флаг установлен
+                        break;  // Прерываем цикл, так как подкатегория найдена
                     }
-                });
+                }
             }
         }
     });
-
 
     function toggleCategory(title) {
         const category = title.parentElement;
