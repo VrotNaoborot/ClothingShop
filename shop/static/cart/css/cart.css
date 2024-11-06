@@ -129,6 +129,14 @@ a:hover {
   float: left;
 }
 
+.product header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Обрезает изображение, сохраняя пропорции */
+    object-position: bottom; /* Обрезает верхнюю часть изображения */
+}
+
+
 .product header {
   background: #000;
   margin: 0 1% 20px 0;
@@ -249,7 +257,7 @@ a:hover {
 }
 
 .qt-plus:hover, .qt-minus:hover {
-  background: #53b5aa;
+  background: #999;
   color: #fff;
   cursor: pointer;
 }
@@ -325,7 +333,7 @@ a:hover {
 
 .btn:hover {
   color: #fff;
-  background: #429188;
+  background: #999;
 }
 
 .type {
@@ -369,5 +377,26 @@ a:hover {
 
 .total span {
     font-size: 24px;
+}
+
+.color-info {
+    font-size: 16px; /* Размер шрифта для цвета */
+    color: #333; /* Цвет текста, например, темно-серый */
+}
+
+.size-info {
+    margin-top: 10px;
+    font-size: 16px; /* Размер шрифта для размера */
+    color: #333; /* Цвет текста, аналогично цвету */
+}
+
+.empty-cart {
+    font-size: 24px;
+    text-align: center;      /* Выравнивание текста по центру */
+    margin-top: 50px;        /* Отступ сверху для отцентровки по вертикали */
+    display: flex;           /* Включаем flex-контейнер */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center;     /* Вертикальное центрирование */
+    height: 200px;           /* Высота блока, для центрирования по высоте */
 }
 

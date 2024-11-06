@@ -1,0 +1,61 @@
+.modal {
+    display: flex;
+    justify-content: center; /* Центрирует модальное окно */
+    align-items: center; /* Выравнивает по вертикали */
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    border-radius: 10px;
+}
+
+.modal-content p {
+    font-size: 20px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between; /* Распределяет кнопки по краям */
+    margin-top: 50px; /* Добавляет отступ сверху для разделения с текстом */
+}
+
+.modal-buttons button {
+    padding: 10px 20px; /* Добавляет внутренние отступы для кнопок */
+    border: none; /* Убирает стандартные границы */
+    border-radius: 5px; /* Скругляет углы */
+    cursor: pointer; /* Изменяет курсор на указатель */
+}
+
+#cancelDelete {
+    background-color: #999; /* Красный цвет для кнопки Отмена */
+    color: white; /* Белый цвет текста */
+}
+
+#confirmDelete {
+    background-color: #000; /* Зелёный цвет для кнопки Подтвердить */
+    color: white; /* Белый цвет текста */
+}

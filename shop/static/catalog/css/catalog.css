@@ -555,3 +555,7 @@ label:hover .color-box {
 .price-container {
     display: flex;
 }
+
+.highlighted {
+    background-color: #999;
+}

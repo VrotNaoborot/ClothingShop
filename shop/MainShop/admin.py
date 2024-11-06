@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ColorsClothing, Stock, PriceHistory, Clothing, ClothingCategory, Brand, Color, Sizes
+from .models import *
 
 
 class StockInline(admin.TabularInline):
@@ -26,3 +26,4 @@ admin.site.register(Brand)
 admin.site.register(Color)
 admin.site.register(Clothing)
 admin.site.register(Sizes)
+admin.site.register(LargeCategory)

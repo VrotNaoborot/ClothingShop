@@ -17,172 +17,8 @@
           crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-menu">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="{% static 'magazine/images/logo.png' %}" alt="logo">
-                    </a>
-                </div>
-                <nav>
-                    <div class="header-production-button">
-                        ПРОДУКЦИЯ
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 448 512">
-                            <path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
-                        </svg>
-                    </div>
-                    <div class="header-production-menu">
-                        <div class="menu-list">
-                            <a href="female.html">
-                                Женское
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-                            <a href="male.html">
-                                Мужское
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-                            <a href="male.html">
-                                Детское
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 320 512">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <a class="header-contacts-button" href="info.html">
-                        КОНТАКТЫ
-                    </a>
-                    {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="login-button-container">ВЫЙТИ</button>
-                    </form>
-                    {% else %}
-                    <a class="login-button-container" href="login/">ВОЙТИ</a>
-                    {% endif %}
-                    <a class="header-cart-button" href="checkout/cart/" role="link" rel="nofollow">
-                        <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.5 2.5h-13L3.747 18.28a2 2 0 0 0 1.988 2.22h12.53a2 2 0 0 0 1.988-2.22L18.5 2.5z"
-                                  stroke="#000"></path>
-                            <path d="M15.5 9a3.5 3.5 0 1 1-7 0m0-2V5m7 2V5" stroke="#000"></path>
-                        </svg>
-                        <span>КОРЗИНА</span>
-                    </a>
-                </nav>
-            </div>
-        </div>
-    </header>
-    <div class="bottom-menu">
-        <div class="container">
-            <div class="categories">
-                <a href="#" class="category-item" data-category="new">Новинки</a>
-                <a href="#" class="category-item" data-category="clothes">Одежда</a>
-                <a href="#" class="category-item" data-category="shoes">Обувь</a>
-                <a href="#" class="category-item" data-category="accessories">Аксессуары</a>
-                <a href="#" class="category-item" data-category="sale" style="color: red;">Sale%</a>
-            </div>
-            <div class="search-container">
-                <input type="text" placeholder="Поиск" class="search-input">
-                <a href="#" class="search-button">
-                    <img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
-                </a>
-            </div>
-        </div>
-        <div class="dropdown-menu" id="clothes-menu">
-            <div class="container">
-                <div class="menu-content">
-                    <div class="menu-columns">
-                        <div class="menu-row">
-                            <h4>Вся одежда</h4>
-                            <ul>
-                                <li><a href="#">Брюки</a></li>
-                                <li><a href="#">Верхняя одежда</a></li>
-                                <li><a href="#">Джинсы</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-row">
-                            <h4>По сезону</h4>
-                            <ul>
-                                <li><a href="#">Летняя одежда</a></li>
-                                <li><a href="#">Зимняя одежда</a></li>
-                                <li><a href="#">Осенние коллекции</a></li>
-                                <li><a href="#">Весенние коллекции</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-row">
-                            <h4>Бренды</h4>
-                            <ul>
-                                <li><a href="#">Nike</a></li>
-                                <li><a href="#">Adidas</a></li>
-                                <li><a href="#">Zara</a></li>
-                                <li><a href="#">H&M</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="ad-section">
-                        <a href="ссылка-на-рекламу" class="ad-banner">
-                            <img src="{% static 'home/images/main_banner_2.webp' %}" alt="Рекламный баннер">
-                            <div class="small-banner-text">
-                                <div class="title">Маршрут построен</div>
-                                <div class="description">Экипировка для трекинга</div>
-                            </div>
-                            <div class="ad-label">Реклама</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="dropdown-menu" id="shoes-menu">
-            <div class="container">
-                <div class="menu-content">
-                    <div class="menu-columns">
-                        <div class="menu-row">
-                            <h4>Вся обувь</h4>
-                            <ul>
-                                <li><a href="#">Кроссовки</a></li>
-                                <li><a href="#">Кеды</a></li>
-                                <li><a href="#">Сандали</a></li>
-                                <li><a href="#">Тапки</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-row">
-                            <h4>По сезону</h4>
-                            <ul>
-                                <li><a href="#">Летняя одежда</a></li>
-                                <li><a href="#">Зимняя одежда</a></li>
-                                <li><a href="#">Осенние коллекции</a></li>
-                                <li><a href="#">Весенние коллекции</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-row">
-                            <h4>Бренды</h4>
-                            <ul>
-                                <li><a href="#">Nike</a></li>
-                                <li><a href="#">Adidas</a></li>
-                                <li><a href="#">Zara</a></li>
-                                <li><a href="#">H&M</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="ad-section">
-                        <a href="ссылка-на-рекламу" class="ad-banner">
-                            <img src="{% static 'home/images/main_banner_2.webp' %}" alt="Рекламный баннер">
-                            <div class="small-banner-text">
-                                <div class="title">Маршрут построен</div>
-                                <div class="description">Экипировка для трекинга</div>
-                            </div>
-                            <div class="ad-label">Реклама</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'main_header.html' %}
+    {% include 'bottom-menu.html' %}
     <div class="promo">
         <div class="container">
             <div class="promo-section">
@@ -229,45 +65,45 @@
             </div>
             <div class="catalog-body">
                 <div class="left-column">
-                    <div class="category">
+                    <div class="category" data-category="shoes">
                         <div class="category-name">
                             Обувь
                             <div class="arrow"></div>
                         </div>
                         <div class="subcategory">
                             <ul>
-                                <li>Кроссовки</li>
-                                <li>Ботинки</li>
-                                <li>Сандалии</li>
-                                <li>Сапоги</li>
+                                <li data-subcategory="sneakers">Кроссовки</li>
+                                <li data-subcategory="boots">Ботинки</li>
+                                <li data-subcategory="sandals">Сандалии</li>
+                                <li data-subcategory="boots">Сапоги</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="category">
+                    <div class="category" data-category="clothes">
                         <div class="category-name">
                             Одежда
                             <div class="arrow"></div>
                         </div>
                         <div class="subcategory">
                             <ul>
-                                <li>Кроссовки</li>
-                                <li>Ботинки</li>
-                                <li>Сандалии</li>
-                                <li>Сапоги</li>
+                                <li data-subcategory="sneakers">Кроссовки</li>
+                                <li data-subcategory="boots">Ботинки</li>
+                                <li data-subcategory="sandals">Сандалии</li>
+                                <li data-subcategory="boots">Сапоги</li>
                             </ul>
                         </div>
                     </div>
                     <div class="category">
-                        <div class="category-name">
+                        <div class="category-name" data-category="accessories">
                             Аксессуары
                             <div class="arrow"></div>
                         </div>
                         <div class="subcategory">
                             <ul>
-                                <li>Кроссовки</li>
-                                <li>Ботинки</li>
-                                <li>Сандалии</li>
-                                <li>Сапоги</li>
+                                <li data-subcategory="sneakers">Кроссовки</li>
+                                <li data-subcategory="boots">Ботинки</li>
+                                <li data-subcategory="sandals">Сандалии</li>
+                                <li data-subcategory="boots">Сапоги</li>
                             </ul>
                         </div>
                     </div>
@@ -749,42 +585,38 @@
 
                     <div class="category-products">
                         {% for clothing in clothing_items %}
-                            <a href="{{ clothing.url }}" class="product-card">
-                                <div class="product-image-container">
-                                    <img src="{{ clothing.image1.url }}"
-                                         data-src="{{ clothing.image1.url }}" alt="{{ clothing.model }}"
-                                         class="product-image" id="main-image">
-                                    <img src="{{ clothing.image2.url }}" alt="{{ clothing.model }}"
-                                         class="additional-images" data-index="0">
-                                    {% if clothing.discount %}
-                                        <div class="discount-label">-{{ clothing.discount_value }}%</div>
-                                    {% endif %}
-                                    <div class="wishlist-btn"></div>
-                                </div>
-                                <div class="product-details">
-                                    {% if not clothing.discount %}
-                                        <div class="current-price">{{ clothing.current_price }} ₽</div>
-                                    {% elif clothing.discount %}
-                                        <div class="price-container">
-                                            <div class="old-price">{{ clothing.old_price }}</div>
-                                            <div class="new-price">{{ clothing.new_price }} ₽</div>
-                                        </div>
-                                    {% endif %}
-
-                                    <div class="product-title">{{ clothing.brand.name }}</div>
-                                    <div class="product-subtitle">{{ clothing.category.name }} {{ clothing.model }}</div>
-                                    <div class="review-value">
-                                        <span class="rating-star">★</span>
-                                        <span class="rating-score">4.7</span>
-                                        <span class="review-count">(118)</span>
-                                    </div>
-                                    <div class="sizes">
-                                        {% for size in clothing.stock_items %}
-                                            <span>{{ size.size.value }}</span> <!-- Выводим размеры -->
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                            <div class="product-card">
+                            <a href="{{ clothing.url }}" class="product-image-container">
+                                <img src="{{ clothing.image1.url }}" data-src="{% static 'magazine/images/test/1.webp' %}" alt="{{ clothing.model }}" class="product-image" id="main-image">
+                                <img src="{{ clothing.image2.url }}" alt="{{ clothing.model }}" class="additional-images" data-index="0">
+                                {% if clothing.discount %}
+                                    <div class="discount-label">-{{ clothing.discount_value }}%</div>
+                                {% endif %}
+                                <div class="wishlist-btn"></div>
                             </a>
+                            <div class="product-details">
+                                {% if not clothing.discount %}
+                                    <div class="current-price">{{ clothing.current_price }} ₽</div>
+                                {% elif clothing.discount %}
+                                    <div class="price-container">
+                                        <div class="old-price">{{ clothing.old_price }}</div>
+                                        <div class="new-price">{{ clothing.new_price }} ₽</div>
+                                    </div>
+                                {% endif %}
+                                <div class="product-title">{{ clothing.brand.name }}</div>
+                                <div class="product-subtitle">{{ clothing.category.name }} {{ clothing.model }}</div>
+                                <div class="review-value">
+                                    <span class="rating-star">★</span>
+                                    <span class="rating-score">{{ clothing.avg_rating }}</span>
+                                    <span class="review-count">(118)</span>
+                                </div>
+                                <div class="sizes">
+                                    {% for size in clothing.sizes %}
+                                        <a href="{{ popular_item.url }}/size/{{ size.id }}">{{ size.value }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                         {% empty %}
                             <p>Нет доступных товаров.</p>
                         {% endfor %}
@@ -803,4 +635,7 @@
     <script src="{% static 'catalog/js/searcher-filters.js' %}"></script>
     <script src="{% static 'catalog/js/filter-container.js' %}"></script>
     <script src="{% static 'catalog/js/price-slider.js' %}"></script>
+    <script src="{% static 'catalog/js/loader-category.js' %}"></script>
+    <script src="{% static 'bottom-menu/js/script.js' %}"></script>
+
 </body>

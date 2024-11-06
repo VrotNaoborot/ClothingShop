@@ -27,13 +27,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Если ошибки есть, не добавляем в корзину
         if (hasError) return;
 
-        // Логика добавления в корзину
-        console.log("Товар добавлен в корзину с цветом ID:", selectedColorId, "и размером ID:", selectedSizeId);
+        // Извлечение product_id из URL
+        var urlParts = window.location.pathname.split('/');
+        var productId = urlParts[2]; // Получаем ID продукта (например, 1)
 
-        // Здесь выполняем запрос для добавления в корзину
         var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-        fetch(`/add-to-cart/${productId}/{selectedColorId}&size=${selectedSizeId}`, {
+        // Отправляем запрос на добавление в корзину
+        fetch(`/add-to-cart/${productId}/color=${selectedColorId}&size=${selectedSizeId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -41,15 +42,17 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         })
         .then(response => {
-            if (response.ok) {
-                console.log('Товар успешно добавлен в корзину');
-                // Можете перенаправить пользователя или обновить корзину на странице
-            } else {
-                console.error('Ошибка при добавлении товара в корзину');
+            if (!response.ok) {
+                // Логируем ошибку для диагностики
+                return response.json().then(errorData => {
+                    throw new Error(`Ошибка: ${errorData.message}`);
+                });
             }
+            console.log('Товар успешно добавлен в корзину');
+            // Здесь можете обновить корзину на странице или перенаправить пользователя
         })
         .catch(error => {
-            console.error('Ошибка:', error);
+            console.error('Ошибка при выполнении fetch:', error);
         });
     }
 

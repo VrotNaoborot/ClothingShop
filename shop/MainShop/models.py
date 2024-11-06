@@ -56,6 +56,13 @@ class ClothingCategory(models.Model):
         verbose_name_plural = "Категории одежды"
 
 
+class LargeCategory(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Color(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID цвета")
     color = models.CharField(max_length=50, verbose_name="Цвет")
@@ -100,6 +107,7 @@ class Clothing(models.Model):
     ]
 
     id = models.AutoField(primary_key=True, verbose_name="ID одежды")
+    large_category = models.ForeignKey(LargeCategory, on_delete=models.CASCADE)
     model = models.CharField(max_length=100, verbose_name="Название модели")
     target = models.CharField(max_length=1, choices=TARGET_CHOICES, verbose_name="Пол")
     description = models.CharField(max_length=300, verbose_name="Описание")
@@ -193,21 +201,16 @@ class OrdersDetail(models.Model):
 
 
 class Cart(models.Model):
-    id = models.AutoField(primary_key=True, verbose_name="ID корзины")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart_user")
-
-    def __str__(self):
-        return f"Корзина пользователя: {self.user}"
-
-    class Meta:
-        verbose_name = "Корзина"
-        verbose_name_plural = "Корзины"
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
-    colors_clothing = models.ForeignKey(ColorsClothing, on_delete=models.CASCADE, related_name='cart_items')
-    count = models.IntegerField(default=1)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
 
-    def __str__(self):
-        return f"{self.clothes.name} (x{self.count})"
+    class Meta:
+        unique_together = (
+            'cart', 'stock')  # Гарантирует, что один и тот же товар не может быть добавлен в корзину несколько раз

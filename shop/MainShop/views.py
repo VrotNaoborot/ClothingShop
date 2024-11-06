@@ -8,11 +8,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .models import CustomUser, Clothing, PriceHistory, Stock, Color, ColorsClothing, Cart, CartItem
+from .models import *
 from django.urls import reverse
 from django.db.models import Count
 from django.db.models import Q
 from shop import settings
+from django.views.decorators.http import require_POST
 
 
 def index(request):
@@ -31,7 +32,12 @@ def product_card(request, pk, color_id, size_id=None):
     color = get_object_or_404(Color, id=color_id)
 
     clothing_color = get_object_or_404(ColorsClothing, clothing=product, color=color)
+
     stock_items = Stock.objects.filter(colors_clothing=clothing_color, count__gt=0)
+    cart_items_user = CartItem.objects.filter(cart=request.user.cart)
+    for cart_item in cart_items_user:
+        if cart_item.stock.colors_clothing.clothing == product:
+            product.is_cart_product = True
     if size_id:
         sizes = list(i.size for i in stock_items if i.count > 0)
         print(sizes, type(sizes[0]))
@@ -52,8 +58,6 @@ def product_card(request, pk, color_id, size_id=None):
             .annotate(stock_count=Count('stock', filter=Q(stock__count__gt=0)))
             .filter(stock_count__gt=0)
         )
-
-        print(f"available_colors: {[(color.color.color, color.color.id) for color in available_colors]}")
 
         # Обработка цен и скидок
         if len(price_history) == 1:
@@ -90,35 +94,75 @@ def product_card(request, pk, color_id, size_id=None):
         return render(request, 'cardViewProduct.html', context=context)
 
 
-def add_to_cart(request, color_id, product_id):
+def add_to_cart(request, color_id, product_id, size_id):
     if request.method == 'POST' and request.user.is_authenticated:
+        # Получаем товар и его цвет
         product = get_object_or_404(Clothing, id=product_id)
         color = get_object_or_404(Color, id=color_id)
         product_color = get_object_or_404(ColorsClothing, clothing=product, color=color)
+        size = get_object_or_404(Sizes, id=size_id)
+        stock_item = get_object_or_404(Stock, colors_clothing=product_color, size=size)
 
-        # Получаем или создаем корзину пользователя
+        if stock_item.count <= 0:
+            return JsonResponse({'success': False, 'error': 'Товар отсутствует на складе.'})
+
         cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, stock=stock_item)
 
-        # Получаем или создаем элемент корзины
-        cart_item, created = CartItem.objects.get_or_create(cart=cart, colors_clothing=product_color)
-
-        # Обновляем количество товара в корзине
-        if not created:
-            cart_item.count += 1  # Увеличиваем количество
+        if created:
+            cart_item.quantity = 1  # Если это новый элемент, устанавливаем количество на 1
         else:
-            cart_item.count = 1  # Устанавливаем количество при добавлении нового товара
+            cart_item.quantity += 1  # Если элемент уже существует, увеличиваем количество на 1
 
-        cart_item.save()
+        cart_item.save()  # Сохраняем изменения
 
-        return JsonResponse(
-            {'success': True, 'message': 'Товар добавлен в корзину.', 'cart_item_count': cart.items.count()})
+        return JsonResponse({'success': True, 'quantity': cart_item.quantity})
 
-    return JsonResponse({'success': False, 'message': 'Не удалось добавить товар в корзину.'})
+    # Если запрос не POST или пользователь не аутентифицирован
+    return JsonResponse({'success': False, 'error': 'Invalid request or user not authenticated.'})
 
 
-def load_cart(requests):
-    if requests.method == 'GET' and requests.user_is_authentificated:
-        return render(requests, 'cart.html')
+def load_cart(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_items = CartItem.objects.filter(cart=cart)
+
+        for item in cart_items:
+            stock_product = item.stock
+            color_product = stock_product.colors_clothing
+            price_history = PriceHistory.objects.filter(color_clothing=color_product).order_by('-date_create')
+            if price_history:
+                item.current_price = price_history[0].price
+        return render(request, 'cart.html', {
+            'cart': cart,
+            'cart_items': cart_items,
+        })
+
+
+@require_POST
+def update_cart(request, stock_id):
+    data = json.loads(request.body)
+    quantity = data.get('quantity')
+    if quantity is not None and quantity > 0:
+        try:
+            cart_item = CartItem.objects.get(cart=request.user.cart, stock_id=stock_id)
+            cart_item.quantity = quantity
+            cart_item.save()
+            return JsonResponse({'success': True})
+        except CartItem.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Cart item not found.'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid quantity.'}, status=400)
+
+
+@require_POST
+def delete_cart(request, stock_id):
+    try:
+        cart_item = CartItem.objects.get(cart=request.user.cart, stock_id=stock_id)
+        cart_item.delete()
+        return JsonResponse({'success': True})
+    except CartItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Cart item not found.'}, status=404)
 
 
 def generate_verification_code(length=6):
@@ -222,40 +266,112 @@ def home(request, target):
                   {'popular_items': popular_clothing_items, 'discount_items': filter_discount_clothing})
 
 
-def catalog(request):
-    clothing_items = Clothing.objects.all()
-    for item in clothing_items:
-        # Все доступные в наличии цвета и размеры
-        item.stock_items = Stock.objects.filter(clothing=item, count__gt=0)
+def catalog(request, target):
+    v = ""
+    if target == 'men':
+        v = "M"
+    elif target == 'women':
+        v = "F"
+    elif target == 'child':
+        v = "C"
 
-        if item.stock_items.exists():
-            first_stock_item = item.stock_items.first()
-            item.color_id = first_stock_item.color.id
-            item.size_id = first_stock_item.size.id
-            item.url = reverse('card', args=[item.id, item.color_id])
-            item.image1 = first_stock_item.image1
-            item.image2 = first_stock_item.image2
-        # available_colors = list(set(stock.color for stock in item.stock_items))
+    # popular_items
+    #   query со всей одеждой подходящей по таргету
+    target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
+    print(f"Cl: {target_clothing_items}")
+    for clothing_item in target_clothing_items:
+        colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
+        print(f"Colors clotning: {colors_clothing}")
 
-        # Получаем историю цен, отсортированную от новой даты к старой
-        price_history = PriceHistory.objects.filter(clothing=item).order_by('-date_create')
-        if len(price_history) == 1:
-            item.discount = False
-            current_price = price_history[0].price
-            item.current_price = f"{current_price:,}".replace(',', ' ')
-        elif len(price_history) >= 2:
-            new_price = price_history[0].price
-            old_price = price_history[1].price
-            if new_price < old_price:
-                item.discount = True
-                item.old_price = f"{old_price:,}".replace(',', ' ')
-                item.new_price = f"{new_price:,}".replace(',', ' ')
-                item.discount_value = int(((old_price - new_price) / old_price) * 100)
-            else:
-                item.discount = False
-                item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+        for color_clothing in colors_clothing:
+            stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
+            if stock_items:
+                clothing_item.image1 = color_clothing.image1
+                clothing_item.image2 = color_clothing.image2
+                color_obj = color_clothing.color
+                clothing_item.color_id = color_obj.id
+                clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
 
-    return render(request, 'catalog.html', {'clothing_items': clothing_items})
+                price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+                if len(price_history) == 1:
+                    clothing_item.discount = False
+                    current_price = price_history[0].price
+                    clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
+                elif len(price_history) >= 2:
+                    new_price = price_history[0].price
+                    old_price = price_history[1].price
+                    if new_price < old_price:
+                        clothing_item.discount = True
+                        clothing_item.old_price = f"{old_price:,}".replace(',', ' ')
+                        clothing_item.new_price = f"{new_price:,}".replace(',', ' ')
+                        clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
+                    else:
+                        clothing_item.discount = False
+                        clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+                else:
+                    continue
+
+                clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
+
+    return render(request, 'catalog.html', {'clothing_items': target_clothing_items})
+
+
+def category(request, target, category, subcategory=None):
+    v = "M"
+    _category = "Одежда"
+    if target == 'men':
+        v = "M"
+    elif target == 'women':
+        v = "F"
+    elif target == 'child':
+        v = "C"
+
+    if category == 'clothes':
+        _category = 'Одежда'
+    elif category == 'shoes':
+        _category = 'Обувь'
+    elif _category == 'accessories':
+        _category = "Аксессуары"
+
+    large_category = LargeCategory.objects.get(name=_category)
+    target_clothing_items = Clothing.objects.filter(
+        (Q(target=v) | Q(target='U')) & Q(large_category=large_category)
+    )
+    for clothing_item in target_clothing_items:
+        colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
+        print(f"Colors clotning: {colors_clothing}")
+
+        for color_clothing in colors_clothing:
+            stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
+            if stock_items:
+                clothing_item.image1 = color_clothing.image1
+                clothing_item.image2 = color_clothing.image2
+                color_obj = color_clothing.color
+                clothing_item.color_id = color_obj.id
+                clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
+
+                price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+                if len(price_history) == 1:
+                    clothing_item.discount = False
+                    current_price = price_history[0].price
+                    clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
+                elif len(price_history) >= 2:
+                    new_price = price_history[0].price
+                    old_price = price_history[1].price
+                    if new_price < old_price:
+                        clothing_item.discount = True
+                        clothing_item.old_price = f"{old_price:,}".replace(',', ' ')
+                        clothing_item.new_price = f"{new_price:,}".replace(',', ' ')
+                        clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
+                    else:
+                        clothing_item.discount = False
+                        clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+                else:
+                    continue
+
+                clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
+
+    return render(request, 'catalog.html', {'clothing_items': target_clothing_items})
 
 
 def login(request):
