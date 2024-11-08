@@ -65,10 +65,11 @@ class LargeCategory(models.Model):
 
 class Color(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID цвета")
-    color = models.CharField(max_length=50, verbose_name="Цвет")
+    name = models.CharField(max_length=50, verbose_name="Цвет")
+    eng_name = models.CharField(max_length=50, verbose_name="Color (EN)")
 
     def __str__(self):
-        return self.color
+        return self.name
 
     class Meta:
         verbose_name = "Цвет"
@@ -87,7 +88,7 @@ class Sizes(models.Model):
 
 
 class Brand(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Бренд")
+    name = models.CharField(max_length=100, verbose_name="Бренд (EN)")
 
     def __str__(self):
         return self.name
@@ -95,6 +96,19 @@ class Brand(models.Model):
     class Meta:
         verbose_name = "Бренд"
         verbose_name_plural = "Бренд"
+
+
+class Material(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Материал")
+    eng_name = models.CharField(max_length=100, verbose_name="Material name (EN)")
+
+    def __str__(self):
+        return self.name
+
+
+class CountryManufacture(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Страна производства")
+    eng_name = models.CharField(max_length=100, verbose_name="Country (EN)")
 
 
 # Одежда
@@ -110,9 +124,11 @@ class Clothing(models.Model):
     large_category = models.ForeignKey(LargeCategory, on_delete=models.CASCADE)
     model = models.CharField(max_length=100, verbose_name="Название модели")
     target = models.CharField(max_length=1, choices=TARGET_CHOICES, verbose_name="Пол")
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="material")
     description = models.CharField(max_length=300, verbose_name="Описание")
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Бренд")
+    country_manufacture = models.ForeignKey(CountryManufacture, on_delete=models.CASCADE, related_name="Страна")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name="Средний рейтинг")
 
     def __str__(self):
@@ -126,11 +142,11 @@ class Clothing(models.Model):
 class ColorsClothing(models.Model):
     clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE, verbose_name="Одежда")
     color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name="Цвет")
-    image1 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image2 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image3 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image4 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
-    image5 = models.ImageField(verbose_name="Изображение товара", blank=True, null=True)
+    image1 = models.ImageField(verbose_name="Изображение товара 1", blank=True, null=True)
+    image2 = models.ImageField(verbose_name="Изображение товара 2", blank=True, null=True)
+    image3 = models.ImageField(verbose_name="Изображение товара 3", blank=True, null=True)
+    image4 = models.ImageField(verbose_name="Изображение товара 4", blank=True, null=True)
+    image5 = models.ImageField(verbose_name="Изображение товара 5", blank=True, null=True)
 
     def __str__(self):
         return f"{self.clothing.model}: {self.color}"
@@ -156,7 +172,7 @@ class Stock(models.Model):
     count = models.IntegerField(verbose_name="Количество")
 
     def __str__(self):
-        return f'{self.colors_clothing.clothing.model} - {self.colors_clothing.color.color} - {self.size.value}: {self.count} шт.'
+        return f'{self.colors_clothing.clothing.model} - {self.colors_clothing.color.name} - {self.size.value}: {self.count} шт.'
 
 
 class Orders(models.Model):

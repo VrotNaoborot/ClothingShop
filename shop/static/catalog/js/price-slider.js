@@ -106,7 +106,15 @@ function adjustMaxPrice() {
 }
 // Функция для обновления цвета слайдера
 function fillColor() {
-    const percent1 = (sliderOne.value / maxValue) * 100; // Процент для первого слайдера
-    const percent2 = (sliderTwo.value / maxValue) * 100; // Процент для второго слайдера
+    const minValue = parseInt(sliderOne.min); // минимальное значение из атрибута min
+    const maxValue = parseInt(sliderTwo.max); // максимальное значение из атрибута max
+    const range = maxValue - minValue;
+
+    // Вычисляем проценты для позиции ползунков относительно диапазона
+    const percent1 = ((sliderOne.value - minValue) / range) * 100;
+    const percent2 = ((sliderTwo.value - minValue) / range) * 100;
+
+    // Устанавливаем цвет фона трека
     sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}%, #999 ${percent1}%, #999 ${percent2}%, #dadae5 ${percent2}%)`;
 }
+

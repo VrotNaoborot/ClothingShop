@@ -267,7 +267,11 @@ def home(request, target):
 
 
 def catalog(request, target):
-    v = ""
+    materials, colors, sizes, brands, countries = set(), set(), set(), set(), set()
+    min_price = float('inf')
+    max_price = float('-inf')
+
+    v = "M"
     if target == 'men':
         v = "M"
     elif target == 'women':
@@ -280,19 +284,30 @@ def catalog(request, target):
     target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
     print(f"Cl: {target_clothing_items}")
     for clothing_item in target_clothing_items:
+        materials.add(clothing_item.material)
+        brands.add(clothing_item.brand)
+        countries.add(clothing_item.country_manufacture)
         colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
         print(f"Colors clotning: {colors_clothing}")
 
         for color_clothing in colors_clothing:
             stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
             if stock_items:
+                for stock in stock_items:
+                    sizes.add(stock.size)
                 clothing_item.image1 = color_clothing.image1
                 clothing_item.image2 = color_clothing.image2
                 color_obj = color_clothing.color
+                colors.add(color_obj)
                 clothing_item.color_id = color_obj.id
                 clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
 
                 price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+                for price in price_history:
+                    if price.price < min_price:
+                        min_price = price.price
+                    if price.price > max_price:
+                        max_price = price.price
                 if len(price_history) == 1:
                     clothing_item.discount = False
                     current_price = price_history[0].price
@@ -313,7 +328,8 @@ def catalog(request, target):
 
                 clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
 
-    return render(request, 'catalog.html', {'clothing_items': target_clothing_items})
+    return render(request, 'catalog.html',
+                  {'clothing_items': target_clothing_items, 'materials': materials, 'colors': colors, 'sizes': sizes, 'brands': brands, 'min_price': min_price, 'max_price': max_price, 'countries': countries})
 
 
 def category(request, target, category, subcategory=None):
