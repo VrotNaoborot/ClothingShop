@@ -47,6 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):  # Добавляем Perm
 class ClothingCategory(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID категории одежды")
     name = models.CharField(max_length=100, verbose_name="Название")
+    eng_name = models.CharField(max_length=100, verbose_name="Category (EN)")
 
     def __str__(self):
         return self.name
@@ -58,9 +59,10 @@ class ClothingCategory(models.Model):
 
 class LargeCategory(models.Model):
     name = models.CharField(max_length=100)
+    eng_name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} | {self.eng_name}"
 
 
 class Color(models.Model):
@@ -109,6 +111,9 @@ class Material(models.Model):
 class CountryManufacture(models.Model):
     name = models.CharField(max_length=100, verbose_name="Страна производства")
     eng_name = models.CharField(max_length=100, verbose_name="Country (EN)")
+
+    def __str__(self):
+        return self.name
 
 
 # Одежда

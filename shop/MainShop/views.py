@@ -10,8 +10,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import *
 from django.urls import reverse
-from django.db.models import Count
-from django.db.models import Q
+from django.db.models import Q, F, Subquery, OuterRef, Count, Max, Min
 from shop import settings
 from django.views.decorators.http import require_POST
 
@@ -267,47 +266,85 @@ def home(request, target):
 
 
 def catalog(request, target):
-    materials, colors, sizes, brands, countries = set(), set(), set(), set(), set()
+    # Инициализация множеств для хранения всех доступных значений фильтров
+    all_materials, all_colors, all_sizes, all_brands, all_countries = set(), set(), set(), set(), set()
     min_price = float('inf')
     max_price = float('-inf')
 
-    v = "M"
-    if target == 'men':
-        v = "M"
-    elif target == 'women':
-        v = "F"
-    elif target == 'child':
-        v = "C"
+    # Определение целевой аудитории (M, F, C)
+    v = "M" if target == 'men' else "F" if target == 'women' else "C"
 
-    # popular_items
-    #   query со всей одеждой подходящей по таргету
-    target_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
-    print(f"Cl: {target_clothing_items}")
-    for clothing_item in target_clothing_items:
-        materials.add(clothing_item.material)
-        brands.add(clothing_item.brand)
-        countries.add(clothing_item.country_manufacture)
+    # Получаем все товары, подходящие по целевой аудитории
+    all_clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
+
+    # Заполняем все доступные значения фильтров (без фильтрации по запросу)
+    for clothing_item in all_clothing_items:
+        all_materials.add(clothing_item.material)
+        all_brands.add(clothing_item.brand)
+        all_countries.add(clothing_item.country_manufacture)
+
         colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
-        print(f"Colors clotning: {colors_clothing}")
+        for color_clothing in colors_clothing:
+            stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
+            for stock in stock_items:
+                all_sizes.add(stock.size)
 
+            color_obj = color_clothing.color
+            all_colors.add(color_obj)
+
+            # Получаем историю цен для определения минимальной и максимальной цены
+            price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+            for price in price_history:
+                if price.price < min_price:
+                    min_price = price.price
+                if price.price > max_price:
+                    max_price = price.price
+
+    # Применение фильтров из запроса
+    material_filters = request.GET.getlist('material')
+    color_filters = request.GET.getlist('color')
+    size_filters = request.GET.getlist('size')
+    brand_filters = request.GET.getlist('brand')
+    country_filters = request.GET.getlist('country')
+    min_price_filter = request.GET.get('min_price')
+    max_price_filter = request.GET.get('max_price')
+
+    # Фильтрация товаров
+    filtered_clothing_items = all_clothing_items
+    if material_filters:
+        filtered_clothing_items = filtered_clothing_items.filter(material__eng_name__in=material_filters)
+    if brand_filters:
+        filtered_clothing_items = filtered_clothing_items.filter(brand__name__in=brand_filters)
+    if country_filters:
+        filtered_clothing_items = filtered_clothing_items.filter(country_manufacture__name__in=country_filters)
+
+    # Фильтр по цвету
+    if color_filters:
+        filtered_clothing_items = filtered_clothing_items.filter(colorsclothing__color__eng_name__in=color_filters)
+    # Фильтр по размеру
+    if size_filters:
+        filtered_clothing_items = filtered_clothing_items.filter(stock__size__value__in=size_filters)
+    # Фильтр по цене
+    if min_price_filter:
+        filtered_clothing_items = filtered_clothing_items.filter(pricehistory__price__gte=min_price_filter)
+    if max_price_filter:
+        filtered_clothing_items = filtered_clothing_items.filter(pricehistory__price__lte=max_price_filter)
+
+    # Обработка товаров для отображения
+    for clothing_item in filtered_clothing_items:
+        colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
         for color_clothing in colors_clothing:
             stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
             if stock_items:
-                for stock in stock_items:
-                    sizes.add(stock.size)
+                clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
                 clothing_item.image1 = color_clothing.image1
                 clothing_item.image2 = color_clothing.image2
                 color_obj = color_clothing.color
-                colors.add(color_obj)
                 clothing_item.color_id = color_obj.id
                 clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
 
+                # Обработка текущей цены и скидок
                 price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
-                for price in price_history:
-                    if price.price < min_price:
-                        min_price = price.price
-                    if price.price > max_price:
-                        max_price = price.price
                 if len(price_history) == 1:
                     clothing_item.discount = False
                     current_price = price_history[0].price
@@ -323,54 +360,99 @@ def catalog(request, target):
                     else:
                         clothing_item.discount = False
                         clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
-                else:
-                    continue
 
-                clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
-
-    return render(request, 'catalog.html',
-                  {'clothing_items': target_clothing_items, 'materials': materials, 'colors': colors, 'sizes': sizes, 'brands': brands, 'min_price': min_price, 'max_price': max_price, 'countries': countries})
+    # Передача данных в шаблон
+    return render(request, 'catalog.html', {
+        'clothing_items': filtered_clothing_items,
+        'materials': all_materials,
+        'colors': all_colors,
+        'sizes': all_sizes,
+        'brands': all_brands,
+        'min_price': min_price,
+        'max_price': max_price,
+        'countries': all_countries
+    })
 
 
 def category(request, target, category, subcategory=None):
-    v = "M"
-    _category = "Одежда"
-    if target == 'men':
-        v = "M"
-    elif target == 'women':
-        v = "F"
-    elif target == 'child':
-        v = "C"
+    target_map = {"men": "M", "women": "F", "child": "C"}
+    v = target_map.get(target, "U")
 
-    if category == 'clothes':
-        _category = 'Одежда'
-    elif category == 'shoes':
-        _category = 'Обувь'
-    elif _category == 'accessories':
-        _category = "Аксессуары"
+    # Базовый запрос для фильтрации по `target`
+    clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
+    clothing_items_category = clothing_items
 
-    large_category = LargeCategory.objects.get(name=_category)
-    target_clothing_items = Clothing.objects.filter(
-        (Q(target=v) | Q(target='U')) & Q(large_category=large_category)
-    )
-    for clothing_item in target_clothing_items:
+    # Подгрузка фильтров (материалы, цвета, размеры, бренды, страны)
+    materials, colors, sizes, brands, countries = set(), set(), set(), set(), set()
+
+    # Обработка категории
+    if category == 'news':
+        clothing_items = clothing_items.order_by('-id')
+        clothing_items_category = clothing_items
+    elif category in ['shoes', 'clothes', 'accessories']:
+        large_category = LargeCategory.objects.filter(eng_name__iexact=category).first()
+        if large_category:
+            clothing_items = clothing_items.filter(large_category=large_category)
+            clothing_items_category = clothing_items
+            if subcategory:
+                sub_category = ClothingCategory.objects.filter(eng_name__iexact=subcategory).first()
+                if sub_category:
+                    clothing_items = clothing_items.filter(category=sub_category)
+    elif category == 'sale':
+        # Фильтрация товаров, у которых есть скидка
+        clothing_items = [
+            item for item in clothing_items if has_discount(item)
+        ]
+        clothing_items_category = clothing_items
+
+    # Обработка фильтров
+    material_filter = request.GET.getlist('material', [])
+    color_filter = request.GET.getlist('color', [])
+    brand_filter = request.GET.getlist('brand', [])
+    country_filter = request.GET.getlist('country', [])
+
+    # Применяем фильтры
+    if material_filter:
+        # Получаем ID материалов, соответствующих строкам в фильтре
+        material_ids = Material.objects.filter(eng_name__in=material_filter).values_list('id', flat=True)
+        clothing_items = clothing_items.filter(material__in=material_ids)
+
+    if color_filter:
+        # Получаем ID цветов, соответствующих строкам в фильтре
+        color_ids = Color.objects.filter(eng_name__in=color_filter).values_list('id', flat=True)
+        clothing_items = clothing_items.filter(colorsclothing__color__in=color_ids)
+
+    if brand_filter:
+        # Получаем ID брендов, соответствующих строкам в фильтре
+        brand_ids = Brand.objects.filter(eng_name__in=brand_filter).values_list('id', flat=True)
+        clothing_items = clothing_items.filter(brand__in=brand_ids)
+
+    if country_filter:
+        # Получаем ID стран, соответствующих строкам в фильтре
+        country_ids = CountryManufacture.objects.filter(eng_name__in=country_filter).values_list('id', flat=True)
+        clothing_items = clothing_items.filter(country_manufacture__in=country_ids)
+
+    # Подготовка товаров с нужными данными
+    enhanced_items = []
+    for clothing_item in clothing_items:
         colors_clothing = ColorsClothing.objects.filter(clothing=clothing_item)
-        print(f"Colors clotning: {colors_clothing}")
 
         for color_clothing in colors_clothing:
             stock_items = Stock.objects.filter(colors_clothing=color_clothing, count__gt=0)
             if stock_items:
+                # Изображения
                 clothing_item.image1 = color_clothing.image1
                 clothing_item.image2 = color_clothing.image2
-                color_obj = color_clothing.color
-                clothing_item.color_id = color_obj.id
+
+                # Цвет и URL
+                clothing_item.color_id = color_clothing.color.id
                 clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
 
+                # История цен и скидки
                 price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
                 if len(price_history) == 1:
                     clothing_item.discount = False
-                    current_price = price_history[0].price
-                    clothing_item.current_price = f"{current_price:,}".replace(',', ' ')
+                    clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
                 elif len(price_history) >= 2:
                     new_price = price_history[0].price
                     old_price = price_history[1].price
@@ -381,13 +463,81 @@ def category(request, target, category, subcategory=None):
                         clothing_item.discount_value = int(((old_price - new_price) / old_price) * 100)
                     else:
                         clothing_item.discount = False
-                        clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+                        clothing_item.current_price = f"{new_price:,}".replace(',', ' ')
                 else:
-                    continue
+                    continue  # Пропуск товаров без истории цен
 
+                # Доступные размеры
                 clothing_item.sizes = sorted(set(stock.size for stock in stock_items), key=lambda s: s.value)
 
-    return render(request, 'catalog.html', {'clothing_items': target_clothing_items})
+                # Добавляем одежду в список
+                enhanced_items.append(clothing_item)
+                break
+
+    if category == 'sale':
+        enhanced_items = sorted(
+            [item for item in enhanced_items if getattr(item, 'discount', False)],
+            key=lambda item: item.discount_value,
+            reverse=True
+        )
+
+    # Filters data add
+    for clothing_item_category in clothing_items_category:
+        colors_clothing_filter = ColorsClothing.objects.filter(clothing=clothing_item_category)
+        for color_clothing_filter in colors_clothing_filter:
+            stock_filter = Stock.objects.filter(colors_clothing=color_clothing_filter, count__gt=0)
+            price_filter = PriceHistory.objects.filter(color_clothing=color_clothing_filter)
+            if stock_filter and price_filter:
+                materials.add(clothing_item_category.material)
+                colors.add(color_clothing_filter.color)
+                for size in stock_filter:
+                    sizes.add(size.size)
+                brands.add(clothing_item_category.brand)
+                countries.add(clothing_item_category.country_manufacture)
+
+    actual_prices = [
+        PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create').first().price
+        for clothing_item in clothing_items_category
+        for color_clothing in ColorsClothing.objects.filter(clothing=clothing_item)
+    ]
+    actual_prices = [price for price in actual_prices if price is not None]
+
+    min_price = min(actual_prices) if actual_prices else 0
+    max_price = max(actual_prices) if actual_prices else 0
+
+    # Подготовка данных для фильтров
+    materials = sorted(materials, key=lambda material: material.name)
+    colors = sorted(colors, key=lambda color: color.name)
+    sizes = sorted(sizes, key=lambda size: size.value)
+    brands = sorted(brands, key=lambda brand: brand.name)
+    countries = sorted(countries, key=lambda country: country.name)
+
+    return render(request, 'catalog.html', {
+        'clothing_items': enhanced_items,
+        'target': target,
+        'category': category,
+        'subcategory': subcategory,
+        'materials': materials,
+        'colors': colors,
+        'sizes': sizes,
+        'brands': brands,
+        'countries': countries,
+        'min_price': min_price,
+        'max_price': max_price,
+    })
+
+
+def has_discount(clothing_item):
+    # Проверяем наличие скидки в истории цен для данного товара
+    price_history = PriceHistory.objects.filter(
+        color_clothing__clothing=clothing_item
+    ).order_by('-date_create')
+
+    if len(price_history) >= 2:
+        new_price = price_history[0].price
+        old_price = price_history[1].price
+        return new_price < old_price  # Есть скидка, если новая цена меньше старой
+    return False  # Если скидки нет
 
 
 def login(request):
