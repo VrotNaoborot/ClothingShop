@@ -221,8 +221,8 @@
                                     <ul>
                                         {% for brand in brands %}
                                         <li>
-                                            <label for="brand-{{ brand.name }}">
-                                                <input type="checkbox" id="brand-{{ brand.name }}"> {{ brand.name }}
+                                            <label for="brand-{{ brand.name|lower }}">
+                                                <input type="checkbox" id="brand-{{ brand.name|lower }}"> {{ brand.name }}
                                             </label>
                                         </li>
                                         {% endfor %}
@@ -274,8 +274,8 @@
                                     <ul>
                                         {% for country in countries %}
                                         <li>
-                                            <label for="country-{{ country.eng_name }}">
-                                                <input type="checkbox" id="country-{{ country.eng_name }}"> {{ country.name }}
+                                            <label for="country-{{ country.eng_name|lower }}">
+                                                <input type="checkbox" id="country-{{ country.eng_name|lower }}"> {{ country.name }}
                                             </label>
                                         </li>
                                         {% endfor %}

@@ -6,13 +6,12 @@ from django.db.models import Prefetch
 from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import Http404
 from django.http import JsonResponse
 from .models import *
 from django.urls import reverse
 from django.db.models import Q, F, Subquery, OuterRef, Count, Max, Min
-from shop import settings
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 
 def index(request):
@@ -374,6 +373,7 @@ def catalog(request, target):
     })
 
 
+@require_GET
 def category(request, target, category, subcategory=None):
     target_map = {"men": "M", "women": "F", "child": "C"}
     v = target_map.get(target, "U")
@@ -390,20 +390,23 @@ def category(request, target, category, subcategory=None):
         clothing_items = clothing_items.order_by('-id')
         clothing_items_category = clothing_items
     elif category in ['shoes', 'clothes', 'accessories']:
-        large_category = LargeCategory.objects.filter(eng_name__iexact=category).first()
-        if large_category:
-            clothing_items = clothing_items.filter(large_category=large_category)
-            clothing_items_category = clothing_items
-            if subcategory:
-                sub_category = ClothingCategory.objects.filter(eng_name__iexact=subcategory).first()
-                if sub_category:
-                    clothing_items = clothing_items.filter(category=sub_category)
+        # Получаем основную категорию или возвращаем 404, если она не существует
+        large_category = get_object_or_404(LargeCategory, eng_name__iexact=category)
+        clothing_items = clothing_items.filter(large_category=large_category)
+        clothing_items_category = clothing_items
+
+        if subcategory:
+            # Получаем подкатегорию или возвращаем 404, если она не существует
+            sub_category = get_object_or_404(ClothingCategory, eng_name__iexact=subcategory)
+            clothing_items = clothing_items.filter(category=sub_category)
     elif category == 'sale':
         # Фильтрация товаров, у которых есть скидка
         clothing_items = [
             item for item in clothing_items if has_discount(item)
         ]
         clothing_items_category = clothing_items
+    else:
+        raise Http404("Category not found")
 
     # Обработка фильтров
     material_filter = request.GET.getlist('material', [])
@@ -424,7 +427,7 @@ def category(request, target, category, subcategory=None):
 
     if brand_filter:
         # Получаем ID брендов, соответствующих строкам в фильтре
-        brand_ids = Brand.objects.filter(eng_name__in=brand_filter).values_list('id', flat=True)
+        brand_ids = Brand.objects.filter(name__in=brand_filter).values_list('id', flat=True)
         clothing_items = clothing_items.filter(brand__in=brand_ids)
 
     if country_filter:
