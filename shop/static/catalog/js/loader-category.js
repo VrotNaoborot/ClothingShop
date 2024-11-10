@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    console.log("Категория из URL:", categoryFromUrl); // Логируем извлеченную категорию
-    console.log("Подкатегория из URL:", subcategoryFromUrl); // Логируем извлеченную подкатегорию
 
     categoryTitles.forEach(title => {
         title.addEventListener('click', function() {
@@ -28,10 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = title.parentElement;
         const categoryData = category.getAttribute('data-category');
 
-        console.log("Проверка категории:", categoryData); // Логируем категорию для каждого элемента
 
         if (categoryData && categoryData === categoryFromUrl) {
-            console.log("Категория совпала:", categoryData); // Логируем, если категории совпали
             openCategory(category, title.querySelector('.arrow'));
 
             // Если есть подкатегория в URL, выделяем соответствующий элемент

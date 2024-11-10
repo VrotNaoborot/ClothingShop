@@ -106,6 +106,7 @@ function adjustMaxPrice() {
 }
 // Функция для обновления цвета слайдера
 function fillColor() {
+    console.log("fill color");
     const minValue = parseInt(sliderOne.min); // минимальное значение из атрибута min
     const maxValue = parseInt(sliderTwo.max); // максимальное значение из атрибута max
     const range = maxValue - minValue;

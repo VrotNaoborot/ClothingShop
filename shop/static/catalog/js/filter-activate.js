@@ -1,65 +1,61 @@
-document.querySelectorAll('.apply-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const params = new URLSearchParams(window.location.search);
+// Функция для формирования URL с учетом выбранных фильтров
+function updateURLWithFilters() {
+    // Начальный базовый URL (например, это текущий путь страницы без параметров)
+    let baseURL = window.location.pathname + '?';  // Базовый путь без параметров
 
-        // Пример для материалов
-        document.querySelectorAll('#fmaterials-menu input[type="checkbox"]:checked').forEach(input => {
-            params.delete('material'); // Убираем старый параметр и добавляем новый
-            params.append('material', input.id.replace('material-', ''));
-        });
+    // Проходим по всем меню фильтров (с классом dropdown-content)
+    document.querySelectorAll('.dropdown-content').forEach(menu => {
+        // Проходим по всем чекбоксам в текущем меню
+        const checkedInputs = menu.querySelectorAll('input[type="checkbox"]:checked');
 
-        // Пример для цветов
-        document.querySelectorAll('#fcolor-menu input[type="checkbox"]:checked').forEach(input => {
-            params.delete('color'); // Убираем старый параметр и добавляем новый
-            params.append('color', input.id.replace('color-', ''));
-        });
+        if (menu.id === 'fprice-menu') {
+            // Находим кнопку "Применить"
+            const applyBtn = menu.querySelector('.apply-btn');
 
-
-        // Размер
-        document.querySelectorAll('#fsize-menu input[type="checkbox"]:checked').forEach(input => {
-            params.delete('size'); // Убираем старый параметр и добавляем новый
-            params.append('size', input.id.replace('size-', ''));
-        });
-
-        // Бренд
-        document.querySelectorAll('#fbrand-menu input[type="checkbox"]:checked').forEach(input => {
-            params.delete('brand'); // Убираем старый параметр и добавляем новый
-            params.append('brand', input.id.replace('brand-', ''));
-        });
-
-        // Страна производства
-        document.querySelectorAll('#fcountry-menu input[type="checkbox"]:checked').forEach(input => {
-            params.delete('country'); // Убираем старый параметр и добавляем новый
-            params.append('country', input.id.replace('country-', ''));
-        });
-
-        // Цена - добавление только после нажатия на кнопку "Применить"
-        const minPrice = document.getElementById('minPrice').value;
-        const maxPrice = document.getElementById('maxPrice').value;
-        const priceButton = document.querySelector('#fprice-menu .apply-btn');
-
-        // Проверка, если кнопка для цены активирована
-        if (priceButton && priceButton.disabled === false) {
-            if (minPrice) {
-                params.set('min_price', minPrice);
-            } else {
-                params.delete('min_price'); // Удаляем, если пусто
-            }
-            if (maxPrice) {
-                params.set('max_price', maxPrice);
-            } else {
-                params.delete('max_price'); // Удаляем, если пусто
+            // Если кнопка "Применить" не отключена, добавляем фильтр цен в URL
+            if (applyBtn && !applyBtn.disabled) {
+                // Добавляем параметры диапазона цен в URL
+                const minPrice = document.getElementById('minPrice').value;
+                const maxPrice = document.getElementById('maxPrice').value;
+                baseURL += `minPrice=${minPrice}&maxPrice=${maxPrice}&`;
             }
         }
 
-        // Изменяем URL
-        window.location.search = params.toString();
-    });
-});
+        // Если есть выбранные чекбоксы, добавляем их в URL
+        if (checkedInputs.length > 0) {
+            checkedInputs.forEach(input => {
+                // Извлекаем название фильтра и значение
+                const [filterName, filterValue] = input.id.split('-');  // Разделяем ID на две части: filterName и filterValue
 
-// Обработчик для фильтра скидок
-document.getElementById('fdiscount').addEventListener('click', () => {
-    const params = new URLSearchParams(window.location.search);
-    params.set('discount', 'true');
-    window.location.search = params.toString();
+                // Логируем id и значение для отладки
+                console.log(`Selected filter: ${filterName}=${filterValue}`);
+
+                // Добавляем новый параметр в URL с нужным ключом
+                baseURL += `${filterName}=${filterValue}&`;
+            });
+        }
+    });
+
+
+    // Обработка скидок
+    const discountButton = document.querySelector('#fdiscount');
+    if (discountButton && discountButton.checked) {
+        baseURL += `discount=true&`;
+    }
+
+    // Убираем последний лишний амперсанд (&) и обновляем URL
+    baseURL = baseURL.slice(0, -1);  // Удаляем последний &
+
+    // Логируем итоговый URL для отладки
+    console.log(`Generated URL: ${baseURL}`);
+
+    // Изменяем URL с новыми параметрами
+    window.location.href = baseURL;  // Полностью заменяем URL
+}
+
+// Добавляем обработчик нажатия на кнопки "Применить"
+document.querySelectorAll('.apply-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        updateURLWithFilters();  // Вызываем функцию для обновления URL с фильтрами
+    });
 });
