@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
             if (urlParams.has(menuKey)) {
                 changes = true;
             }
+            if (menuKey === 'price' && (urlParams.has('minPrice') || urlParams.has('maxPrice'))) {
+                changes = true;
+            }
 
             const checkboxes = menu.querySelectorAll("input[type='checkbox']");
             const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
