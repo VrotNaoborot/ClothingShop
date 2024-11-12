@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    window.updateApplyButtonState = updateApplyButtonState;
+
     // Применяем активные стили к кнопкам и чекбоксам, если параметры присутствуют в URL
     Object.entries(filters).forEach(([filterId, paramName]) => {
         if (urlParams.has(paramName)) {

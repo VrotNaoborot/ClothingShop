@@ -39,9 +39,10 @@ function updateURLWithFilters() {
 
     // Обработка скидок
     const discountButton = document.querySelector('#fdiscount');
-    if (discountButton && discountButton.checked) {
+    if (discountButton && discountButton.classList.contains("filter-button-activate")) {
         baseURL += `discount=true&`;
     }
+
 
     // Убираем последний лишний амперсанд (&) и обновляем URL
     baseURL = baseURL.slice(0, -1);  // Удаляем последний &

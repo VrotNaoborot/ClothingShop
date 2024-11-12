@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", function() {
     filterBtns.forEach(btn => {
         btn.addEventListener("click", function() {
             // Получаем id кнопки и формируем id для соответствующего выпадающего меню
+            if (btn.id === 'fdiscount') {
+                btn.classList.toggle("filter-button-activate");
+                updateURLWithFilters();
+                return;
+            }
+
             const menuId = `${btn.id}-menu`;
             const dropdownContent = document.getElementById(menuId);
 

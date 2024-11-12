@@ -413,6 +413,10 @@ def category(request, target, category, subcategory=None):
     color_filter = request.GET.getlist('color', [])
     brand_filter = request.GET.getlist('brand', [])
     country_filter = request.GET.getlist('country', [])
+    max_price_filter = request.GET.get('maxPrice', None)
+    min_price_filter = request.GET.get('minPrice', None)
+    only_discount_filter = request.GET.get('discount', '') == 'true'
+    print(only_discount_filter)
 
     # Применяем фильтры
     if material_filter:
@@ -435,6 +439,8 @@ def category(request, target, category, subcategory=None):
         country_ids = CountryManufacture.objects.filter(eng_name__in=country_filter).values_list('id', flat=True)
         clothing_items = clothing_items.filter(country_manufacture__in=country_ids)
 
+
+
     # Подготовка товаров с нужными данными
     enhanced_items = []
     for clothing_item in clothing_items:
@@ -451,8 +457,16 @@ def category(request, target, category, subcategory=None):
                 clothing_item.color_id = color_clothing.color.id
                 clothing_item.url = reverse('card', args=[clothing_item.id, clothing_item.color_id])
 
-                # История цен и скидки
+                # Фильтер цен
                 price_history = PriceHistory.objects.filter(color_clothing=color_clothing).order_by('-date_create')
+                if price_history and (min_price_filter or max_price_filter):
+                    current_price = price_history[0].price
+                    if min_price_filter and current_price < int(min_price_filter):
+                        continue
+                    if max_price_filter and current_price > int(max_price_filter):
+                        continue
+
+                # История цен и скидки
                 if len(price_history) == 1:
                     clothing_item.discount = False
                     clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
@@ -514,6 +528,8 @@ def category(request, target, category, subcategory=None):
     sizes = sorted(sizes, key=lambda size: size.value)
     brands = sorted(brands, key=lambda brand: brand.name)
     countries = sorted(countries, key=lambda country: country.name)
+
+    print(f"data: min-price {min_price} / {max_price}")
 
     return render(request, 'catalog.html', {
         'clothing_items': enhanced_items,

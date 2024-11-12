@@ -1,7 +1,7 @@
 // Инициализация элементов при загрузке страницы
 window.onload = function() {
     updateSliderValues();
-    updateApplyButtonState(); // Проверяем состояние кнопки "Применить" при загрузке
+    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить" при загрузке
 }
 
 // Получаем элементы слайдеров и полей ввода
@@ -26,7 +26,7 @@ const checkboxes = document.querySelectorAll("#fcolor-menu input[type='checkbox'
 let isButtonActive = false;
 
 // Функция для проверки состояния кнопки "Применить"
-function updateApplyButtonState() {
+function updateApplyButtonPrice() {
     const isPriceChanged = (sliderOne.value !== minValue.toString() || sliderTwo.value !== maxValue.toString());
     const isInputChanged = (minPriceInput.value !== minValue.toString() || maxPriceInput.value !== maxValue.toString());
     const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked); // Проверьте, есть ли активные чекбоксы
@@ -46,7 +46,7 @@ function updateSliderValues() {
     sliderOne.value = minValue;
     sliderTwo.value = maxValue;
     fillColor(); // Обновляем цвет слайдера
-    updateApplyButtonState(); // Проверяем состояние кнопки "Применить"
+    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить"
 }
 
 // Обработка изменения первого слайдера
@@ -56,7 +56,7 @@ sliderOne.oninput = function() {
     }
     minPriceInput.value = sliderOne.value; // Обновляем поле ввода
     fillColor(); // Обновляем цвет слайдера
-    updateApplyButtonState(); // Проверяем состояние кнопки "Применить" при перемещении ползунка
+    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить" при перемещении ползунка
 }
 
 // Обработка изменения второго слайдера
@@ -66,7 +66,7 @@ sliderTwo.oninput = function() {
     }
     maxPriceInput.value = sliderTwo.value; // Обновляем поле ввода
     fillColor(); // Обновляем цвет слайдера
-    updateApplyButtonState(); // Проверяем состояние кнопки "Применить" при перемещении ползунка
+    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить" при перемещении ползунка
 }
 
 // Функция для обновления ползунков из полей ввода
@@ -82,7 +82,7 @@ function updateSliderFromInput() {
     sliderOne.value = minPrice; // Обновляем ползунок 1
     sliderTwo.value = maxPrice; // Обновляем ползунок 2
     fillColor(); // Обновляем цвет слайдера
-    updateApplyButtonState(); // Проверяем состояние кнопки "Применить" после обновления
+    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить" после обновления
 }
 
 function adjustMinPrice() {
