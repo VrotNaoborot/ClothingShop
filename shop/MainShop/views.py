@@ -375,11 +375,21 @@ def catalog(request, target):
 
 @require_GET
 def category(request, target, category, subcategory=None):
-    target_map = {"men": "M", "women": "F", "child": "C"}
-    v = target_map.get(target, "U")
+    target_word = "Мужская"
+    v = "U"
+    if target == 'men':
+        target_word = 'Мужская'
+        v = 'M'
+    elif target == 'women':
+        target_word = 'Женская'
+        v = 'F'
+    elif target == 'child':
+        target_word = 'Детская'
+        v = 'C'
 
     # Базовый запрос для фильтрации по `target`
     clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
+    target_count = len(clothing_items)
     clothing_items_category = clothing_items
 
     # Подгрузка фильтров (материалы, цвета, размеры, бренды, страны)
@@ -416,7 +426,6 @@ def category(request, target, category, subcategory=None):
     max_price_filter = request.GET.get('maxPrice', None)
     min_price_filter = request.GET.get('minPrice', None)
     only_discount_filter = request.GET.get('discount', '') == 'true'
-    print(only_discount_filter)
 
     # Применяем фильтры
     if material_filter:
@@ -438,8 +447,6 @@ def category(request, target, category, subcategory=None):
         # Получаем ID стран, соответствующих строкам в фильтре
         country_ids = CountryManufacture.objects.filter(eng_name__in=country_filter).values_list('id', flat=True)
         clothing_items = clothing_items.filter(country_manufacture__in=country_ids)
-
-
 
     # Подготовка товаров с нужными данными
     enhanced_items = []
@@ -470,6 +477,8 @@ def category(request, target, category, subcategory=None):
                 if len(price_history) == 1:
                     clothing_item.discount = False
                     clothing_item.current_price = f"{price_history[0].price:,}".replace(',', ' ')
+                    if only_discount_filter:
+                        continue
                 elif len(price_history) >= 2:
                     new_price = price_history[0].price
                     old_price = price_history[1].price
@@ -481,6 +490,8 @@ def category(request, target, category, subcategory=None):
                     else:
                         clothing_item.discount = False
                         clothing_item.current_price = f"{new_price:,}".replace(',', ' ')
+                        if only_discount_filter:
+                            continue
                 else:
                     continue  # Пропуск товаров без истории цен
 
@@ -543,6 +554,8 @@ def category(request, target, category, subcategory=None):
         'countries': countries,
         'min_price': min_price,
         'max_price': max_price,
+        'target_word': target_word,
+        'target_count': target_count
     })
 
 

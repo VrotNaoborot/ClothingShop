@@ -1,8 +1,10 @@
-// Инициализация элементов при загрузке страницы
 window.onload = function() {
-    updateSliderValues();
-    updateApplyButtonPrice(); // Проверяем состояние кнопки "Применить" при загрузке
+    if (!window.initializedFromURL) { // Проверка, инициализирован ли слайдер из URL
+        updateSliderValues();
+    }
+    updateApplyButtonPrice();
 }
+
 
 // Получаем элементы слайдеров и полей ввода
 let sliderOne = document.getElementById("slider-1");
@@ -112,6 +114,8 @@ function fillColor() {
     const range = maxValue - minValue;
 
     // Вычисляем проценты для позиции ползунков относительно диапазона
+    console.log(sliderOne.value);
+    console.log(sliderTwo.value);
     const percent1 = ((sliderOne.value - minValue) / range) * 100;
     const percent2 = ((sliderTwo.value - minValue) / range) * 100;
 
