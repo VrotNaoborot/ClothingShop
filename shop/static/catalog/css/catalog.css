@@ -48,15 +48,15 @@ span {
 }
 
 .category-name {
-    cursor: pointer;           /* Указатель при наведении для раскрытия подкатегорий */
+    cursor: pointer;
     font-size: 18px;
     text-align: left;
     border-radius: 3px;
     padding: 5px;
-    position: relative; /* для позиционирования псевдоэлемента */
-    display: flex; /* добавлено для выравнивания текста и иконки */
-    align-items: center; /* выравнивание по вертикали */
-    justify-content: space-between; /* выравнивание текста и иконки по краям */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Размещаем элементы по краям */
     font-weight: bold;
 }
 
@@ -569,3 +569,23 @@ label:hover .color-box {
     opacity: 1; /* Показываем иконку при активном фильтре */
 }
 
+.category-count-item {
+    text-align: right;
+    color: #999;
+    font-size: 14px;
+    margin-top: 2px;  /* Можно использовать middle для выравнивания по вертикали */
+    margin-left: 4px;
+}
+.subcategory-name {
+    display: inline-block; /* Размещаем название подкатегории на одной линии */
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 3px;
+    margin-right: 15px;
+}
+.subcategory-count {
+    display: inline-block; /* Размещаем количество на одной линии */
+    font-weight: normal;
+    color: #777; /* Можете изменить цвет, если нужно */
+}

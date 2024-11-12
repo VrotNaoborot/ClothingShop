@@ -22,9 +22,10 @@
                     <div class="menu-row">
                         <h4>Вся одежда</h4>
                         <ul>
-                            <li><a href="#" data-url="pants">Брюки</a></li>
-                            <li><a href="#" data-url="outerwear">Верхняя одежда</a></li>
+                            <li><a href="#" data-url="jackets">Куртки</a></li>
+                            <li><a href="#" data-url="hoodies">Худи</a></li>
                             <li><a href="#" data-url="jeans">Джинсы</a></li>
+                            <li><a href="#" data-url="tshirts">Футболки</a></li>
                         </ul>
                     </div>
                     <div class="menu-row">
@@ -36,15 +37,19 @@
                             <li><a href="#" data-url="season-spring">Весенние коллекции</a></li>
                         </ul>
                     </div>
-                    <div class="menu-row">
-                        <h4>Бренды</h4>
-                        <ul>
-                            <li><a href="#" data-url="brand-nike">Nike</a></li>
-                            <li><a href="#" data-url="brand-adidas">Adidas</a></li>
-                            <li><a href="#" data-url="brand-zara">Zara</a></li>
-                            <li><a href="#" data-url="brand-hm">H&M</a></li>
-                        </ul>
-                    </div>
+                    {% if brands_clothes %}
+                        <div class="menu-row">
+                            <h4>Бренды</h4>
+                            <ul>
+                                {% for brand_clothes in brands_clothes %}
+                                    <li><a href="#" data-url="brand-{{ brand_clothes.name }}">{{ brand_clothes.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="menu-row">
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="ad-section">
                     <a href="ссылка-на-рекламу" class="ad-banner">
@@ -67,29 +72,30 @@
                         <h4>Вся обувь</h4>
                         <ul>
                             <li><a href="#" data-url="sneakers">Кроссовки</a></li>
-                            <li><a href="#">Кеды</a></li>
-                            <li><a href="#">Ботинки</a></li>
-                            <li><a href="#">Туфли</a></li>
+                            <li><a href="#" data-url="plimsolls">Кеды</a></li>
+                            <li><a href="#" data-url="boots">Ботинки</a></li>
+                            <li><a href="#" data-url="dress-shoes">Туфли</a></li>
                         </ul>
                     </div>
                     <div class="menu-row">
                         <h4>По сезону</h4>
                         <ul>
-                            <li><a href="#">Летняя одежда</a></li>
-                            <li><a href="#">Зимняя одежда</a></li>
-                            <li><a href="#">Осенние коллекции</a></li>
-                            <li><a href="#">Весенние коллекции</a></li>
+                            <li><a href="#" data-url="season-summer">Летняя одежда</a></li>
+                            <li><a href="#" data-url="season-winter">Зимняя одежда</a></li>
+                            <li><a href="#" data-url="season-autumn">Осенние коллекции</a></li>
+                            <li><a href="#" data-url="season-spring">Весенние коллекции</a></li>
                         </ul>
                     </div>
-                    <div class="menu-row">
-                        <h4>Бренды</h4>
-                        <ul>
-                            <li><a href="#">Nike</a></li>
-                            <li><a href="#">Adidas</a></li>
-                            <li><a href="#">Zara</a></li>
-                            <li><a href="#">H&M</a></li>
-                        </ul>
-                    </div>
+                    {% if brands_shoes %}
+                        <div class="menu-row">
+                            <h4>Бренды</h4>
+                            <ul>
+                                {% for brand_shoes in brands_shoes %}
+                                    <li><a href="#" data-url="brand-{{ brand_shoes.name }}">{{ brand_shoes.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="ad-section">
                     <a href="ссылка-на-рекламу" class="ad-banner">

@@ -132,7 +132,7 @@ class Clothing(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="material")
     description = models.CharField(max_length=300, verbose_name="Описание")
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, related_name="clothing")
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Бренд")
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Brand")
     country_manufacture = models.ForeignKey(CountryManufacture, on_delete=models.CASCADE, related_name="Страна")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name="Средний рейтинг")
 

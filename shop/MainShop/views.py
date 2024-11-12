@@ -264,6 +264,15 @@ def home(request, target):
                   {'popular_items': popular_clothing_items, 'discount_items': filter_discount_clothing})
 
 
+def get_all_brands(cat):
+    """Все бренды которые есть в наличии"""
+    lc = get_object_or_404(LargeCategory, eng_name__iexact=cat)
+    brands_for_category = Brand.objects.filter(
+        Brand__large_category=lc
+    ).distinct()
+    return brands_for_category
+
+
 def catalog(request, target):
     # Инициализация множеств для хранения всех доступных значений фильтров
     all_materials, all_colors, all_sizes, all_brands, all_countries = set(), set(), set(), set(), set()
@@ -390,6 +399,21 @@ def category(request, target, category, subcategory=None):
     # Базовый запрос для фильтрации по `target`
     clothing_items = Clothing.objects.filter(Q(target=v) | Q(target='U'))
     target_count = len(clothing_items)
+
+    # shoes info
+    target_count_shoes = len(Clothing.objects.filter(large_category__eng_name__iexact="shoes"))
+    target_count_sneakers = len(Clothing.objects.filter(category__eng_name__iexact="sneakers"))
+    target_count_plimsolls = len(Clothing.objects.filter(category__eng_name__iexact="plimsolls"))
+    target_count_boots = len(Clothing.objects.filter(category__eng_name__iexact="boots"))
+    target_count_dress_shoes = len(Clothing.objects.filter(category__eng_name__iexact="dress-shoes"))
+
+    # clothes info
+    target_count_clothes = len(Clothing.objects.filter(large_category__eng_name__iexact="clothes"))
+    target_count_jackets = len(Clothing.objects.filter(category__eng_name__iexact="jackets"))
+    target_count_hoodies = len(Clothing.objects.filter(category__eng_name__iexact="hoodies"))
+    target_count_jeans = len(Clothing.objects.filter(category__eng_name__iexact="jeans"))
+    target_count_tshirts = len(Clothing.objects.filter(category__eng_name__iexact="tshirts"))
+
     clothing_items_category = clothing_items
 
     # Подгрузка фильтров (материалы, цвета, размеры, бренды, страны)
@@ -540,8 +564,6 @@ def category(request, target, category, subcategory=None):
     brands = sorted(brands, key=lambda brand: brand.name)
     countries = sorted(countries, key=lambda country: country.name)
 
-    print(f"data: min-price {min_price} / {max_price}")
-
     return render(request, 'catalog.html', {
         'clothing_items': enhanced_items,
         'target': target,
@@ -555,7 +577,19 @@ def category(request, target, category, subcategory=None):
         'min_price': min_price,
         'max_price': max_price,
         'target_word': target_word,
-        'target_count': target_count
+        'target_count': target_count,
+        'brands_clothes': get_all_brands("clothes"),
+        'brands_shoes': get_all_brands("shoes"),
+        'target_count_shoes': target_count_shoes,
+        'target_count_sneakers': target_count_sneakers,
+        'target_count_plimsolls': target_count_plimsolls,
+        'target_count_boots': target_count_boots,
+        'target_count_dress_shoes': target_count_dress_shoes,
+        'target_count_clothes': target_count_clothes,
+        'target_count_jackets': target_count_jackets,
+        'target_count_hoodies': target_count_hoodies,
+        'target_count_jeans': target_count_jeans,
+        'target_count_tshirts': target_count_tshirts,
     })
 
 
