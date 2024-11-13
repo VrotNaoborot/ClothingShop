@@ -261,16 +261,22 @@ def home(request, target):
 
     filter_discount_clothing = list(filter(lambda x: x.oldprice - x.newprice, discount_clothing))
     return render(request, "home.html",
-                  {'popular_items': popular_clothing_items, 'discount_items': filter_discount_clothing})
+                  {'popular_items': popular_clothing_items,
+                   'discount_items': filter_discount_clothing,
+                   'brands_clothes': get_all_brands("clothes"),
+                   'brands_shoes': get_all_brands("shoes"),
+                   })
 
 
 def get_all_brands(cat):
     """Все бренды которые есть в наличии"""
-    lc = get_object_or_404(LargeCategory, eng_name__iexact=cat)
-    brands_for_category = Brand.objects.filter(
-        Brand__large_category=lc
-    ).distinct()
-    return brands_for_category
+    lc = LargeCategory.objects.filter(eng_name__iexact=cat)
+    if lc:
+        brands_for_category = Brand.objects.filter(
+            Brand__large_category=lc[0]
+        ).distinct()
+        return brands_for_category
+    return []
 
 
 def catalog(request, target):
@@ -450,6 +456,8 @@ def category(request, target, category, subcategory=None):
     max_price_filter = request.GET.get('maxPrice', None)
     min_price_filter = request.GET.get('minPrice', None)
     only_discount_filter = request.GET.get('discount', '') == 'true'
+    season_filter = request.GET.get('season', None)
+    print(f"Season: {season_filter}")
 
     # Применяем фильтры
     if material_filter:
@@ -472,6 +480,8 @@ def category(request, target, category, subcategory=None):
         country_ids = CountryManufacture.objects.filter(eng_name__in=country_filter).values_list('id', flat=True)
         clothing_items = clothing_items.filter(country_manufacture__in=country_ids)
 
+    if season_filter:
+        season_obj = Season.objects.filter(name='')
     # Подготовка товаров с нужными данными
     enhanced_items = []
     for clothing_item in clothing_items:

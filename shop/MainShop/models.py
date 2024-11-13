@@ -116,6 +116,13 @@ class CountryManufacture(models.Model):
         return self.name
 
 
+class Season(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 # Одежда
 class Clothing(models.Model):
     TARGET_CHOICES = [
@@ -135,6 +142,7 @@ class Clothing(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="Brand")
     country_manufacture = models.ForeignKey(CountryManufacture, on_delete=models.CASCADE, related_name="Страна")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name="Средний рейтинг")
+    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name="season")
 
     def __str__(self):
         return f'{self.category.name}: {self.model} Rating: {self.avg_rating}'
