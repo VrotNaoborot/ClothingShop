@@ -430,15 +430,15 @@ def category(request, target, category, subcategory=None):
         clothing_items = clothing_items.order_by('-id')
         clothing_items_category = clothing_items
     elif category in ['shoes', 'clothes', 'accessories']:
-        # Получаем основную категорию или возвращаем 404, если она не существует
-        large_category = get_object_or_404(LargeCategory, eng_name__iexact=category)
-        clothing_items = clothing_items.filter(large_category=large_category)
-        clothing_items_category = clothing_items
+        large_category = LargeCategory.objects.filter(eng_name__iexact=category).first()
+        if large_category:
+            clothing_items = clothing_items.filter(large_category=large_category)
+            clothing_items_category = clothing_items
 
-        if subcategory:
-            # Получаем подкатегорию или возвращаем 404, если она не существует
-            sub_category = get_object_or_404(ClothingCategory, eng_name__iexact=subcategory)
-            clothing_items = clothing_items.filter(category=sub_category)
+            if subcategory:
+                # Получаем подкатегорию или возвращаем 404, если она не существует
+                sub_category = get_object_or_404(ClothingCategory, eng_name__iexact=subcategory)
+                clothing_items = clothing_items.filter(category=sub_category)
     elif category == 'sale':
         # Фильтрация товаров, у которых есть скидка
         clothing_items = [
@@ -456,8 +456,7 @@ def category(request, target, category, subcategory=None):
     max_price_filter = request.GET.get('maxPrice', None)
     min_price_filter = request.GET.get('minPrice', None)
     only_discount_filter = request.GET.get('discount', '') == 'true'
-    season_filter = request.GET.get('season', None)
-    print(f"Season: {season_filter}")
+    season_filter = request.GET.getlist('season', [])
 
     # Применяем фильтры
     if material_filter:
@@ -481,7 +480,9 @@ def category(request, target, category, subcategory=None):
         clothing_items = clothing_items.filter(country_manufacture__in=country_ids)
 
     if season_filter:
-        season_obj = Season.objects.filter(name='')
+        season_ids = Season.objects.filter(name__in=season_filter).values_list('id', flat=True)
+        clothing_items = clothing_items.filter(season__in=season_ids)
+
     # Подготовка товаров с нужными данными
     enhanced_items = []
     for clothing_item in clothing_items:

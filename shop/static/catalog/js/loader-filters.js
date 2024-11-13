@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "fbrand": "brand",
         "fcountry": "country",
         "fprice": "price",
-        "fdiscount": "discount"
+        "fdiscount": "discount",
+        "fseason": "season"
     };
 
     function paintSlider(minValue, maxValue) {

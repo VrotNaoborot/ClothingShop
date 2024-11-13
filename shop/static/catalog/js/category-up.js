@@ -5,14 +5,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const category = this.parentElement;
             const subcategory = category.querySelector('.subcategory');
             const arrow = this.querySelector('.arrow');
+            const categoryValue = category.getAttribute('data-category'); // Получаем значение data-category
+
+            // Переадресация на URL категории
+            if (categoryValue) {
+                const currentUrl = window.location.href;
+                const catalogIndex = currentUrl.indexOf('/catalog/');
+
+                // Если нашли 'catalog/' в URL, формируем новый URL с выбранной категорией
+                if (catalogIndex !== -1) {
+                    const baseUrl = currentUrl.slice(0, catalogIndex + 9); // Обрезаем URL после 'catalog/'
+                    window.location.href = `${baseUrl}${categoryValue}/`;
+                    return;
+                }
+            }
 
             // Блокируем кнопку, чтобы предотвратить быстрые клики
-            if (category.classList.contains('disabled')) return; // Если кнопка заблокирована, ничего не делаем
+            if (category.classList.contains('disabled')) return;
             category.classList.add('disabled');
-            setTimeout(() => category.classList.remove('disabled'), 300); // Разблокировка через 300ms
+            setTimeout(() => category.classList.remove('disabled'), 300);
 
             const isActive = category.classList.contains('active');
-            const isOpening = !isActive;  // Если категория не активна, значит открываем
+            const isOpening = !isActive;
 
             if (isOpening) {
                 // Открываем категорию
@@ -41,15 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     subcategory.style.opacity = '0';
                     subcategory.style.maxHeight = '0';
-                }, 100); // Скрываем элементы сразу, не ожидая окончания анимации
+                }, 100);
 
                 setTimeout(() => {
-                    // Убираем активный класс немедленно после скрытия
                     category.classList.remove('active');
                     subcategory.classList.remove('active');
                     arrow.classList.remove('white');
                     arrow.style.transform = 'rotate(0deg)';
-                }, 200); // Убираем активный класс после небольшой задержки
+                }, 200);
             }
         });
     });
