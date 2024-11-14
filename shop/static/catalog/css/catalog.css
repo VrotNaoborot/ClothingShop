@@ -589,3 +589,35 @@ label:hover .color-box {
     font-weight: normal;
     color: #777; /* Можете изменить цвет, если нужно */
 }
+
+/**************************/
+
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid black;
+    margin: 0 5px;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #e6e8e8;
+    color: black;
+}
+
+.pagination .active {
+    background-color: #999;
+    color: black;
+}
+
+#page-numbers {
+    margin-top: 20px;
+    font-size: 16px;
+}
+

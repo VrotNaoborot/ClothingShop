@@ -127,7 +127,7 @@
                         </div>
                         <div class="subcategory">
                             <ul>
-                                <li data-subcategory="backpack">
+                                <li data-subcategory="backpacks">
                                     <div class="subcategory-name">Рюкзаки</div>
                                     <div class="subcategory-count">{{ target_count_jackets }}</div>
                                 </li>
@@ -383,6 +383,26 @@
                             <p>Нет доступных товаров.</p>
                         {% endfor %}
                     </div>
+
+                    <div class="pagination" id="pagination">
+                        <!-- Кнопка "Назад" скрыта, если это первая страница -->
+                        {% if current_page > 1 %}
+                            <a href="#" id="prev" data-page="{{ current_page - 1 }}">Назад</a>
+                        {% endif %}
+
+                        <!-- Отображаем ссылки на страницы -->
+                        {% for i in page_range %}
+                            <a href="#" class="page-link {% if current_page == i %}active{% endif %}" data-page="{{ i }}">{{ i }}</a>
+                        {% endfor %}
+
+                        <!-- Кнопка "Дальше" скрыта, если это последняя страница -->
+                        {% if current_page < total_pages %}
+                            <a href="#" id="next" data-page="{{ current_page + 1 }}">Дальше</a>
+                        {% endif %}
+
+                        <p id="page-numbers"></p>
+                    </div>
+
                 </div>
             </div>
         </div>

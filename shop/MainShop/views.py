@@ -12,6 +12,7 @@ from .models import *
 from django.urls import reverse
 from django.db.models import Q, F, Subquery, OuterRef, Count, Max, Min
 from django.views.decorators.http import require_POST, require_GET
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -429,7 +430,7 @@ def category(request, target, category, subcategory=None):
     if category == 'news':
         clothing_items = clothing_items.order_by('-id')
         clothing_items_category = clothing_items
-    elif category in ['shoes', 'clothes', 'accessories']:
+    elif category in ['shoes', 'clothes', 'accessories', 'sports-equipment']:
         large_category = LargeCategory.objects.filter(eng_name__iexact=category).first()
         if large_category:
             clothing_items = clothing_items.filter(large_category=large_category)
@@ -544,6 +545,17 @@ def category(request, target, category, subcategory=None):
             reverse=True
         )
 
+    paginator = Paginator(enhanced_items, 1)
+    page = request.GET.get('page', 1)
+    page_range = paginator.page_range
+    print(page)
+    try:
+        paginated_items = paginator.page(page)
+    except PageNotAnInteger:
+        paginated_items = paginator.page(1)
+    except EmptyPage:
+        paginated_items = paginator.page(paginator.num_pages)
+
     # Filters data add
     for clothing_item_category in clothing_items_category:
         colors_clothing_filter = ColorsClothing.objects.filter(clothing=clothing_item_category)
@@ -576,7 +588,10 @@ def category(request, target, category, subcategory=None):
     countries = sorted(countries, key=lambda country: country.name)
 
     return render(request, 'catalog.html', {
-        'clothing_items': enhanced_items,
+        'clothing_items': paginated_items,
+        'current_page': paginated_items.number,
+        'total_pages': paginator.num_pages,
+        'page_range': page_range,
         'target': target,
         'category': category,
         'subcategory': subcategory,
