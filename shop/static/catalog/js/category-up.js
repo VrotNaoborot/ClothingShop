@@ -66,4 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Обработчик для подкатегорий
+    const subcategoryItems = document.querySelectorAll('.subcategory li');
+    subcategoryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const subcategoryValue = item.getAttribute('data-subcategory');
+            const categoryElement = item.closest('.category');
+            const categoryValue = categoryElement.getAttribute('data-category');
+
+            // Получаем текущий URL и обрезаем его после '/catalog/'
+            const currentUrl = window.location.href;
+            const catalogIndex = currentUrl.indexOf('/catalog/');
+            if (catalogIndex !== -1) {
+                const baseUrl = currentUrl.slice(0, catalogIndex + 9);
+
+                // Перенаправление с добавлением категории и подкатегории
+                window.location.href = `${baseUrl}${categoryValue}/${subcategoryValue}/`;
+            }
+        });
+    });
 });
