@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
             console.log('Товар успешно добавлен в корзину');
-            // Здесь можете обновить корзину на странице или перенаправить пользователя
+            // Перезагружаем страницу после успешного добавления
+            window.location.reload(); // Это обновит текущую страницу
         })
         .catch(error => {
             console.error('Ошибка при выполнении fetch:', error);

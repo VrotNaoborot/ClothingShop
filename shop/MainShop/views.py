@@ -32,8 +32,15 @@ def product_card(request, pk, color_id, size_id=None):
 
     clothing_color = get_object_or_404(ColorsClothing, clothing=product, color=color)
 
-    stock_items = Stock.objects.filter(colors_clothing=clothing_color, count__gt=0)
+    # Проверяем, есть ли у пользователя корзина. Если нет, создаем.
+    if not hasattr(request.user, 'cart'):
+        Cart.objects.create(user=request.user)
+
+    # Теперь безопасно можно получить корзину пользователя
     cart_items_user = CartItem.objects.filter(cart=request.user.cart)
+
+    stock_items = Stock.objects.filter(colors_clothing=clothing_color, count__gt=0)
+
     for cart_item in cart_items_user:
         if cart_item.stock.colors_clothing.clothing == product:
             product.is_cart_product = True
@@ -545,16 +552,21 @@ def category(request, target, category, subcategory=None):
             reverse=True
         )
 
-    paginator = Paginator(enhanced_items, 1)
+    print(f"data {enhanced_items}")
+    paginator = Paginator(enhanced_items, 20)
     page = request.GET.get('page', 1)
-    page_range = paginator.page_range
-    print(page)
     try:
         paginated_items = paginator.page(page)
     except PageNotAnInteger:
         paginated_items = paginator.page(1)
     except EmptyPage:
         paginated_items = paginator.page(paginator.num_pages)
+
+    # Определяем диапазон страниц
+    current_page = paginated_items.number
+    start_page = max(current_page - 2, 1)
+    end_page = min(current_page + 2, paginator.num_pages)
+    page_range = range(start_page, end_page + 1)
 
     # Filters data add
     for clothing_item_category in clothing_items_category:
@@ -587,11 +599,18 @@ def category(request, target, category, subcategory=None):
     brands = sorted(brands, key=lambda brand: brand.name)
     countries = sorted(countries, key=lambda country: country.name)
 
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        del query_params['page']
+
     return render(request, 'catalog.html', {
         'clothing_items': paginated_items,
         'current_page': paginated_items.number,
         'total_pages': paginator.num_pages,
         'page_range': page_range,
+        'prev_page': paginated_items.previous_page_number() if paginated_items.has_previous() else None,
+        'next_page': paginated_items.next_page_number() if paginated_items.has_next() else None,
+        'query_params': query_params.urlencode(),
         'target': target,
         'category': category,
         'subcategory': subcategory,

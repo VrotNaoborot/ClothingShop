@@ -189,6 +189,10 @@ a:hover {
   width: 75%;
 }
 
+.product .content:hover {
+    opacity: .7;
+}
+
 .product .title {
   color: #000;
   font-size: 25px;

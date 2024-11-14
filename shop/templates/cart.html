@@ -26,15 +26,17 @@
             </header>
 
             <div class="content">
-                <div class="title">
-                    {{ cart_item.stock.colors_clothing.clothing.category.name }}:
-                    {{ cart_item.stock.colors_clothing.clothing.brand.name }}
-                    {{ cart_item.stock.colors_clothing.clothing.model }}
-                </div>
-                <div class="description">
-                    <div class="color-info">Цвет: {{ cart_item.stock.colors_clothing.color.color }}</div>
-                    <div class="size-info">Размер: {{ cart_item.stock.size.value }}</div>
-                </div>
+                <a href="{% url 'card_with_size' pk=cart_item.stock.colors_clothing.clothing.id color_id=cart_item.stock.colors_clothing.color.id size_id=cart_item.stock.size.id %}">
+                    <div class="title">
+                        {{ cart_item.stock.colors_clothing.clothing.category.name }}:
+                        {{ cart_item.stock.colors_clothing.clothing.brand.name }}
+                        {{ cart_item.stock.colors_clothing.clothing.model }}
+                    </div>
+                    <div class="description">
+                        <div class="color-info">Цвет: {{ cart_item.stock.colors_clothing.color.name }}</div>
+                        <div class="size-info">Размер: {{ cart_item.stock.size.value }}</div>
+                    </div>
+                </a>
             </div>
 
 

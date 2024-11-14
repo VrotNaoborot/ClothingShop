@@ -374,7 +374,7 @@
                                 </div>
                                 <div class="sizes">
                                     {% for size in clothing.sizes %}
-                                        <a href="{{ popular_item.url }}/size/{{ size.id }}">{{ size.value }}</a>
+                                        <a href="{{ clothing.url }}/size/{{ size.id }}">{{ size.value }}</a>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -383,30 +383,34 @@
                             <p>Нет доступных товаров.</p>
                         {% endfor %}
                     </div>
-
                     <div class="pagination" id="pagination">
-                        <!-- Кнопка "Назад" скрыта, если это первая страница -->
-                        {% if current_page > 1 %}
-                            <a href="#" id="prev" data-page="{{ current_page - 1 }}">Назад</a>
-                        {% endif %}
+                        {% if total_pages > 1 %}
+                            <!-- Кнопка "Назад" -->
+                            {% if prev_page %}
+                                <a href="?{{ query_params }}&page={{ prev_page }}" id="prev">Назад</a>
+                            {% endif %}
 
-                        <!-- Отображаем ссылки на страницы -->
-                        {% for i in page_range %}
-                            <a href="#" class="page-link {% if current_page == i %}active{% endif %}" data-page="{{ i }}">{{ i }}</a>
-                        {% endfor %}
+                            <!-- Ссылки на страницы -->
+                            {% for i in page_range %}
+                                <a href="?{{ query_params }}&page={{ i }}" class="page-link {% if current_page == i %}active{% endif %}">{{ i }}</a>
+                            {% endfor %}
 
-                        <!-- Кнопка "Дальше" скрыта, если это последняя страница -->
-                        {% if current_page < total_pages %}
-                            <a href="#" id="next" data-page="{{ current_page + 1 }}">Дальше</a>
+                            <!-- Кнопка "Дальше" -->
+                            {% if next_page %}
+                                <a href="?{{ query_params }}&page={{ next_page }}" id="next">Дальше</a>
+                            {% endif %}
                         {% endif %}
 
                         <p id="page-numbers"></p>
                     </div>
 
+
                 </div>
             </div>
         </div>
     </div>
+
+    {% include 'down_block_info.html' %}
 
 
     <script src="{% static 'home/js/view_menu.js' %}"></script>
