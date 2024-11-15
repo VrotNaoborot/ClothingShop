@@ -9,10 +9,11 @@
             <a href="#" class="category-item" data-category="sale" data-url="/sale/">Sale%</a>
         </div>
         <div class="search-container">
-            <input type="text" placeholder="Поиск" class="search-input">
+            <input type="text" placeholder="Поиск" class="search-input" id="search-input">
             <a href="#" class="search-button">
                 <img src="{% static 'home/images/search.png' %}" alt="Поиск" class="search-icon">
             </a>
+            <div class="search-results" id="search-results"></div>
         </div>
     </div>
     <div class="dropdown-menu" id="clothes-menu">

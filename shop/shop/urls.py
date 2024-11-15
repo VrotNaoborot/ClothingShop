@@ -39,4 +39,5 @@ urlpatterns = [
     path('add-to-cart/<int:product_id>/color=<int:color_id>&size=<int:size_id>/', add_to_cart, name='add_to_cart'),
     path('cart/update/<int:stock_id>/', update_cart, name='update_cart'),
     path('cart/remove/<int:stock_id>/', delete_cart, name='delete_cart'),
+    path('search/', search_products, name='search_products')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

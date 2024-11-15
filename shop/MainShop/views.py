@@ -403,6 +403,25 @@ def catalog(request, target):
     })
 
 
+def search_products(request):
+    query = request.GET.get('q', '').strip()
+    print(f"Query: {query}")
+    if query:
+        # Фильтрация по названию модели, игнорируя регистр
+        results = Clothing.objects.filter(model__icontains=query)[:10]  # Ограничиваем 10 результатами
+        print(f"Results: {results}")
+        data = [
+            {
+                'id': item.id,
+                'name': item.model,
+                'url': f'/card/{item.id}/',  # Генерация URL для карточки товара
+            }
+            for item in results
+        ]
+        return JsonResponse({'results': data})
+    return JsonResponse({'results': []})
+
+
 @require_GET
 def category(request, target, category, subcategory=None):
     target_word = "Мужская"
