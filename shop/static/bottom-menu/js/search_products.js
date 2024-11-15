@@ -1,39 +1,45 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById('search-input');
-    const searchResults = document.getElementById('search-results');
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.search-input');
+    const searchResults = document.querySelector('.search-results');
 
+    // Обработчик события ввода
     searchInput.addEventListener('input', () => {
-        const query = searchInput.value;
-        console.log(query);
+        const query = searchInput.value.trim();
 
-        if (query.length > 2) {  // Начинаем поиск, если больше 2 символов
-            fetch(`/search/?q=${encodeURIComponent(query)}`)
+        if (query.length > 0) {
+            fetch(`/search?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
-                    const results = data.results;
-                    searchResults.innerHTML = '';
+                    searchResults.innerHTML = ''; // Очищаем старые результаты
 
-                    if (results.length) {
-                        results.forEach(item => {
-                            const link = document.createElement('a');
-                            link.href = item.url;
-                            link.textContent = item.name;
-                            searchResults.appendChild(link);
+                    if (data.results.length > 0) {
+                        data.results.forEach(item => {
+                            const resultItem = document.createElement('a');
+                            resultItem.href = item.url;
+                            resultItem.textContent = `${item.category}: ${item.name}`;
+                            searchResults.appendChild(resultItem);
                         });
-                        searchResults.style.display = 'block';
+                        searchResults.style.display = 'block'; // Показываем результаты
                     } else {
-                        searchResults.innerHTML = '<p>Ничего не найдено</p>';
+                        // Если ничего не найдено
+                        const noResults = document.createElement('p');
+                        noResults.textContent = 'Ничего не найдено';
+                        searchResults.appendChild(noResults);
+                        searchResults.style.display = 'block';
                     }
                 })
-                .catch(error => console.error('Error fetching search results:', error));
+                .catch(error => {
+                    console.error('Ошибка при поиске:', error);
+                });
         } else {
-            searchResults.style.display = 'none';
+            searchResults.innerHTML = ''; // Очищаем результаты, если ввода нет
+            searchResults.style.display = 'none'; // Скрываем результаты
         }
     });
 
-    // Скрытие выпадающего меню при клике вне поиска
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-container')) {
+    // Закрытие выпадающего списка при клике вне
+    document.addEventListener('click', (event) => {
+        if (!searchResults.contains(event.target) && event.target !== searchInput) {
             searchResults.style.display = 'none';
         }
     });

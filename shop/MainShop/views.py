@@ -406,20 +406,39 @@ def catalog(request, target):
 def search_products(request):
     query = request.GET.get('q', '').strip()
     print(f"Query: {query}")
-    if query:
-        # Фильтрация по названию модели, игнорируя регистр
-        results = Clothing.objects.filter(model__icontains=query)[:10]  # Ограничиваем 10 результатами
-        print(f"Results: {results}")
-        data = [
-            {
-                'id': item.id,
-                'name': item.model,
-                'url': f'/card/{item.id}/',  # Генерация URL для карточки товара
-            }
-            for item in results
-        ]
-        return JsonResponse({'results': data})
-    return JsonResponse({'results': []})
+    data = []
+    for cl in Clothing.objects.filter(model__icontains=query):
+        if len(data) == 8:
+            break
+        color_cl = ColorsClothing.objects.filter(clothing=cl)
+        for cc in color_cl:
+            stock_cc = Stock.objects.filter(colors_clothing=cc, count__gt=0)
+            price_cc = PriceHistory.objects.filter(color_clothing=cc)
+
+            if stock_cc and price_cc:
+                data.append(
+                    {
+                        'category': cl.category.name,
+                        'name': cl.model,
+                        'url': reverse('card', kwargs={'pk': cl.id, 'color_id': cc.color.id})
+                    }
+                )
+                break
+    return JsonResponse({'results': data})
+    # if query:
+    #     # Фильтрация по названию модели, игнорируя регистр
+    #     results = Clothing.objects.filter(model__icontains=query)[:8]
+    #     print(f"Results: {results}")
+    #     data = [
+    #         {
+    #             'id': item.id,
+    #             'name': item.model,
+    #             'url': f'/card/{item.id}/',  # Генерация URL для карточки товара
+    #         }
+    #         for item in results
+    #     ]
+    #     return JsonResponse({'results': data})
+    # return JsonResponse({'results': []})
 
 
 @require_GET

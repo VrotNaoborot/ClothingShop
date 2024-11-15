@@ -32,7 +32,7 @@
                     <button type="submit" class="login-button-container">ВЫЙТИ</button>
                 </form>
                 {% else %}
-                <a class="login-button-container" href="login/">ВОЙТИ</a>
+                <a class="login-button-container" href="{% url 'login' %}">ВОЙТИ</a>
                 {% endif %}
                 <a class="header-cart-button" href="{% url 'cart' %}" role="link" rel="nofollow">
                     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
