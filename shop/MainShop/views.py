@@ -181,6 +181,12 @@ def mail_is_registrate(mail):
 
 
 def home(request, target):
+    links = {
+        'women': reverse('target', kwargs={'target': 'women'}),
+        'men': reverse('target', kwargs={'target': 'men'}),
+        'child': reverse('target', kwargs={'target': 'child'}),
+    }
+
     v = ""
     if target == 'men':
         v = "M"
@@ -273,6 +279,7 @@ def home(request, target):
                    'discount_items': filter_discount_clothing,
                    'brands_clothes': get_all_brands("clothes"),
                    'brands_shoes': get_all_brands("shoes"),
+                   'links': links
                    })
 
 
@@ -603,10 +610,17 @@ def category(request, target, category, subcategory=None):
     if 'page' in query_params:
         del query_params['page']
 
+    links = {
+        'women': reverse('category', kwargs={'target': 'women', 'category': category}),
+        'men': reverse('category', kwargs={'target': 'men', 'category': category}),
+        'child': reverse('category', kwargs={'target': 'child', 'category': category})
+    }
+
     return render(request, 'catalog.html', {
         'clothing_items': paginated_items,
         'current_page': paginated_items.number,
         'total_pages': paginator.num_pages,
+        'links': links,
         'page_range': page_range,
         'prev_page': paginated_items.previous_page_number() if paginated_items.has_previous() else None,
         'next_page': paginated_items.next_page_number() if paginated_items.has_next() else None,
